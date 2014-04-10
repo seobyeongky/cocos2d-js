@@ -608,7 +608,7 @@ bool ScriptingCore::runScript(const char *path, JSObject* global, JSContext* cx)
 	if (cx == NULL) {
 		cx = _cx;
 	}
-	if (!filename_script[path])
+//	if (!filename_script[path])
 	{
 		compileScript(path,global,cx );
 	}
