@@ -132,6 +132,8 @@ def main():
                     'cocos2dx_ui.ini' : ('cocos2dx_ui', 'jsb_cocos2dx_ui_auto'), \
                     'cocos2dx_studio.ini' : ('cocos2dx_studio', 'jsb_cocos2dx_studio_auto'), \
                     'cocos2dx_spine.ini' : ('cocos2dx_spine', 'jsb_cocos2dx_spine_auto'), \
+                    'cocos2dx_network.ini' : ('cocos2dx_network', 'jsb_cocos2dx_network_auto'), \
+                    'soomla.ini' : ('soomla', 'jsb_soomla_auto'), \
                     }
         target = 'spidermonkey'
         generator_py = '%s/generator.py' % cxx_generator_root

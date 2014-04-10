@@ -101,8 +101,8 @@ bool js_cocos2dx_extension_Scale9Sprite_initWithSpriteFrameName(JSContext *cx, u
 	JSB_PRECONDITION2( cobj, cx, false, "js_cocos2dx_extension_Scale9Sprite_initWithSpriteFrameName : Invalid Native Object");
 	do {
 		if (argc == 1) {
-			const char* arg0;
-			std::string arg0_tmp; ok &= jsval_to_std_string(cx, argv[0], &arg0_tmp); arg0 = arg0_tmp.c_str();
+			std::string arg0;
+			ok &= jsval_to_std_string(cx, argv[0], &arg0);
 			if (!ok) { ok = true; break; }
 			bool ret = cobj->initWithSpriteFrameName(arg0);
 			jsval jsret = JSVAL_NULL;
@@ -114,8 +114,8 @@ bool js_cocos2dx_extension_Scale9Sprite_initWithSpriteFrameName(JSContext *cx, u
 
 	do {
 		if (argc == 2) {
-			const char* arg0;
-			std::string arg0_tmp; ok &= jsval_to_std_string(cx, argv[0], &arg0_tmp); arg0 = arg0_tmp.c_str();
+			std::string arg0;
+			ok &= jsval_to_std_string(cx, argv[0], &arg0);
 			if (!ok) { ok = true; break; }
 			cocos2d::Rect arg1;
 			ok &= jsval_to_ccrect(cx, argv[1], &arg1);
@@ -400,8 +400,8 @@ bool js_cocos2dx_extension_Scale9Sprite_initWithFile(JSContext *cx, uint32_t arg
 	JSB_PRECONDITION2( cobj, cx, false, "js_cocos2dx_extension_Scale9Sprite_initWithFile : Invalid Native Object");
 	do {
 		if (argc == 2) {
-			const char* arg0;
-			std::string arg0_tmp; ok &= jsval_to_std_string(cx, argv[0], &arg0_tmp); arg0 = arg0_tmp.c_str();
+			std::string arg0;
+			ok &= jsval_to_std_string(cx, argv[0], &arg0);
 			if (!ok) { ok = true; break; }
 			cocos2d::Rect arg1;
 			ok &= jsval_to_ccrect(cx, argv[1], &arg1);
@@ -416,8 +416,8 @@ bool js_cocos2dx_extension_Scale9Sprite_initWithFile(JSContext *cx, uint32_t arg
 
 	do {
 		if (argc == 3) {
-			const char* arg0;
-			std::string arg0_tmp; ok &= jsval_to_std_string(cx, argv[0], &arg0_tmp); arg0 = arg0_tmp.c_str();
+			std::string arg0;
+			ok &= jsval_to_std_string(cx, argv[0], &arg0);
 			if (!ok) { ok = true; break; }
 			cocos2d::Rect arg1;
 			ok &= jsval_to_ccrect(cx, argv[1], &arg1);
@@ -438,8 +438,8 @@ bool js_cocos2dx_extension_Scale9Sprite_initWithFile(JSContext *cx, uint32_t arg
 			cocos2d::Rect arg0;
 			ok &= jsval_to_ccrect(cx, argv[0], &arg0);
 			if (!ok) { ok = true; break; }
-			const char* arg1;
-			std::string arg1_tmp; ok &= jsval_to_std_string(cx, argv[1], &arg1_tmp); arg1 = arg1_tmp.c_str();
+			std::string arg1;
+			ok &= jsval_to_std_string(cx, argv[1], &arg1);
 			if (!ok) { ok = true; break; }
 			bool ret = cobj->initWithFile(arg0, arg1);
 			jsval jsret = JSVAL_NULL;
@@ -451,8 +451,8 @@ bool js_cocos2dx_extension_Scale9Sprite_initWithFile(JSContext *cx, uint32_t arg
 
 	do {
 		if (argc == 1) {
-			const char* arg0;
-			std::string arg0_tmp; ok &= jsval_to_std_string(cx, argv[0], &arg0_tmp); arg0 = arg0_tmp.c_str();
+			std::string arg0;
+			ok &= jsval_to_std_string(cx, argv[0], &arg0);
 			if (!ok) { ok = true; break; }
 			bool ret = cobj->initWithFile(arg0);
 			jsval jsret = JSVAL_NULL;
@@ -640,8 +640,8 @@ bool js_cocos2dx_extension_Scale9Sprite_create(JSContext *cx, uint32_t argc, jsv
 	
 	do {
 		if (argc == 3) {
-			const char* arg0;
-			std::string arg0_tmp; ok &= jsval_to_std_string(cx, argv[0], &arg0_tmp); arg0 = arg0_tmp.c_str();
+			std::string arg0;
+			ok &= jsval_to_std_string(cx, argv[0], &arg0);
 			if (!ok) { ok = true; break; }
 			cocos2d::Rect arg1;
 			ok &= jsval_to_ccrect(cx, argv[1], &arg1);
@@ -686,8 +686,8 @@ bool js_cocos2dx_extension_Scale9Sprite_create(JSContext *cx, uint32_t argc, jsv
 			cocos2d::Rect arg0;
 			ok &= jsval_to_ccrect(cx, argv[0], &arg0);
 			if (!ok) { ok = true; break; }
-			const char* arg1;
-			std::string arg1_tmp; ok &= jsval_to_std_string(cx, argv[1], &arg1_tmp); arg1 = arg1_tmp.c_str();
+			std::string arg1;
+			ok &= jsval_to_std_string(cx, argv[1], &arg1);
 			if (!ok) { ok = true; break; }
 			cocos2d::extension::Scale9Sprite* ret = cocos2d::extension::Scale9Sprite::create(arg0, arg1);
 			jsval jsret = JSVAL_NULL;
@@ -706,8 +706,8 @@ bool js_cocos2dx_extension_Scale9Sprite_create(JSContext *cx, uint32_t argc, jsv
 	
 	do {
 		if (argc == 2) {
-			const char* arg0;
-			std::string arg0_tmp; ok &= jsval_to_std_string(cx, argv[0], &arg0_tmp); arg0 = arg0_tmp.c_str();
+			std::string arg0;
+			ok &= jsval_to_std_string(cx, argv[0], &arg0);
 			if (!ok) { ok = true; break; }
 			cocos2d::Rect arg1;
 			ok &= jsval_to_ccrect(cx, argv[1], &arg1);
@@ -729,8 +729,8 @@ bool js_cocos2dx_extension_Scale9Sprite_create(JSContext *cx, uint32_t argc, jsv
 	
 	do {
 		if (argc == 1) {
-			const char* arg0;
-			std::string arg0_tmp; ok &= jsval_to_std_string(cx, argv[0], &arg0_tmp); arg0 = arg0_tmp.c_str();
+			std::string arg0;
+			ok &= jsval_to_std_string(cx, argv[0], &arg0);
 			if (!ok) { ok = true; break; }
 			cocos2d::extension::Scale9Sprite* ret = cocos2d::extension::Scale9Sprite::create(arg0);
 			jsval jsret = JSVAL_NULL;
@@ -756,8 +756,8 @@ bool js_cocos2dx_extension_Scale9Sprite_createWithSpriteFrameName(JSContext *cx,
 	
 	do {
 		if (argc == 2) {
-			const char* arg0;
-			std::string arg0_tmp; ok &= jsval_to_std_string(cx, argv[0], &arg0_tmp); arg0 = arg0_tmp.c_str();
+			std::string arg0;
+			ok &= jsval_to_std_string(cx, argv[0], &arg0);
 			if (!ok) { ok = true; break; }
 			cocos2d::Rect arg1;
 			ok &= jsval_to_ccrect(cx, argv[1], &arg1);
@@ -779,8 +779,8 @@ bool js_cocos2dx_extension_Scale9Sprite_createWithSpriteFrameName(JSContext *cx,
 	
 	do {
 		if (argc == 1) {
-			const char* arg0;
-			std::string arg0_tmp; ok &= jsval_to_std_string(cx, argv[0], &arg0_tmp); arg0 = arg0_tmp.c_str();
+			std::string arg0;
+			ok &= jsval_to_std_string(cx, argv[0], &arg0);
 			if (!ok) { ok = true; break; }
 			cocos2d::extension::Scale9Sprite* ret = cocos2d::extension::Scale9Sprite::createWithSpriteFrameName(arg0);
 			jsval jsret = JSVAL_NULL;
@@ -8200,6 +8200,36 @@ bool js_cocos2dx_extension_AssetsManager_checkUpdate(JSContext *cx, uint32_t arg
 	JS_ReportError(cx, "js_cocos2dx_extension_AssetsManager_checkUpdate : wrong number of arguments: %d, was expecting %d", argc, 0);
 	return false;
 }
+bool js_cocos2dx_extension_AssetsManager_destroyStoragePath(JSContext *cx, uint32_t argc, jsval *vp)
+{
+	JSObject *obj = JS_THIS_OBJECT(cx, vp);
+	js_proxy_t *proxy = jsb_get_js_proxy(obj);
+	cocos2d::extension::AssetsManager* cobj = (cocos2d::extension::AssetsManager *)(proxy ? proxy->ptr : NULL);
+	JSB_PRECONDITION2( cobj, cx, false, "js_cocos2dx_extension_AssetsManager_destroyStoragePath : Invalid Native Object");
+	if (argc == 0) {
+		cobj->destroyStoragePath();
+		JS_SET_RVAL(cx, vp, JSVAL_VOID);
+		return true;
+	}
+
+	JS_ReportError(cx, "js_cocos2dx_extension_AssetsManager_destroyStoragePath : wrong number of arguments: %d, was expecting %d", argc, 0);
+	return false;
+}
+bool js_cocos2dx_extension_AssetsManager_createStoragePath(JSContext *cx, uint32_t argc, jsval *vp)
+{
+	JSObject *obj = JS_THIS_OBJECT(cx, vp);
+	js_proxy_t *proxy = jsb_get_js_proxy(obj);
+	cocos2d::extension::AssetsManager* cobj = (cocos2d::extension::AssetsManager *)(proxy ? proxy->ptr : NULL);
+	JSB_PRECONDITION2( cobj, cx, false, "js_cocos2dx_extension_AssetsManager_createStoragePath : Invalid Native Object");
+	if (argc == 0) {
+		cobj->createStoragePath();
+		JS_SET_RVAL(cx, vp, JSVAL_VOID);
+		return true;
+	}
+
+	JS_ReportError(cx, "js_cocos2dx_extension_AssetsManager_createStoragePath : wrong number of arguments: %d, was expecting %d", argc, 0);
+	return false;
+}
 bool js_cocos2dx_extension_AssetsManager_getStoragePath(JSContext *cx, uint32_t argc, jsval *vp)
 {
 	JSObject *obj = JS_THIS_OBJECT(cx, vp);
@@ -8456,6 +8486,8 @@ void js_register_cocos2dx_extension_AssetsManager(JSContext *cx, JSObject *globa
 		JS_FN("setStoragePath", js_cocos2dx_extension_AssetsManager_setStoragePath, 1, JSPROP_PERMANENT | JSPROP_ENUMERATE),
 		JS_FN("setPackageUrl", js_cocos2dx_extension_AssetsManager_setPackageUrl, 1, JSPROP_PERMANENT | JSPROP_ENUMERATE),
 		JS_FN("checkUpdate", js_cocos2dx_extension_AssetsManager_checkUpdate, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
+		JS_FN("destroyStoragePath", js_cocos2dx_extension_AssetsManager_destroyStoragePath, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
+		JS_FN("createStoragePath", js_cocos2dx_extension_AssetsManager_createStoragePath, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
 		JS_FN("getStoragePath", js_cocos2dx_extension_AssetsManager_getStoragePath, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
 		JS_FN("update", js_cocos2dx_extension_AssetsManager_update, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
 		JS_FN("setConnectionTimeout", js_cocos2dx_extension_AssetsManager_setConnectionTimeout, 1, JSPROP_PERMANENT | JSPROP_ENUMERATE),

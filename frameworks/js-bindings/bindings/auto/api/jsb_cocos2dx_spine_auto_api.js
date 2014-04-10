@@ -224,3 +224,57 @@ float
 },
 
 };
+
+/**
+ * @class JSSkeletonAnimation
+ */
+sp.JSSkeletonAnimation = {
+
+/**
+ * @method onAnimationStateEvent
+ * @param {int} arg0
+ * @param {spEventType} arg1
+ * @param {spEvent} arg2
+ * @param {int} arg3
+ */
+onAnimationStateEvent : function (
+int, 
+speventtype, 
+spevent, 
+int 
+)
+{
+},
+
+/**
+ * @method createWithFile
+* @param {char|char} char
+* @param {char|spAtlas} char
+* @param {float|float} float
+* @return {sp.JSSkeletonAnimation|sp.JSSkeletonAnimation}
+*/
+createWithFile : function(
+char,
+spatlas,
+float 
+)
+{
+    return sp.JSSkeletonAnimation;
+},
+
+/**
+ * @method JSSkeletonAnimation
+ * @constructor
+* @param {char|char} char
+* @param {char|spAtlas} char
+* @param {float|float} float
+*/
+JSSkeletonAnimation : function(
+char,
+spatlas,
+float 
+)
+{
+},
+
+};

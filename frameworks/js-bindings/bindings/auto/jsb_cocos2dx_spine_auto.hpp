@@ -38,5 +38,16 @@ bool js_cocos2dx_spine_SkeletonAnimation_clearTrack(JSContext *cx, uint32_t argc
 bool js_cocos2dx_spine_SkeletonAnimation_onAnimationStateEvent(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_spine_SkeletonAnimation_createWithFile(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_spine_SkeletonAnimation_SkeletonAnimation(JSContext *cx, uint32_t argc, jsval *vp);
+
+extern JSClass  *jsb_spine_JSSkeletonAnimation_class;
+extern JSObject *jsb_spine_JSSkeletonAnimation_prototype;
+
+bool js_cocos2dx_spine_JSSkeletonAnimation_constructor(JSContext *cx, uint32_t argc, jsval *vp);
+void js_cocos2dx_spine_JSSkeletonAnimation_finalize(JSContext *cx, JSObject *obj);
+void js_register_cocos2dx_spine_JSSkeletonAnimation(JSContext *cx, JSObject *global);
+void register_all_cocos2dx_spine(JSContext* cx, JSObject* obj);
+bool js_cocos2dx_spine_JSSkeletonAnimation_onAnimationStateEvent(JSContext *cx, uint32_t argc, jsval *vp);
+bool js_cocos2dx_spine_JSSkeletonAnimation_createWithFile(JSContext *cx, uint32_t argc, jsval *vp);
+bool js_cocos2dx_spine_JSSkeletonAnimation_JSSkeletonAnimation(JSContext *cx, uint32_t argc, jsval *vp);
 #endif
 
