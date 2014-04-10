@@ -31,6 +31,14 @@
 
 using namespace std;
 
+namespace {
+    jsval curl_std_string_to_jsval(JSContext * cx, const std::string& v)
+    {
+        JSString* str = JS_NewStringCopyZ(cx, v.c_str());
+        return STRING_TO_JSVAL(str);
+    }
+}
+
 //#pragma mark - MinXmlHttpRequest
 
 /**
@@ -499,7 +507,7 @@ JS_BINDED_PROP_GET_IMPL(MinXmlHttpRequest, status)
  */
 JS_BINDED_PROP_GET_IMPL(MinXmlHttpRequest, statusText)
 {
-    jsval strVal = std_string_to_jsval(cx, _statusText);
+    jsval strVal = curl_std_string_to_jsval(cx, _statusText);
     
     if (strVal != JSVAL_NULL)
     {
@@ -546,7 +554,7 @@ JS_BINDED_PROP_GET_IMPL(MinXmlHttpRequest, responseText)
 {
     if (_data)
     {
-        jsval strVal = std_string_to_jsval(cx, _data);
+        jsval strVal = curl_std_string_to_jsval(cx, _data);
 
         if (strVal != JSVAL_NULL)
         {
@@ -574,7 +582,7 @@ JS_BINDED_PROP_GET_IMPL(MinXmlHttpRequest, response)
     {
         JS::RootedValue outVal(cx);
         
-        jsval strVal = std_string_to_jsval(cx, _data);
+        jsval strVal = curl_std_string_to_jsval(cx, _data);
         if (JS_ParseJSON(cx, JS_GetStringCharsZ(cx, JSVAL_TO_STRING(strVal)), _dataSize, &outVal))
         {
             vp.set(outVal);
@@ -710,7 +718,7 @@ JS_BINDED_FUNC_IMPL(MinXmlHttpRequest, getAllResponseHeaders)
     
     responseheader = responseheaders.str();
     
-    jsval strVal = std_string_to_jsval(cx, responseheader);
+    jsval strVal = curl_std_string_to_jsval(cx, responseheader);
     if (strVal != JSVAL_NULL)
     {
         JS_SET_RVAL(cx, vp, strVal);
@@ -750,7 +758,7 @@ JS_BINDED_FUNC_IMPL(MinXmlHttpRequest, getResponseHeader)
     auto iter = _httpHeader.find(value);
     if (iter != _httpHeader.end())
     {
-        jsval js_ret_val =  std_string_to_jsval(cx, iter->second);
+        jsval js_ret_val =  curl_std_string_to_jsval(cx, iter->second);
         JS_SET_RVAL(cx, vp, js_ret_val);
         return true;
     }

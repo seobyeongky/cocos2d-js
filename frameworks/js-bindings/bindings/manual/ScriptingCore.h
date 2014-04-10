@@ -42,6 +42,7 @@ private:
 	JSObject  *_global;
 	JSObject  *_debugGlobal;
 	SimpleRunLoop* _runLoop;
+    std::function<void(const char*)> logSniffer_;
 
     bool _callFromScript;
 	ScriptingCore();
@@ -187,7 +188,12 @@ public:
 	 * run a script from script :)
 	 */
 	static bool executeScript(JSContext *cx, uint32_t argc, jsval *vp);
-
+    
+	/**
+	 *  log sniffer
+	 */
+	static bool setLogSniffer(JSContext* cx, uint32_t argc, jsval* vp);
+    
 	/**
 	 * Force a cycle of GC
 	 * @param cx
@@ -206,7 +212,8 @@ public:
 	void enableDebugger();
 	JSObject* getDebugGlobal() { return _debugGlobal; }
     JSObject* getGlobalObject() { return _global; }
-
+    void smellLog(const char* msg) { if (logSniffer_) logSniffer_(msg); }
+    
     bool isFunctionOverridedInJS(JSObject* obj, const std::string& name, JSNative native);
     
  private:

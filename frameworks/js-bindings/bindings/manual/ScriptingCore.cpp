@@ -230,6 +230,8 @@ void js_log(const char *format, ...) {
     if (len > 0)
     {
         CCLOG("JS: %s\n", _js_log_buf);
+        
+        ScriptingCore::getInstance()->smellLog(_js_log_buf);
     }
 }
 
@@ -349,6 +351,7 @@ void registerDefaultClasses(JSContext* cx, JSObject* global) {
     JS_DefineFunction(cx, jsc, "addGCRootObject", ScriptingCore::addRootJS, 1, JSPROP_READONLY | JSPROP_PERMANENT | JSPROP_ENUMERATE );
     JS_DefineFunction(cx, jsc, "removeGCRootObject", ScriptingCore::removeRootJS, 1, JSPROP_READONLY | JSPROP_PERMANENT | JSPROP_ENUMERATE );
     JS_DefineFunction(cx, jsc, "executeScript", ScriptingCore::executeScript, 1, JSPROP_READONLY | JSPROP_PERMANENT | JSPROP_ENUMERATE );
+    JS_DefineFunction(cx, jsc, "setLogSniffer", ScriptingCore::setLogSniffer, 1, JSPROP_READONLY | JSPROP_PERMANENT | JSPROP_ENUMERATE );
 
     // register some global functions
     JS_DefineFunction(cx, global, "require", ScriptingCore::executeScript, 1, JSPROP_READONLY | JSPROP_PERMANENT);
@@ -379,6 +382,7 @@ ScriptingCore::ScriptingCore()
 , _global(nullptr)
 , _debugGlobal(nullptr)
 , _callFromScript(false)
+, logSniffer_(nullptr)
 {
     // set utf8 strings internally (we don't need utf16)
     // XXX: Removed in SpiderMonkey 19.0
@@ -731,6 +735,49 @@ bool ScriptingCore::executeScript(JSContext *cx, uint32_t argc, jsval *vp)
         return res;
     }
     return true;
+}
+
+
+bool ScriptingCore::setLogSniffer(JSContext* cx, uint32_t argc, jsval* vp)
+{
+    if (argc == 1) {
+        jsval* argv = JS_ARGV(cx, vp);
+        do {
+            std::shared_ptr<JSFunctionWrapper> func(new JSFunctionWrapper(cx, JS_THIS_OBJECT(cx, vp), argv[0]));
+            auto lambda = [=](const char* larg0) -> void {
+                jsval largv[1];
+                do {
+                    if (larg0) {
+                        largv[0] = c_string_to_jsval(cx, larg0);
+                    } else {
+                        largv[0] = JSVAL_NULL;
+                    }
+                } while (0);
+                jsval rval;
+                JS::RootedValue exception(cx);
+                
+                static bool avoidRecursion = false;
+                if (avoidRecursion) return;
+                
+                avoidRecursion = true;
+                if (JS_IsExceptionPending(cx))
+                {
+                    JS_GetPendingException(cx,&exception);
+                    JS_ClearPendingException(cx);
+                    func->invoke(1, &largv[0], rval);
+                    JS_SetPendingException(cx,exception);
+                }
+                else
+                {
+                    func->invoke(1, &largv[0], rval);
+                }
+                avoidRecursion = false;
+            };
+            getInstance()->logSniffer_ = lambda;
+            return true;
+        } while(0);
+    }
+    return false;
 }
 
 bool ScriptingCore::forceGC(JSContext *cx, uint32_t argc, jsval *vp)
