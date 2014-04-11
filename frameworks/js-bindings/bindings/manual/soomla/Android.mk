@@ -26,5 +26,5 @@ LOCAL_WHOLE_STATIC_LIBRARIES += cocos2dx_store_static
 include $(BUILD_STATIC_LIBRARY)
 
 $(call import-module,external/spidermonkey/prebuilt/android)
-$(call import-module,scripting/javascript/bindings)
-#$(call import-module,extensions/cocos2dx-store/android/jni)
+$(call import-module,bindings)
+$(call import-module,extensions/cocos2dx-store/android/jni)
