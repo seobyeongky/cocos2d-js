@@ -95,5 +95,8 @@ Makefile
 cmake_install.cmake
 templates/js-template-default/frameworks/js-bindings
 
+# ignore helloworld project
 helloworld
-redduck
+
+# redmobile project part
+redmobile
