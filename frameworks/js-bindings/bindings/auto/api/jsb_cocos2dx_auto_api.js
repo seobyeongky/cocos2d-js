@@ -894,26 +894,6 @@ getMaxS : function (
 },
 
 /**
- * @method updateWithData
- * @param {void} arg0
- * @param {int} arg1
- * @param {int} arg2
- * @param {int} arg3
- * @param {int} arg4
- * @return {bool}
- */
-updateWithData : function (
-void, 
-int, 
-int, 
-int, 
-int 
-)
-{
-    return false;
-},
-
-/**
  * @method hasPremultipliedAlpha
  * @return {bool}
  */
@@ -10405,21 +10385,11 @@ float
 },
 
 /**
- * @method init
- * @return {bool}
- */
-init : function (
-)
-{
-    return false;
-},
-
-/**
  * @method initWithColor
 * @param {Color4BObject|Color4BObject} color4b
 * @param {float} float
 * @param {float} float
-* @return {bool|bool}
+* @return {bool|bool|bool}
 */
 initWithColor : function(
 color4b,
@@ -15712,16 +15682,6 @@ str
 },
 
 /**
- * @method setFilenameLookupDictionary
- * @param {MapObject} arg0
- */
-setFilenameLookupDictionary : function (
-map 
-)
-{
-},
-
-/**
  * @method isAbsolutePath
  * @param {String} arg0
  * @return {bool}
@@ -15789,26 +15749,6 @@ str
 )
 {
     return map_object;
-},
-
-/**
- * @method addSearchResolutionsOrder
- * @param {String} arg0
- */
-addSearchResolutionsOrder : function (
-str 
-)
-{
-},
-
-/**
- * @method addSearchPath
- * @param {String} arg0
- */
-addSearchPath : function (
-str 
-)
-{
 },
 
 /**

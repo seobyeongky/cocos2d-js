@@ -496,7 +496,7 @@ cc.loader = {
      * @param {Function} cb     callback
      */
     loadAliases : function(url, cb){
-        cc.FileUtils.getInstance().loadFilenameLookup(url);
+        cc.fileUtils.loadFilenameLookup(url);
         if(cb) cb();
     },
 
@@ -600,6 +600,9 @@ cc.spriteFrameCache = cc.SpriteFrameCache.getInstance();
 cc.plistParser = cc.PlistParser.getInstance();
 //cc.tiffReader;
 //cc.imeDispatcher;
+
+// File utils (only in JSB)
+cc.fileUtils = cc.FileUtils.getInstance();
 
 cc.screen = {
     init: function() {},
