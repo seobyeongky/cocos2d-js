@@ -1483,7 +1483,8 @@ cc.EventListener.create = function(argObj){
         delete argObj.callback;
     }
     else if(listenerType === cc.EventListener.SCREEN_LAYOUT){
-        listener = cc.EventListenerScreenLayout.create();
+        listener = cc.EventListenerScreenLayout.create(argObj.callback);
+        delete argObj.callback;
     }
     else
     {
