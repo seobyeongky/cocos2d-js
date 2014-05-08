@@ -2980,9 +2980,14 @@ bool js_cocos2dx_Device_constructor(JSContext *cx, uint32_t argc, jsval *vp);
 void js_cocos2dx_Device_finalize(JSContext *cx, JSObject *obj);
 void js_register_cocos2dx_Device(JSContext *cx, JSObject *global);
 void register_all_cocos2dx(JSContext* cx, JSObject* obj);
+bool js_cocos2dx_Device_getCurrentOrientation(JSContext *cx, uint32_t argc, jsval *vp);
+bool js_cocos2dx_Device_setOrientationLock(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_Device_setAccelerometerEnabled(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_Device_setAccelerometerInterval(JSContext *cx, uint32_t argc, jsval *vp);
+bool js_cocos2dx_Device_setOrientationAllow(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_Device_getDPI(JSContext *cx, uint32_t argc, jsval *vp);
+bool js_cocos2dx_Device_isOrientationAllowed(JSContext *cx, uint32_t argc, jsval *vp);
+bool js_cocos2dx_Device_isOrientationLocked(JSContext *cx, uint32_t argc, jsval *vp);
 
 extern JSClass  *jsb_cocos2d_FileUtils_class;
 extern JSObject *jsb_cocos2d_FileUtils_prototype;
@@ -3380,6 +3385,27 @@ void js_cocos2dx_EventListenerAcceleration_finalize(JSContext *cx, JSObject *obj
 void js_register_cocos2dx_EventListenerAcceleration(JSContext *cx, JSObject *global);
 void register_all_cocos2dx(JSContext* cx, JSObject* obj);
 bool js_cocos2dx_EventListenerAcceleration_create(JSContext *cx, uint32_t argc, jsval *vp);
+
+extern JSClass  *jsb_cocos2d_EventScreenLayout_class;
+extern JSObject *jsb_cocos2d_EventScreenLayout_prototype;
+
+bool js_cocos2dx_EventScreenLayout_constructor(JSContext *cx, uint32_t argc, jsval *vp);
+void js_cocos2dx_EventScreenLayout_finalize(JSContext *cx, JSObject *obj);
+void js_register_cocos2dx_EventScreenLayout(JSContext *cx, JSObject *global);
+void register_all_cocos2dx(JSContext* cx, JSObject* obj);
+bool js_cocos2dx_EventScreenLayout_getWidth(JSContext *cx, uint32_t argc, jsval *vp);
+bool js_cocos2dx_EventScreenLayout_getHeight(JSContext *cx, uint32_t argc, jsval *vp);
+bool js_cocos2dx_EventScreenLayout_getOrientation(JSContext *cx, uint32_t argc, jsval *vp);
+bool js_cocos2dx_EventScreenLayout_EventScreenLayout(JSContext *cx, uint32_t argc, jsval *vp);
+
+extern JSClass  *jsb_cocos2d_EventListenerScreenLayout_class;
+extern JSObject *jsb_cocos2d_EventListenerScreenLayout_prototype;
+
+bool js_cocos2dx_EventListenerScreenLayout_constructor(JSContext *cx, uint32_t argc, jsval *vp);
+void js_cocos2dx_EventListenerScreenLayout_finalize(JSContext *cx, JSObject *obj);
+void js_register_cocos2dx_EventListenerScreenLayout(JSContext *cx, JSObject *global);
+void register_all_cocos2dx(JSContext* cx, JSObject* obj);
+bool js_cocos2dx_EventListenerScreenLayout_create(JSContext *cx, uint32_t argc, jsval *vp);
 
 extern JSClass  *jsb_cocos2d_Scheduler_class;
 extern JSObject *jsb_cocos2d_Scheduler_prototype;

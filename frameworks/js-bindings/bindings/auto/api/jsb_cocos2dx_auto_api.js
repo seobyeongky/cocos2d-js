@@ -15621,6 +15621,26 @@ str
 cc.Device = {
 
 /**
+ * @method getCurrentOrientation
+ * @return {cc.Device::Orientation}
+ */
+getCurrentOrientation : function (
+)
+{
+    return 0;
+},
+
+/**
+ * @method setOrientationLock
+ * @param {bool} arg0
+ */
+setOrientationLock : function (
+bool 
+)
+{
+},
+
+/**
  * @method setAccelerometerEnabled
  * @param {bool} arg0
  */
@@ -15641,6 +15661,18 @@ float
 },
 
 /**
+ * @method setOrientationAllow
+ * @param {cc.Device::Orientation} arg0
+ * @param {bool} arg1
+ */
+setOrientationAllow : function (
+orientation, 
+bool 
+)
+{
+},
+
+/**
  * @method getDPI
  * @return {int}
  */
@@ -15648,6 +15680,28 @@ getDPI : function (
 )
 {
     return 0;
+},
+
+/**
+ * @method isOrientationAllowed
+ * @param {cc.Device::Orientation} arg0
+ * @return {bool}
+ */
+isOrientationAllowed : function (
+orientation 
+)
+{
+    return false;
+},
+
+/**
+ * @method isOrientationLocked
+ * @return {bool}
+ */
+isOrientationLocked : function (
+)
+{
+    return false;
 },
 
 };
@@ -17940,6 +17994,77 @@ func
 )
 {
     return cc.EventListenerAcceleration;
+},
+
+};
+
+/**
+ * @class EventScreenLayout
+ */
+cc.EventScreenLayout = {
+
+/**
+ * @method getWidth
+ * @return {int}
+ */
+getWidth : function (
+)
+{
+    return 0;
+},
+
+/**
+ * @method getHeight
+ * @return {int}
+ */
+getHeight : function (
+)
+{
+    return 0;
+},
+
+/**
+ * @method getOrientation
+ * @return {cc.Device::Orientation}
+ */
+getOrientation : function (
+)
+{
+    return 0;
+},
+
+/**
+ * @method EventScreenLayout
+ * @constructor
+ * @param {cc.Device::Orientation} arg0
+ * @param {int} arg1
+ * @param {int} arg2
+ */
+EventScreenLayout : function (
+orientation, 
+int, 
+int 
+)
+{
+},
+
+};
+
+/**
+ * @class EventListenerScreenLayout
+ */
+cc.EventListenerScreenLayout = {
+
+/**
+ * @method create
+ * @param {function} arg0
+ * @return {cc.EventListenerScreenLayout}
+ */
+create : function (
+func 
+)
+{
+    return cc.EventListenerScreenLayout;
 },
 
 };

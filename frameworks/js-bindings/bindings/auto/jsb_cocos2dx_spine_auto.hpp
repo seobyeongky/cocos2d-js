@@ -20,6 +20,7 @@ bool js_cocos2dx_spine_Skeleton_setAttachment(JSContext *cx, uint32_t argc, jsva
 bool js_cocos2dx_spine_Skeleton_getBlendFunc(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_spine_Skeleton_setSkin(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_spine_Skeleton_updateWorldTransform(JSContext *cx, uint32_t argc, jsval *vp);
+bool js_cocos2dx_spine_Skeleton_getLocalBounds(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_spine_Skeleton_setBonesToSetupPose(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_spine_Skeleton_createWithFile(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_spine_Skeleton_Skeleton(JSContext *cx, uint32_t argc, jsval *vp);
@@ -35,7 +36,6 @@ bool js_cocos2dx_spine_SkeletonAnimation_update(JSContext *cx, uint32_t argc, js
 bool js_cocos2dx_spine_SkeletonAnimation_setMix(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_spine_SkeletonAnimation_clearTracks(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_spine_SkeletonAnimation_clearTrack(JSContext *cx, uint32_t argc, jsval *vp);
-bool js_cocos2dx_spine_SkeletonAnimation_onAnimationStateEvent(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_spine_SkeletonAnimation_createWithFile(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_spine_SkeletonAnimation_SkeletonAnimation(JSContext *cx, uint32_t argc, jsval *vp);
 
@@ -46,7 +46,6 @@ bool js_cocos2dx_spine_JSSkeletonAnimation_constructor(JSContext *cx, uint32_t a
 void js_cocos2dx_spine_JSSkeletonAnimation_finalize(JSContext *cx, JSObject *obj);
 void js_register_cocos2dx_spine_JSSkeletonAnimation(JSContext *cx, JSObject *global);
 void register_all_cocos2dx_spine(JSContext* cx, JSObject* obj);
-bool js_cocos2dx_spine_JSSkeletonAnimation_onAnimationStateEvent(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_spine_JSSkeletonAnimation_createWithFile(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_spine_JSSkeletonAnimation_JSSkeletonAnimation(JSContext *cx, uint32_t argc, jsval *vp);
 #endif

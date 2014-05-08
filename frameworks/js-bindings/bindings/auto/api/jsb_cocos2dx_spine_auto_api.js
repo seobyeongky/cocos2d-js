@@ -91,6 +91,16 @@ updateWorldTransform : function (
 },
 
 /**
+ * @method getLocalBounds
+ * @return {RectObject}
+ */
+getLocalBounds : function (
+)
+{
+    return cc.Rect;
+},
+
+/**
  * @method setBonesToSetupPose
  */
 setBonesToSetupPose : function (
@@ -177,22 +187,6 @@ clearTrack : function (
 },
 
 /**
- * @method onAnimationStateEvent
- * @param {int} arg0
- * @param {spEventType} arg1
- * @param {spEvent} arg2
- * @param {int} arg3
- */
-onAnimationStateEvent : function (
-int, 
-speventtype, 
-spevent, 
-int 
-)
-{
-},
-
-/**
  * @method createWithFile
 * @param {char|char} char
 * @param {char|spAtlas} char
@@ -229,22 +223,6 @@ float
  * @class JSSkeletonAnimation
  */
 sp.JSSkeletonAnimation = {
-
-/**
- * @method onAnimationStateEvent
- * @param {int} arg0
- * @param {spEventType} arg1
- * @param {spEvent} arg2
- * @param {int} arg3
- */
-onAnimationStateEvent : function (
-int, 
-speventtype, 
-spevent, 
-int 
-)
-{
-},
 
 /**
  * @method createWithFile
