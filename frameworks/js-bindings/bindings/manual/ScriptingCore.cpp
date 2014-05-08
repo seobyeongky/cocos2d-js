@@ -511,14 +511,9 @@ void ScriptingCore::createGlobalContext() {
     JS::ContextOptionsRef(_cx).setIon(true);
     JS::ContextOptionsRef(_cx).setBaseline(true);
     JS::ContextOptionsRef(_cx).setAsmJS(true);
+    JS::ContextOptionsRef(_cx).setCompileAndGo(true);
     
 //    JS_SetVersion(this->_cx, JSVERSION_LATEST);
-    
-    // Only disable METHODJIT on iOS.
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-//    JS_SetOptions(this->_cx, JS_GetOptions(this->_cx) & ~JSOPTION_METHODJIT);
-//    JS_SetOptions(this->_cx, JS_GetOptions(this->_cx) & ~JSOPTION_METHODJIT_ALWAYS);
-#endif
     
     JS_SetErrorReporter(this->_cx, ScriptingCore::reportError);
 #if defined(JS_GC_ZEAL) && defined(DEBUG)
