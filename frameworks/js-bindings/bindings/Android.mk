@@ -15,6 +15,8 @@ LOCAL_SRC_FILES := manual/ScriptingCore.cpp \
                    manual/jsb_opengl_manual.cpp \
                    manual/jsb_opengl_registration.cpp \
                    manual/jsb_event_dispatcher_manual.cpp \
+                   manual/platform/android/CCJavascriptJavaBridge.cpp \
+                   manual/platform/android/org_cocos2dx_lib_Cocos2dxJavascriptJavaBridge.cpp \
                    auto/jsb_cocos2dx_auto.cpp
 
 LOCAL_CFLAGS := -DCOCOS2D_JAVASCRIPT
@@ -42,5 +44,5 @@ LOCAL_WHOLE_STATIC_LIBRARIES += cocosdenshion_static
 include $(BUILD_STATIC_LIBRARY)
 
 $(call import-module,external/spidermonkey/prebuilt/android)
-$(call import-module,2d)
+$(call import-module,.)
 $(call import-module,audio/android)

@@ -208,10 +208,10 @@ ccui.Widget = {
 
 /**
  * @method setSizePercent
- * @param {PointObject} arg0
+ * @param {Array} arg0
  */
 setSizePercent : function (
-point 
+array 
 )
 {
 },
@@ -258,20 +258,20 @@ getLeftInParent : function (
 
 /**
  * @method getTouchEndPos
- * @return {PointObject}
+ * @return {Array}
  */
 getTouchEndPos : function (
 )
 {
-    return cc.Point;
+    return new Array();
 },
 
 /**
  * @method setPositionPercent
- * @param {PointObject} arg0
+ * @param {Array} arg0
  */
 setPositionPercent : function (
-point 
+array 
 )
 {
 },
@@ -422,12 +422,12 @@ getActionTag : function (
 
 /**
  * @method getWorldPosition
- * @return {PointObject}
+ * @return {Array}
  */
 getWorldPosition : function (
 )
 {
-    return cc.Point;
+    return new Array();
 },
 
 /**
@@ -470,12 +470,12 @@ clone : function (
 
 /**
  * @method getTouchMovePos
- * @return {PointObject}
+ * @return {Array}
  */
 getTouchMovePos : function (
 )
 {
-    return cc.Point;
+    return new Array();
 },
 
 /**
@@ -530,22 +530,22 @@ layoutparameter
 
 /**
  * @method getSizePercent
- * @return {PointObject}
+ * @return {Array}
  */
 getSizePercent : function (
 )
 {
-    return cc.Point;
+    return new Array();
 },
 
 /**
  * @method getTouchStartPos
- * @return {PointObject}
+ * @return {Array}
  */
 getTouchStartPos : function (
 )
 {
-    return cc.Point;
+    return new Array();
 },
 
 /**
@@ -570,11 +570,11 @@ isBright : function (
 
 /**
  * @method clippingParentAreaContainPoint
- * @param {PointObject} arg0
+ * @param {Array} arg0
  * @return {bool}
  */
 clippingParentAreaContainPoint : function (
-point 
+array 
 )
 {
     return false;
@@ -642,21 +642,21 @@ bool
 
 /**
  * @method getPositionPercent
- * @return {PointObject}
+ * @return {Array}
  */
 getPositionPercent : function (
 )
 {
-    return cc.Point;
+    return new Array();
 },
 
 /**
  * @method hitTest
- * @param {PointObject} arg0
+ * @param {Array} arg0
  * @return {bool}
  */
 hitTest : function (
-point 
+array 
 )
 {
     return false;
@@ -696,12 +696,12 @@ sizetype
  * @method checkChildInfo
  * @param {int} arg0
  * @param {ccui.Widget} arg1
- * @param {PointObject} arg2
+ * @param {Array} arg2
  */
 checkChildInfo : function (
 int, 
 widget, 
-point 
+array 
 )
 {
 },
@@ -754,10 +754,10 @@ ccui.Layout = {
 
 /**
  * @method setBackGroundColorVector
- * @param {PointObject} arg0
+ * @param {Array} arg0
  */
 setBackGroundColorVector : function (
-point 
+array 
 )
 {
 },
@@ -794,12 +794,12 @@ color3b
 
 /**
  * @method getBackGroundColorVector
- * @return {PointObject}
+ * @return {Array}
  */
 getBackGroundColorVector : function (
 )
 {
-    return cc.Point;
+    return new Array();
 },
 
 /**
@@ -2118,12 +2118,12 @@ isInertiaScrollEnabled : function (
 
 /**
  * @method scrollToPercentBothDirection
- * @param {PointObject} arg0
+ * @param {Array} arg0
  * @param {float} arg1
  * @param {bool} arg2
  */
 scrollToPercentBothDirection : function (
-point, 
+array, 
 float, 
 bool 
 )
@@ -2316,10 +2316,10 @@ bool
 
 /**
  * @method jumpToPercentBothDirection
- * @param {PointObject} arg0
+ * @param {Array} arg0
  */
 jumpToPercentBothDirection : function (
-point 
+array 
 )
 {
 },
@@ -3130,11 +3130,11 @@ bool
 
 /**
  * @method hitTest
- * @param {PointObject} arg0
+ * @param {Array} arg0
  * @return {bool}
  */
 hitTest : function (
-point 
+array 
 )
 {
     return false;
@@ -3464,6 +3464,298 @@ char
 )
 {
     return ccui.Widget;
+},
+
+};
+
+/**
+ * @class RichElement
+ */
+ccui.RichElement = {
+
+/**
+ * @method init
+ * @param {int} arg0
+ * @param {Color3BObject} arg1
+ * @param {unsigned char} arg2
+ * @return {bool}
+ */
+init : function (
+int, 
+color3b, 
+char 
+)
+{
+    return false;
+},
+
+/**
+ * @method RichElement
+ * @constructor
+ */
+RichElement : function (
+)
+{
+},
+
+};
+
+/**
+ * @class RichElementText
+ */
+ccui.RichElementText = {
+
+/**
+ * @method init
+ * @param {int} arg0
+ * @param {Color3BObject} arg1
+ * @param {unsigned char} arg2
+ * @param {char} arg3
+ * @param {char} arg4
+ * @param {float} arg5
+ * @return {bool}
+ */
+init : function (
+int, 
+color3b, 
+char, 
+char, 
+char, 
+float 
+)
+{
+    return false;
+},
+
+/**
+ * @method create
+ * @param {int} arg0
+ * @param {Color3BObject} arg1
+ * @param {unsigned char} arg2
+ * @param {char} arg3
+ * @param {char} arg4
+ * @param {float} arg5
+ * @return {ccui.RichElementText}
+ */
+create : function (
+int, 
+color3b, 
+char, 
+char, 
+char, 
+float 
+)
+{
+    return ccui.RichElementText;
+},
+
+/**
+ * @method RichElementText
+ * @constructor
+ */
+RichElementText : function (
+)
+{
+},
+
+};
+
+/**
+ * @class RichElementImage
+ */
+ccui.RichElementImage = {
+
+/**
+ * @method init
+ * @param {int} arg0
+ * @param {Color3BObject} arg1
+ * @param {unsigned char} arg2
+ * @param {char} arg3
+ * @return {bool}
+ */
+init : function (
+int, 
+color3b, 
+char, 
+char 
+)
+{
+    return false;
+},
+
+/**
+ * @method create
+ * @param {int} arg0
+ * @param {Color3BObject} arg1
+ * @param {unsigned char} arg2
+ * @param {char} arg3
+ * @return {ccui.RichElementImage}
+ */
+create : function (
+int, 
+color3b, 
+char, 
+char 
+)
+{
+    return ccui.RichElementImage;
+},
+
+/**
+ * @method RichElementImage
+ * @constructor
+ */
+RichElementImage : function (
+)
+{
+},
+
+};
+
+/**
+ * @class RichElementCustomNode
+ */
+ccui.RichElementCustomNode = {
+
+/**
+ * @method init
+ * @param {int} arg0
+ * @param {Color3BObject} arg1
+ * @param {unsigned char} arg2
+ * @param {cc.Node} arg3
+ * @return {bool}
+ */
+init : function (
+int, 
+color3b, 
+char, 
+node 
+)
+{
+    return false;
+},
+
+/**
+ * @method create
+ * @param {int} arg0
+ * @param {Color3BObject} arg1
+ * @param {unsigned char} arg2
+ * @param {cc.Node} arg3
+ * @return {ccui.RichElementCustomNode}
+ */
+create : function (
+int, 
+color3b, 
+char, 
+node 
+)
+{
+    return ccui.RichElementCustomNode;
+},
+
+/**
+ * @method RichElementCustomNode
+ * @constructor
+ */
+RichElementCustomNode : function (
+)
+{
+},
+
+};
+
+/**
+ * @class RichText
+ */
+ccui.RichText = {
+
+/**
+ * @method insertElement
+ * @param {ccui.RichElement} arg0
+ * @param {int} arg1
+ */
+insertElement : function (
+richelement, 
+int 
+)
+{
+},
+
+/**
+ * @method setAnchorPoint
+ * @param {Array} arg0
+ */
+setAnchorPoint : function (
+array 
+)
+{
+},
+
+/**
+ * @method pushBackElement
+ * @param {ccui.RichElement} arg0
+ */
+pushBackElement : function (
+richelement 
+)
+{
+},
+
+/**
+ * @method ignoreContentAdaptWithSize
+ * @param {bool} arg0
+ */
+ignoreContentAdaptWithSize : function (
+bool 
+)
+{
+},
+
+/**
+ * @method setVerticalSpace
+ * @param {float} arg0
+ */
+setVerticalSpace : function (
+float 
+)
+{
+},
+
+/**
+ * @method formatText
+ */
+formatText : function (
+)
+{
+},
+
+/**
+ * @method removeElement
+* @param {ccui.RichElement|int} richelement
+*/
+removeElement : function(
+int 
+)
+{
+},
+
+/**
+ * @method create
+ * @return {ccui.RichText}
+ */
+create : function (
+)
+{
+    return ccui.RichText;
+},
+
+/**
+ * @method RichText
+ * @constructor
+ */
+RichText : function (
+)
+{
 },
 
 };

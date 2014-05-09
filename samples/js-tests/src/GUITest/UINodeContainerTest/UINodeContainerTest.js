@@ -1,5 +1,6 @@
 /****************************************************************************
- Copyright (c) 2013 cocos2d-x.org
+ Copyright (c) 2011-2012 cocos2d-x.org
+ Copyright (c) 2013-2014 Chukong Technologies Inc.
 
  http://www.cocos2d-x.org
 
@@ -39,7 +40,7 @@ var UIWidgetAddNodeTest = UIScene.extend({
             var sprite = cc.Sprite.create("res/cocosui/ccicon.png");
             sprite.x = 0;
             sprite.y = sprite.getBoundingBox().height / 4;
-            nodeContainer.addChild(sprite);
+            nodeContainer.addNode(sprite);
 
             return true;
         }
