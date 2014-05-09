@@ -10,3 +10,6 @@
 [submodule "tools/bindings-generator"]
 	path = tools/bindings-generator
 	url = git@github.com:redmobile/bindings-generator.git
+[submodule "frameworks/runtime-src"]
+	path = frameworks/runtime-src
+	url = git@bitbucket.org:redduck/runtime-src.git
