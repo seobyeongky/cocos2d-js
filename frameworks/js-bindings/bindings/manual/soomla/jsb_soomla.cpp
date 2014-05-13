@@ -10,7 +10,7 @@
 #include "CCSoomlaJsonHelper.h"
 #include "CCSoomlaNdkBridge.h"
 #include "ScriptingCore.h"
-#include "CCDirector.h"
+#include "base/CCDirector.h"
 
 using namespace cocos2d;
 
