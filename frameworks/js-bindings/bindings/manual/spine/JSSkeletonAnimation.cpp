@@ -6,6 +6,89 @@
 // #include <spine/spine-cocos2dx.h>
 
 namespace spine {
+    
+    // T for contents pointer type, V for tag type
+    template <typename T, typename V>
+    class Cache
+    {
+    public:
+        struct chunk_t
+        {
+            std::string path;
+            T *         ptr;
+            V           tag;
+            chunk_t() : path(), ptr(nullptr), tag() {}
+            chunk_t(std::string path_, T * ptr_, V tag_) :
+                path(path_), ptr(ptr_), tag(tag_) {}
+        };
+        
+        void add (const char * file, T * ptr, V tag)
+        {
+            list.push_back(chunk_t(file,ptr,tag));
+        }
+        
+        T * get(const char * file, V tag)
+        {
+            for (auto it : list)
+            {
+                if (strcmp(it.path.c_str(), file) == 0 && tag == it.tag)
+                    return it.ptr;
+            }
+            return nullptr;
+        }
+        
+        void clear()
+        {
+            for (auto it : list)
+            {
+                delete it.ptr;
+            }
+            list.clear();
+        }
+        
+    private:
+        std::vector<chunk_t> list;
+    };
+    
+    Cache<spSkeletonData, float> skeletonDataCache;
+    Cache<spAtlas, int> atlasCache;
+    
+    void JSSkeletonAnimation::clearCache()
+    {
+        skeletonDataCache.clear();
+        atlasCache.clear();
+    }
+    
+    spAtlas * getAtlas(const char * path)
+    {
+        auto atlas = atlasCache.get(path, 0);
+        if (!atlas)
+        {
+            atlas = spAtlas_readAtlasFile(path);
+            CCAssert(atlas, "Error reading atlas file.");
+            atlasCache.add(path, atlas, 0);
+        }
+        return atlas;
+    }
+
+    spSkeletonData * getSkeletonData(const char * path, spAtlas * atlas, float wonderScale)
+    {
+        auto skeletonData = skeletonDataCache.get(path, wonderScale);
+        if (!skeletonData)
+        {
+            spSkeletonJson* json = spSkeletonJson_create(atlas);
+            json->scale = wonderScale;
+            skeletonData = spSkeletonJson_readSkeletonDataFile(json, path);
+            CCAssert(skeletonData, json->error ? json->error : "Error reading skeleton data file.");
+            spSkeletonJson_dispose(json);
+            skeletonDataCache.add(path, skeletonData, wonderScale);
+        }
+        return skeletonData;
+    }
+    
+    JSSkeletonAnimation::JSSkeletonAnimation (spSkeletonData * skeletonData, bool isOwnsSkeletonData)
+    : SkeletonAnimation(skeletonData, isOwnsSkeletonData) {}
+    
     JSSkeletonAnimation::JSSkeletonAnimation (const char* skeletonDataFile, spAtlas* atlas, float scale)
     : SkeletonAnimation(skeletonDataFile, atlas, scale) {}
 
@@ -13,16 +96,27 @@ namespace spine {
     : SkeletonAnimation(skeletonDataFile, atlasFile, scale) {}
 
     JSSkeletonAnimation* JSSkeletonAnimation::createWithFile (const char* skeletonDataFile, spAtlas* atlas, float scale) {
-        JSSkeletonAnimation* node = new JSSkeletonAnimation(skeletonDataFile, atlas, scale);
+        float wonderScale = scale == 0 ? (1 / Director::getInstance()->getContentScaleFactor()) : scale;
+        auto skeletonData = getSkeletonData(skeletonDataFile, atlas, wonderScale);
+
+        JSSkeletonAnimation* node = new JSSkeletonAnimation(skeletonData, false);
         node->autorelease();
         return node;
     }
 
     JSSkeletonAnimation* JSSkeletonAnimation::createWithFile (const char* skeletonDataFile, const char* atlasFile, float scale) {
-        JSSkeletonAnimation* node = new JSSkeletonAnimation(skeletonDataFile, atlasFile, scale);
+    
+        auto atlas = getAtlas(atlasFile);
+        
+        float wonderScale = scale == 0 ? (1 / Director::getInstance()->getContentScaleFactor()) : scale;
+        auto skeletonData = getSkeletonData(skeletonDataFile, atlas, wonderScale);
+
+        JSSkeletonAnimation* node = new JSSkeletonAnimation(skeletonData, false);
         node->autorelease();
         return node;
-    }    
+    }
+    
+    
 
     void JSSkeletonAnimation::onAnimationStateEvent (int trackIndex, spEventType type, spEvent* event, int loopCount) {
         js_proxy_t* proxy = NULL;
