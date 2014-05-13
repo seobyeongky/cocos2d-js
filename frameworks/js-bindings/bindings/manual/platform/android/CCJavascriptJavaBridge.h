@@ -25,7 +25,7 @@ class JavascriptJavaBridge
 private:
     typedef enum : char
     {
-        TypeInvalid = -1,
+        TypeInvalid = 0xff,
         TypeVoid    = 0,
         TypeInteger = 1,
         TypeFloat   = 2,
