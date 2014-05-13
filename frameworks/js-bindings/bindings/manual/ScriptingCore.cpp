@@ -524,11 +524,13 @@ void ScriptingCore::createGlobalContext() {
     
     // Removed in Firefox v27
 //    JS_SetOptions(this->_cx, JSOPTION_TYPE_INFERENCE);
-    JS::ContextOptionsRef(_cx).setTypeInference(true);    
-    JS::ContextOptionsRef(_cx).setIon(true);
-    JS::ContextOptionsRef(_cx).setBaseline(true);
-    JS::ContextOptionsRef(_cx).setAsmJS(true);
-    JS::ContextOptionsRef(_cx).setCompileAndGo(true);
+    JS::ContextOptionsRef(_cx).setTypeInference(true)
+        .setIon(true)
+        .setBaseline(true)
+        .setAsmJS(true);
+    
+    JS::CompileOptions compileOptions(_cx);
+    compileOptions.setCompileAndGo(true);
     
 //    JS_SetVersion(this->_cx, JSVERSION_LATEST);
     
