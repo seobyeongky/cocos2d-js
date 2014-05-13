@@ -151,4 +151,38 @@ namespace spine {
             }
         }
     }
+    
+    void JSSkeletonAnimation::bounds_update() {
+        spSkeletonBounds_update(_bounds,skeleton,1);
+    }
+    
+    void JSSkeletonAnimation::supportBounds() {
+        _bounds = spSkeletonBounds_create();
+    }
+    
+    const std::string& JSSkeletonAnimation::bounds_containsPoint( Vector2 p ) {
+        return bounds_containsPoint(p.x,p.y);
+    }
+    const std::string& JSSkeletonAnimation::bounds_containsPoint( float x, float y ) {
+        
+        Vector2 pos = getPosition();
+        
+        x = (x - pos.x)/getScaleX();
+        y = (y - pos.y)/getScaleY();
+        
+        if (spSkeletonBounds_aabbContainsPoint( _bounds, x, y )) {
+            spBoundingBoxAttachment* attachment = spSkeletonBounds_containsPoint( _bounds, x, y );
+            if (attachment) {
+                _buf = attachment->super.name;
+                return _buf;
+            }
+        }
+            spBoundingBoxAttachment* attachment = spSkeletonBounds_containsPoint( _bounds, x, y );
+            if (attachment) {
+                _buf = attachment->super.name;
+                return _buf;
+            }
+        _buf = "";
+        return _buf;
+    }
 }

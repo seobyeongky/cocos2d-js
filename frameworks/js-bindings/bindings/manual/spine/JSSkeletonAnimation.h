@@ -17,9 +17,19 @@ public:
     JSSkeletonAnimation (spSkeletonData * skeletonData, bool isOwnsSkeletonData = false);
 	JSSkeletonAnimation (const char* skeletonDataFile, spAtlas* atlas, float scale = 0);
 	JSSkeletonAnimation (const char* skeletonDataFile, const char* atlasFile, float scale = 0);
-
+    
+    void supportBounds();
+    void bounds_update();
+    
+    const std::string& bounds_containsPoint( Vector2 p );
+    const std::string& bounds_containsPoint( float x, float y );
+    
 protected:
 	JSSkeletonAnimation () {}
+    std::string _buf;
+    
+    
+    spSkeletonBounds* _bounds;
 };
 
 }
