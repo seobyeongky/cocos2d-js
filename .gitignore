@@ -108,5 +108,5 @@ helloworld
 # redmobile project part
 redmobile
 
-# runtime-src
-frameworks/runtime-src
+# ignore auto generated
+frameworks/js-bindings/bindings/auto
