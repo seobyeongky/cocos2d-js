@@ -41,6 +41,6 @@ require('jsb_cocosbuilder.js');
 require('jsb_deprecated.js');
 require('jsb_loaders.js');
 
-if (cc.sys.os == cc.sys.OS_IOS) {
-    require('jsb_pluginx.js');
-}
+//if (cc.sys.os == cc.sys.OS_IOS) {
+//    require('jsb_pluginx.js');
+//}
