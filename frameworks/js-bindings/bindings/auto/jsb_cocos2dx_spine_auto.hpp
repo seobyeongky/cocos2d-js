@@ -22,6 +22,7 @@ bool js_cocos2dx_spine_Skeleton_setSkin(JSContext *cx, uint32_t argc, jsval *vp)
 bool js_cocos2dx_spine_Skeleton_updateWorldTransform(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_spine_Skeleton_getLocalBounds(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_spine_Skeleton_setBonesToSetupPose(JSContext *cx, uint32_t argc, jsval *vp);
+bool js_cocos2dx_spine_Skeleton_createWithData(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_spine_Skeleton_createWithFile(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_spine_Skeleton_Skeleton(JSContext *cx, uint32_t argc, jsval *vp);
 
@@ -47,6 +48,7 @@ void js_cocos2dx_spine_JSSkeletonAnimation_finalize(JSContext *cx, JSObject *obj
 void js_register_cocos2dx_spine_JSSkeletonAnimation(JSContext *cx, JSObject *global);
 void register_all_cocos2dx_spine(JSContext* cx, JSObject* obj);
 bool js_cocos2dx_spine_JSSkeletonAnimation_createWithFile(JSContext *cx, uint32_t argc, jsval *vp);
+bool js_cocos2dx_spine_JSSkeletonAnimation_clearCache(JSContext *cx, uint32_t argc, jsval *vp);
 bool js_cocos2dx_spine_JSSkeletonAnimation_JSSkeletonAnimation(JSContext *cx, uint32_t argc, jsval *vp);
 #endif
 

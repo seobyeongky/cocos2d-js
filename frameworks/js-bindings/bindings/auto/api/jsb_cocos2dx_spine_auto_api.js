@@ -28,7 +28,7 @@ blendfunc
 
 /**
  * @method onDraw
- * @param {cc.Matrix} arg0
+ * @param {matrix_object} arg0
  * @param {bool} arg1
  */
 onDraw : function (
@@ -92,7 +92,7 @@ updateWorldTransform : function (
 
 /**
  * @method getLocalBounds
- * @return {RectObject}
+ * @return {rect_object}
  */
 getLocalBounds : function (
 )
@@ -106,6 +106,20 @@ getLocalBounds : function (
 setBonesToSetupPose : function (
 )
 {
+},
+
+/**
+ * @method createWithData
+ * @param {spSkeletonData} arg0
+ * @param {bool} arg1
+ * @return {sp.Skeleton}
+ */
+createWithData : function (
+spskeletondata, 
+bool 
+)
+{
+    return sp.Skeleton;
 },
 
 /**
@@ -238,6 +252,14 @@ float
 )
 {
     return sp.JSSkeletonAnimation;
+},
+
+/**
+ * @method clearCache
+ */
+clearCache : function (
+)
+{
 },
 
 /**

@@ -9749,6 +9749,651 @@ void js_register_cocos2dx_EventListenerCustom(JSContext *cx, JSObject *global) {
 	}
 }
 
+JSClass  *jsb_cocos2d_EventFocus_class;
+JSObject *jsb_cocos2d_EventFocus_prototype;
+
+bool js_cocos2dx_EventFocus_constructor(JSContext *cx, uint32_t argc, jsval *vp)
+{
+	jsval *argv = JS_ARGV(cx, vp);
+	bool ok = true;
+    cocos2d::ui::Widget* arg0;
+    cocos2d::ui::Widget* arg1;
+    do {
+			if (!argv[0].isObject()) { ok = false; break; }
+			js_proxy_t *jsProxy;
+			JSObject *tmpObj = JSVAL_TO_OBJECT(argv[0]);
+			jsProxy = jsb_get_js_proxy(tmpObj);
+			arg0 = (cocos2d::ui::Widget*)(jsProxy ? jsProxy->ptr : NULL);
+			JSB_PRECONDITION2( arg0, cx, false, "Invalid Native Object");
+		} while (0);
+    do {
+			if (!argv[1].isObject()) { ok = false; break; }
+			js_proxy_t *jsProxy;
+			JSObject *tmpObj = JSVAL_TO_OBJECT(argv[1]);
+			jsProxy = jsb_get_js_proxy(tmpObj);
+			arg1 = (cocos2d::ui::Widget*)(jsProxy ? jsProxy->ptr : NULL);
+			JSB_PRECONDITION2( arg1, cx, false, "Invalid Native Object");
+		} while (0);
+    JSB_PRECONDITION2(ok, cx, false, "js_cocos2dx_EventFocus_constructor : Error processing arguments");
+    cocos2d::EventFocus* cobj = new cocos2d::EventFocus(arg0, arg1);
+    cocos2d::Ref *_ccobj = dynamic_cast<cocos2d::Ref *>(cobj);
+    if (_ccobj) {
+        _ccobj->autorelease();
+    }
+    TypeTest<cocos2d::EventFocus> t;
+    js_type_class_t *typeClass = nullptr;
+    std::string typeName = t.s_name();
+    auto typeMapIter = _js_global_type_map.find(typeName);
+    CCASSERT(typeMapIter != _js_global_type_map.end(), "Can't find the class type!");
+    typeClass = typeMapIter->second;
+    CCASSERT(typeClass, "The value is null.");
+    JSObject *obj = JS_NewObject(cx, typeClass->jsclass, typeClass->proto, typeClass->parentProto);
+    JS_SET_RVAL(cx, vp, OBJECT_TO_JSVAL(obj));
+    // link the native object with the javascript object
+    js_proxy_t* p = jsb_new_proxy(cobj, obj);
+    JS_AddNamedObjectRoot(cx, &p->obj, "cocos2d::EventFocus");
+    if (JS_HasProperty(cx, obj, "_ctor", &ok))
+        ScriptingCore::getInstance()->executeFunctionWithOwner(OBJECT_TO_JSVAL(obj), "_ctor", argc, argv);
+    return true;
+}
+
+
+extern JSObject *jsb_cocos2d_Event_prototype;
+
+void js_cocos2d_EventFocus_finalize(JSFreeOp *fop, JSObject *obj) {
+    CCLOGINFO("jsbindings: finalizing JS object %p (EventFocus)", obj);
+}
+
+void js_register_cocos2dx_EventFocus(JSContext *cx, JSObject *global) {
+	jsb_cocos2d_EventFocus_class = (JSClass *)calloc(1, sizeof(JSClass));
+	jsb_cocos2d_EventFocus_class->name = "EventFocus";
+	jsb_cocos2d_EventFocus_class->addProperty = JS_PropertyStub;
+	jsb_cocos2d_EventFocus_class->delProperty = JS_DeletePropertyStub;
+	jsb_cocos2d_EventFocus_class->getProperty = JS_PropertyStub;
+	jsb_cocos2d_EventFocus_class->setProperty = JS_StrictPropertyStub;
+	jsb_cocos2d_EventFocus_class->enumerate = JS_EnumerateStub;
+	jsb_cocos2d_EventFocus_class->resolve = JS_ResolveStub;
+	jsb_cocos2d_EventFocus_class->convert = JS_ConvertStub;
+	jsb_cocos2d_EventFocus_class->finalize = js_cocos2d_EventFocus_finalize;
+	jsb_cocos2d_EventFocus_class->flags = JSCLASS_HAS_RESERVED_SLOTS(2);
+
+	static JSPropertySpec properties[] = {
+		{"__nativeObj", 0, JSPROP_ENUMERATE | JSPROP_PERMANENT, JSOP_WRAPPER(js_is_native_obj), JSOP_NULLWRAPPER},
+		{0, 0, 0, JSOP_NULLWRAPPER, JSOP_NULLWRAPPER}
+	};
+
+	static JSFunctionSpec funcs[] = {
+        JS_FS_END
+	};
+
+	JSFunctionSpec *st_funcs = NULL;
+
+	jsb_cocos2d_EventFocus_prototype = JS_InitClass(
+		cx, global,
+		jsb_cocos2d_Event_prototype,
+		jsb_cocos2d_EventFocus_class,
+		js_cocos2dx_EventFocus_constructor, 0, // constructor
+		properties,
+		funcs,
+		NULL, // no static properties
+		st_funcs);
+	// make the class enumerable in the registered namespace
+//	bool found;
+//FIXME: Removed in Firefox v27	
+//	JS_SetPropertyAttributes(cx, global, "EventFocus", JSPROP_ENUMERATE | JSPROP_READONLY, &found);
+
+	// add the proto and JSClass to the type->js info hash table
+	TypeTest<cocos2d::EventFocus> t;
+	js_type_class_t *p;
+	std::string typeName = t.s_name();
+	if (_js_global_type_map.find(typeName) == _js_global_type_map.end())
+	{
+		p = (js_type_class_t *)malloc(sizeof(js_type_class_t));
+		p->jsclass = jsb_cocos2d_EventFocus_class;
+		p->proto = jsb_cocos2d_EventFocus_prototype;
+		p->parentProto = jsb_cocos2d_Event_prototype;
+		_js_global_type_map.insert(std::make_pair(typeName, p));
+	}
+}
+
+JSClass  *jsb_cocos2d_EventListenerFocus_class;
+JSObject *jsb_cocos2d_EventListenerFocus_prototype;
+
+bool js_cocos2dx_EventListenerFocus_create(JSContext *cx, uint32_t argc, jsval *vp)
+{
+	if (argc == 0) {
+		cocos2d::EventListenerFocus* ret = cocos2d::EventListenerFocus::create();
+		jsval jsret = JSVAL_NULL;
+		do {
+		if (ret) {
+			js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::EventListenerFocus>(cx, (cocos2d::EventListenerFocus*)ret);
+			jsret = OBJECT_TO_JSVAL(jsProxy->obj);
+		} else {
+			jsret = JSVAL_NULL;
+		}
+	} while (0);
+		JS_SET_RVAL(cx, vp, jsret);
+		return true;
+	}
+	JS_ReportError(cx, "js_cocos2dx_EventListenerFocus_create : wrong number of arguments");
+	return false;
+}
+
+
+extern JSObject *jsb_cocos2d_EventListener_prototype;
+
+void js_cocos2d_EventListenerFocus_finalize(JSFreeOp *fop, JSObject *obj) {
+    CCLOGINFO("jsbindings: finalizing JS object %p (EventListenerFocus)", obj);
+}
+
+void js_register_cocos2dx_EventListenerFocus(JSContext *cx, JSObject *global) {
+	jsb_cocos2d_EventListenerFocus_class = (JSClass *)calloc(1, sizeof(JSClass));
+	jsb_cocos2d_EventListenerFocus_class->name = "EventListenerFocus";
+	jsb_cocos2d_EventListenerFocus_class->addProperty = JS_PropertyStub;
+	jsb_cocos2d_EventListenerFocus_class->delProperty = JS_DeletePropertyStub;
+	jsb_cocos2d_EventListenerFocus_class->getProperty = JS_PropertyStub;
+	jsb_cocos2d_EventListenerFocus_class->setProperty = JS_StrictPropertyStub;
+	jsb_cocos2d_EventListenerFocus_class->enumerate = JS_EnumerateStub;
+	jsb_cocos2d_EventListenerFocus_class->resolve = JS_ResolveStub;
+	jsb_cocos2d_EventListenerFocus_class->convert = JS_ConvertStub;
+	jsb_cocos2d_EventListenerFocus_class->finalize = js_cocos2d_EventListenerFocus_finalize;
+	jsb_cocos2d_EventListenerFocus_class->flags = JSCLASS_HAS_RESERVED_SLOTS(2);
+
+	static JSPropertySpec properties[] = {
+		{"__nativeObj", 0, JSPROP_ENUMERATE | JSPROP_PERMANENT, JSOP_WRAPPER(js_is_native_obj), JSOP_NULLWRAPPER},
+		{0, 0, 0, JSOP_NULLWRAPPER, JSOP_NULLWRAPPER}
+	};
+
+	static JSFunctionSpec funcs[] = {
+        JS_FS_END
+	};
+
+	static JSFunctionSpec st_funcs[] = {
+		JS_FN("create", js_cocos2dx_EventListenerFocus_create, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
+		JS_FS_END
+	};
+
+	jsb_cocos2d_EventListenerFocus_prototype = JS_InitClass(
+		cx, global,
+		jsb_cocos2d_EventListener_prototype,
+		jsb_cocos2d_EventListenerFocus_class,
+		dummy_constructor<cocos2d::EventListenerFocus>, 0, // no constructor
+		properties,
+		funcs,
+		NULL, // no static properties
+		st_funcs);
+	// make the class enumerable in the registered namespace
+//	bool found;
+//FIXME: Removed in Firefox v27	
+//	JS_SetPropertyAttributes(cx, global, "EventListenerFocus", JSPROP_ENUMERATE | JSPROP_READONLY, &found);
+
+	// add the proto and JSClass to the type->js info hash table
+	TypeTest<cocos2d::EventListenerFocus> t;
+	js_type_class_t *p;
+	std::string typeName = t.s_name();
+	if (_js_global_type_map.find(typeName) == _js_global_type_map.end())
+	{
+		p = (js_type_class_t *)malloc(sizeof(js_type_class_t));
+		p->jsclass = jsb_cocos2d_EventListenerFocus_class;
+		p->proto = jsb_cocos2d_EventListenerFocus_prototype;
+		p->parentProto = jsb_cocos2d_EventListener_prototype;
+		_js_global_type_map.insert(std::make_pair(typeName, p));
+	}
+}
+
+JSClass  *jsb_cocos2d_Device_class;
+JSObject *jsb_cocos2d_Device_prototype;
+
+bool js_cocos2dx_Device_getCurrentOrientation(JSContext *cx, uint32_t argc, jsval *vp)
+{
+	if (argc == 0) {
+		int ret = (int)cocos2d::Device::getCurrentOrientation();
+		jsval jsret = JSVAL_NULL;
+		jsret = int32_to_jsval(cx, ret);
+		JS_SET_RVAL(cx, vp, jsret);
+		return true;
+	}
+	JS_ReportError(cx, "js_cocos2dx_Device_getCurrentOrientation : wrong number of arguments");
+	return false;
+}
+
+bool js_cocos2dx_Device_setOrientationLock(JSContext *cx, uint32_t argc, jsval *vp)
+{
+	jsval *argv = JS_ARGV(cx, vp);
+	bool ok = true;
+	if (argc == 1) {
+		bool arg0;
+		arg0 = JS::ToBoolean(JS::RootedValue(cx, argv[0]));
+		JSB_PRECONDITION2(ok, cx, false, "js_cocos2dx_Device_setOrientationLock : Error processing arguments");
+		cocos2d::Device::setOrientationLock(arg0);
+		JS_SET_RVAL(cx, vp, JSVAL_VOID);
+		return true;
+	}
+	JS_ReportError(cx, "js_cocos2dx_Device_setOrientationLock : wrong number of arguments");
+	return false;
+}
+
+bool js_cocos2dx_Device_setAccelerometerEnabled(JSContext *cx, uint32_t argc, jsval *vp)
+{
+	jsval *argv = JS_ARGV(cx, vp);
+	bool ok = true;
+	if (argc == 1) {
+		bool arg0;
+		arg0 = JS::ToBoolean(JS::RootedValue(cx, argv[0]));
+		JSB_PRECONDITION2(ok, cx, false, "js_cocos2dx_Device_setAccelerometerEnabled : Error processing arguments");
+		cocos2d::Device::setAccelerometerEnabled(arg0);
+		JS_SET_RVAL(cx, vp, JSVAL_VOID);
+		return true;
+	}
+	JS_ReportError(cx, "js_cocos2dx_Device_setAccelerometerEnabled : wrong number of arguments");
+	return false;
+}
+
+bool js_cocos2dx_Device_setAccelerometerInterval(JSContext *cx, uint32_t argc, jsval *vp)
+{
+	jsval *argv = JS_ARGV(cx, vp);
+	bool ok = true;
+	if (argc == 1) {
+		double arg0;
+		ok &= JS::ToNumber( cx, JS::RootedValue(cx, argv[0]), &arg0);
+		JSB_PRECONDITION2(ok, cx, false, "js_cocos2dx_Device_setAccelerometerInterval : Error processing arguments");
+		cocos2d::Device::setAccelerometerInterval(arg0);
+		JS_SET_RVAL(cx, vp, JSVAL_VOID);
+		return true;
+	}
+	JS_ReportError(cx, "js_cocos2dx_Device_setAccelerometerInterval : wrong number of arguments");
+	return false;
+}
+
+bool js_cocos2dx_Device_setOrientationAllow(JSContext *cx, uint32_t argc, jsval *vp)
+{
+	jsval *argv = JS_ARGV(cx, vp);
+	bool ok = true;
+	if (argc == 2) {
+		cocos2d::Device::Orientation arg0;
+		bool arg1;
+		ok &= jsval_to_int32(cx, argv[0], (int32_t *)&arg0);
+		arg1 = JS::ToBoolean(JS::RootedValue(cx, argv[1]));
+		JSB_PRECONDITION2(ok, cx, false, "js_cocos2dx_Device_setOrientationAllow : Error processing arguments");
+		cocos2d::Device::setOrientationAllow(arg0, arg1);
+		JS_SET_RVAL(cx, vp, JSVAL_VOID);
+		return true;
+	}
+	JS_ReportError(cx, "js_cocos2dx_Device_setOrientationAllow : wrong number of arguments");
+	return false;
+}
+
+bool js_cocos2dx_Device_getDPI(JSContext *cx, uint32_t argc, jsval *vp)
+{
+	if (argc == 0) {
+		int ret = cocos2d::Device::getDPI();
+		jsval jsret = JSVAL_NULL;
+		jsret = int32_to_jsval(cx, ret);
+		JS_SET_RVAL(cx, vp, jsret);
+		return true;
+	}
+	JS_ReportError(cx, "js_cocos2dx_Device_getDPI : wrong number of arguments");
+	return false;
+}
+
+bool js_cocos2dx_Device_isOrientationAllowed(JSContext *cx, uint32_t argc, jsval *vp)
+{
+	jsval *argv = JS_ARGV(cx, vp);
+	bool ok = true;
+	if (argc == 1) {
+		cocos2d::Device::Orientation arg0;
+		ok &= jsval_to_int32(cx, argv[0], (int32_t *)&arg0);
+		JSB_PRECONDITION2(ok, cx, false, "js_cocos2dx_Device_isOrientationAllowed : Error processing arguments");
+		bool ret = cocos2d::Device::isOrientationAllowed(arg0);
+		jsval jsret = JSVAL_NULL;
+		jsret = BOOLEAN_TO_JSVAL(ret);
+		JS_SET_RVAL(cx, vp, jsret);
+		return true;
+	}
+	JS_ReportError(cx, "js_cocos2dx_Device_isOrientationAllowed : wrong number of arguments");
+	return false;
+}
+
+bool js_cocos2dx_Device_isOrientationLocked(JSContext *cx, uint32_t argc, jsval *vp)
+{
+	if (argc == 0) {
+		bool ret = cocos2d::Device::isOrientationLocked();
+		jsval jsret = JSVAL_NULL;
+		jsret = BOOLEAN_TO_JSVAL(ret);
+		JS_SET_RVAL(cx, vp, jsret);
+		return true;
+	}
+	JS_ReportError(cx, "js_cocos2dx_Device_isOrientationLocked : wrong number of arguments");
+	return false;
+}
+
+
+
+void js_cocos2d_Device_finalize(JSFreeOp *fop, JSObject *obj) {
+    CCLOGINFO("jsbindings: finalizing JS object %p (Device)", obj);
+}
+
+void js_register_cocos2dx_Device(JSContext *cx, JSObject *global) {
+	jsb_cocos2d_Device_class = (JSClass *)calloc(1, sizeof(JSClass));
+	jsb_cocos2d_Device_class->name = "Device";
+	jsb_cocos2d_Device_class->addProperty = JS_PropertyStub;
+	jsb_cocos2d_Device_class->delProperty = JS_DeletePropertyStub;
+	jsb_cocos2d_Device_class->getProperty = JS_PropertyStub;
+	jsb_cocos2d_Device_class->setProperty = JS_StrictPropertyStub;
+	jsb_cocos2d_Device_class->enumerate = JS_EnumerateStub;
+	jsb_cocos2d_Device_class->resolve = JS_ResolveStub;
+	jsb_cocos2d_Device_class->convert = JS_ConvertStub;
+	jsb_cocos2d_Device_class->finalize = js_cocos2d_Device_finalize;
+	jsb_cocos2d_Device_class->flags = JSCLASS_HAS_RESERVED_SLOTS(2);
+
+	static JSPropertySpec properties[] = {
+		{"__nativeObj", 0, JSPROP_ENUMERATE | JSPROP_PERMANENT, JSOP_WRAPPER(js_is_native_obj), JSOP_NULLWRAPPER},
+		{0, 0, 0, JSOP_NULLWRAPPER, JSOP_NULLWRAPPER}
+	};
+
+	static JSFunctionSpec funcs[] = {
+        JS_FS_END
+	};
+
+	static JSFunctionSpec st_funcs[] = {
+		JS_FN("getCurrentOrientation", js_cocos2dx_Device_getCurrentOrientation, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
+		JS_FN("setOrientationLock", js_cocos2dx_Device_setOrientationLock, 1, JSPROP_PERMANENT | JSPROP_ENUMERATE),
+		JS_FN("setAccelerometerEnabled", js_cocos2dx_Device_setAccelerometerEnabled, 1, JSPROP_PERMANENT | JSPROP_ENUMERATE),
+		JS_FN("setAccelerometerInterval", js_cocos2dx_Device_setAccelerometerInterval, 1, JSPROP_PERMANENT | JSPROP_ENUMERATE),
+		JS_FN("setOrientationAllow", js_cocos2dx_Device_setOrientationAllow, 2, JSPROP_PERMANENT | JSPROP_ENUMERATE),
+		JS_FN("getDPI", js_cocos2dx_Device_getDPI, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
+		JS_FN("isOrientationAllowed", js_cocos2dx_Device_isOrientationAllowed, 1, JSPROP_PERMANENT | JSPROP_ENUMERATE),
+		JS_FN("isOrientationLocked", js_cocos2dx_Device_isOrientationLocked, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
+		JS_FS_END
+	};
+
+	jsb_cocos2d_Device_prototype = JS_InitClass(
+		cx, global,
+		NULL, // parent proto
+		jsb_cocos2d_Device_class,
+		dummy_constructor<cocos2d::Device>, 0, // no constructor
+		properties,
+		funcs,
+		NULL, // no static properties
+		st_funcs);
+	// make the class enumerable in the registered namespace
+//	bool found;
+//FIXME: Removed in Firefox v27	
+//	JS_SetPropertyAttributes(cx, global, "Device", JSPROP_ENUMERATE | JSPROP_READONLY, &found);
+
+	// add the proto and JSClass to the type->js info hash table
+	TypeTest<cocos2d::Device> t;
+	js_type_class_t *p;
+	std::string typeName = t.s_name();
+	if (_js_global_type_map.find(typeName) == _js_global_type_map.end())
+	{
+		p = (js_type_class_t *)malloc(sizeof(js_type_class_t));
+		p->jsclass = jsb_cocos2d_Device_class;
+		p->proto = jsb_cocos2d_Device_prototype;
+		p->parentProto = NULL;
+		_js_global_type_map.insert(std::make_pair(typeName, p));
+	}
+}
+
+JSClass  *jsb_cocos2d_EventScreenLayout_class;
+JSObject *jsb_cocos2d_EventScreenLayout_prototype;
+
+bool js_cocos2dx_EventScreenLayout_getWidth(JSContext *cx, uint32_t argc, jsval *vp)
+{
+	JSObject *obj = JS_THIS_OBJECT(cx, vp);
+	js_proxy_t *proxy = jsb_get_js_proxy(obj);
+	cocos2d::EventScreenLayout* cobj = (cocos2d::EventScreenLayout *)(proxy ? proxy->ptr : NULL);
+	JSB_PRECONDITION2( cobj, cx, false, "js_cocos2dx_EventScreenLayout_getWidth : Invalid Native Object");
+	if (argc == 0) {
+		int ret = cobj->getWidth();
+		jsval jsret = JSVAL_NULL;
+		jsret = int32_to_jsval(cx, ret);
+		JS_SET_RVAL(cx, vp, jsret);
+		return true;
+	}
+
+	JS_ReportError(cx, "js_cocos2dx_EventScreenLayout_getWidth : wrong number of arguments: %d, was expecting %d", argc, 0);
+	return false;
+}
+bool js_cocos2dx_EventScreenLayout_getHeight(JSContext *cx, uint32_t argc, jsval *vp)
+{
+	JSObject *obj = JS_THIS_OBJECT(cx, vp);
+	js_proxy_t *proxy = jsb_get_js_proxy(obj);
+	cocos2d::EventScreenLayout* cobj = (cocos2d::EventScreenLayout *)(proxy ? proxy->ptr : NULL);
+	JSB_PRECONDITION2( cobj, cx, false, "js_cocos2dx_EventScreenLayout_getHeight : Invalid Native Object");
+	if (argc == 0) {
+		int ret = cobj->getHeight();
+		jsval jsret = JSVAL_NULL;
+		jsret = int32_to_jsval(cx, ret);
+		JS_SET_RVAL(cx, vp, jsret);
+		return true;
+	}
+
+	JS_ReportError(cx, "js_cocos2dx_EventScreenLayout_getHeight : wrong number of arguments: %d, was expecting %d", argc, 0);
+	return false;
+}
+bool js_cocos2dx_EventScreenLayout_getOrientation(JSContext *cx, uint32_t argc, jsval *vp)
+{
+	JSObject *obj = JS_THIS_OBJECT(cx, vp);
+	js_proxy_t *proxy = jsb_get_js_proxy(obj);
+	cocos2d::EventScreenLayout* cobj = (cocos2d::EventScreenLayout *)(proxy ? proxy->ptr : NULL);
+	JSB_PRECONDITION2( cobj, cx, false, "js_cocos2dx_EventScreenLayout_getOrientation : Invalid Native Object");
+	if (argc == 0) {
+		int ret = (int)cobj->getOrientation();
+		jsval jsret = JSVAL_NULL;
+		jsret = int32_to_jsval(cx, ret);
+		JS_SET_RVAL(cx, vp, jsret);
+		return true;
+	}
+
+	JS_ReportError(cx, "js_cocos2dx_EventScreenLayout_getOrientation : wrong number of arguments: %d, was expecting %d", argc, 0);
+	return false;
+}
+bool js_cocos2dx_EventScreenLayout_constructor(JSContext *cx, uint32_t argc, jsval *vp)
+{
+	jsval *argv = JS_ARGV(cx, vp);
+	bool ok = true;
+    cocos2d::Device::Orientation arg0;
+    int arg1;
+    int arg2;
+    ok &= jsval_to_int32(cx, argv[0], (int32_t *)&arg0);
+    ok &= jsval_to_int32(cx, argv[1], (int32_t *)&arg1);
+    ok &= jsval_to_int32(cx, argv[2], (int32_t *)&arg2);
+    JSB_PRECONDITION2(ok, cx, false, "js_cocos2dx_EventScreenLayout_constructor : Error processing arguments");
+    cocos2d::EventScreenLayout* cobj = new cocos2d::EventScreenLayout(arg0, arg1, arg2);
+    cocos2d::Ref *_ccobj = dynamic_cast<cocos2d::Ref *>(cobj);
+    if (_ccobj) {
+        _ccobj->autorelease();
+    }
+    TypeTest<cocos2d::EventScreenLayout> t;
+    js_type_class_t *typeClass = nullptr;
+    std::string typeName = t.s_name();
+    auto typeMapIter = _js_global_type_map.find(typeName);
+    CCASSERT(typeMapIter != _js_global_type_map.end(), "Can't find the class type!");
+    typeClass = typeMapIter->second;
+    CCASSERT(typeClass, "The value is null.");
+    JSObject *obj = JS_NewObject(cx, typeClass->jsclass, typeClass->proto, typeClass->parentProto);
+    JS_SET_RVAL(cx, vp, OBJECT_TO_JSVAL(obj));
+    // link the native object with the javascript object
+    js_proxy_t* p = jsb_new_proxy(cobj, obj);
+    JS_AddNamedObjectRoot(cx, &p->obj, "cocos2d::EventScreenLayout");
+    if (JS_HasProperty(cx, obj, "_ctor", &ok))
+        ScriptingCore::getInstance()->executeFunctionWithOwner(OBJECT_TO_JSVAL(obj), "_ctor", argc, argv);
+    return true;
+}
+
+
+extern JSObject *jsb_cocos2d_Event_prototype;
+
+void js_cocos2d_EventScreenLayout_finalize(JSFreeOp *fop, JSObject *obj) {
+    CCLOGINFO("jsbindings: finalizing JS object %p (EventScreenLayout)", obj);
+}
+
+void js_register_cocos2dx_EventScreenLayout(JSContext *cx, JSObject *global) {
+	jsb_cocos2d_EventScreenLayout_class = (JSClass *)calloc(1, sizeof(JSClass));
+	jsb_cocos2d_EventScreenLayout_class->name = "EventScreenLayout";
+	jsb_cocos2d_EventScreenLayout_class->addProperty = JS_PropertyStub;
+	jsb_cocos2d_EventScreenLayout_class->delProperty = JS_DeletePropertyStub;
+	jsb_cocos2d_EventScreenLayout_class->getProperty = JS_PropertyStub;
+	jsb_cocos2d_EventScreenLayout_class->setProperty = JS_StrictPropertyStub;
+	jsb_cocos2d_EventScreenLayout_class->enumerate = JS_EnumerateStub;
+	jsb_cocos2d_EventScreenLayout_class->resolve = JS_ResolveStub;
+	jsb_cocos2d_EventScreenLayout_class->convert = JS_ConvertStub;
+	jsb_cocos2d_EventScreenLayout_class->finalize = js_cocos2d_EventScreenLayout_finalize;
+	jsb_cocos2d_EventScreenLayout_class->flags = JSCLASS_HAS_RESERVED_SLOTS(2);
+
+	static JSPropertySpec properties[] = {
+		{"__nativeObj", 0, JSPROP_ENUMERATE | JSPROP_PERMANENT, JSOP_WRAPPER(js_is_native_obj), JSOP_NULLWRAPPER},
+		{0, 0, 0, JSOP_NULLWRAPPER, JSOP_NULLWRAPPER}
+	};
+
+	static JSFunctionSpec funcs[] = {
+		JS_FN("getWidth", js_cocos2dx_EventScreenLayout_getWidth, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
+		JS_FN("getHeight", js_cocos2dx_EventScreenLayout_getHeight, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
+		JS_FN("getOrientation", js_cocos2dx_EventScreenLayout_getOrientation, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
+        JS_FS_END
+	};
+
+	JSFunctionSpec *st_funcs = NULL;
+
+	jsb_cocos2d_EventScreenLayout_prototype = JS_InitClass(
+		cx, global,
+		jsb_cocos2d_Event_prototype,
+		jsb_cocos2d_EventScreenLayout_class,
+		js_cocos2dx_EventScreenLayout_constructor, 0, // constructor
+		properties,
+		funcs,
+		NULL, // no static properties
+		st_funcs);
+	// make the class enumerable in the registered namespace
+//	bool found;
+//FIXME: Removed in Firefox v27	
+//	JS_SetPropertyAttributes(cx, global, "EventScreenLayout", JSPROP_ENUMERATE | JSPROP_READONLY, &found);
+
+	// add the proto and JSClass to the type->js info hash table
+	TypeTest<cocos2d::EventScreenLayout> t;
+	js_type_class_t *p;
+	std::string typeName = t.s_name();
+	if (_js_global_type_map.find(typeName) == _js_global_type_map.end())
+	{
+		p = (js_type_class_t *)malloc(sizeof(js_type_class_t));
+		p->jsclass = jsb_cocos2d_EventScreenLayout_class;
+		p->proto = jsb_cocos2d_EventScreenLayout_prototype;
+		p->parentProto = jsb_cocos2d_Event_prototype;
+		_js_global_type_map.insert(std::make_pair(typeName, p));
+	}
+}
+
+JSClass  *jsb_cocos2d_EventListenerScreenLayout_class;
+JSObject *jsb_cocos2d_EventListenerScreenLayout_prototype;
+
+bool js_cocos2dx_EventListenerScreenLayout_create(JSContext *cx, uint32_t argc, jsval *vp)
+{
+	jsval *argv = JS_ARGV(cx, vp);
+	bool ok = true;
+	if (argc == 1) {
+		std::function<void (cocos2d::EventScreenLayout *)> arg0;
+		do {
+			std::shared_ptr<JSFunctionWrapper> func(new JSFunctionWrapper(cx, JS_THIS_OBJECT(cx, vp), argv[0]));
+			auto lambda = [=](cocos2d::EventScreenLayout* larg0) -> void {
+				jsval largv[1];
+				do {
+					if (larg0) {
+						js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::EventScreenLayout>(cx, (cocos2d::EventScreenLayout*)larg0);
+						largv[0] = OBJECT_TO_JSVAL(jsProxy->obj);
+					} else {
+						largv[0] = JSVAL_NULL;
+					}
+				} while (0);
+				jsval rval;
+				bool ok = func->invoke(1, &largv[0], rval);
+				if (!ok && JS_IsExceptionPending(cx)) {
+					JS_ReportPendingException(cx);
+				}
+			};
+			arg0 = lambda;
+		} while(0)
+		;
+		JSB_PRECONDITION2(ok, cx, false, "js_cocos2dx_EventListenerScreenLayout_create : Error processing arguments");
+		cocos2d::EventListenerScreenLayout* ret = cocos2d::EventListenerScreenLayout::create(arg0);
+		jsval jsret = JSVAL_NULL;
+		do {
+		if (ret) {
+			js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::EventListenerScreenLayout>(cx, (cocos2d::EventListenerScreenLayout*)ret);
+			jsret = OBJECT_TO_JSVAL(jsProxy->obj);
+		} else {
+			jsret = JSVAL_NULL;
+		}
+	} while (0);
+		JS_SET_RVAL(cx, vp, jsret);
+		return true;
+	}
+	JS_ReportError(cx, "js_cocos2dx_EventListenerScreenLayout_create : wrong number of arguments");
+	return false;
+}
+
+
+extern JSObject *jsb_cocos2d_EventListener_prototype;
+
+void js_cocos2d_EventListenerScreenLayout_finalize(JSFreeOp *fop, JSObject *obj) {
+    CCLOGINFO("jsbindings: finalizing JS object %p (EventListenerScreenLayout)", obj);
+}
+
+void js_register_cocos2dx_EventListenerScreenLayout(JSContext *cx, JSObject *global) {
+	jsb_cocos2d_EventListenerScreenLayout_class = (JSClass *)calloc(1, sizeof(JSClass));
+	jsb_cocos2d_EventListenerScreenLayout_class->name = "EventListenerScreenLayout";
+	jsb_cocos2d_EventListenerScreenLayout_class->addProperty = JS_PropertyStub;
+	jsb_cocos2d_EventListenerScreenLayout_class->delProperty = JS_DeletePropertyStub;
+	jsb_cocos2d_EventListenerScreenLayout_class->getProperty = JS_PropertyStub;
+	jsb_cocos2d_EventListenerScreenLayout_class->setProperty = JS_StrictPropertyStub;
+	jsb_cocos2d_EventListenerScreenLayout_class->enumerate = JS_EnumerateStub;
+	jsb_cocos2d_EventListenerScreenLayout_class->resolve = JS_ResolveStub;
+	jsb_cocos2d_EventListenerScreenLayout_class->convert = JS_ConvertStub;
+	jsb_cocos2d_EventListenerScreenLayout_class->finalize = js_cocos2d_EventListenerScreenLayout_finalize;
+	jsb_cocos2d_EventListenerScreenLayout_class->flags = JSCLASS_HAS_RESERVED_SLOTS(2);
+
+	static JSPropertySpec properties[] = {
+		{"__nativeObj", 0, JSPROP_ENUMERATE | JSPROP_PERMANENT, JSOP_WRAPPER(js_is_native_obj), JSOP_NULLWRAPPER},
+		{0, 0, 0, JSOP_NULLWRAPPER, JSOP_NULLWRAPPER}
+	};
+
+	static JSFunctionSpec funcs[] = {
+        JS_FS_END
+	};
+
+	static JSFunctionSpec st_funcs[] = {
+		JS_FN("create", js_cocos2dx_EventListenerScreenLayout_create, 1, JSPROP_PERMANENT | JSPROP_ENUMERATE),
+		JS_FS_END
+	};
+
+	jsb_cocos2d_EventListenerScreenLayout_prototype = JS_InitClass(
+		cx, global,
+		jsb_cocos2d_EventListener_prototype,
+		jsb_cocos2d_EventListenerScreenLayout_class,
+		dummy_constructor<cocos2d::EventListenerScreenLayout>, 0, // no constructor
+		properties,
+		funcs,
+		NULL, // no static properties
+		st_funcs);
+	// make the class enumerable in the registered namespace
+//	bool found;
+//FIXME: Removed in Firefox v27	
+//	JS_SetPropertyAttributes(cx, global, "EventListenerScreenLayout", JSPROP_ENUMERATE | JSPROP_READONLY, &found);
+
+	// add the proto and JSClass to the type->js info hash table
+	TypeTest<cocos2d::EventListenerScreenLayout> t;
+	js_type_class_t *p;
+	std::string typeName = t.s_name();
+	if (_js_global_type_map.find(typeName) == _js_global_type_map.end())
+	{
+		p = (js_type_class_t *)malloc(sizeof(js_type_class_t));
+		p->jsclass = jsb_cocos2d_EventListenerScreenLayout_class;
+		p->proto = jsb_cocos2d_EventListenerScreenLayout_prototype;
+		p->parentProto = jsb_cocos2d_EventListener_prototype;
+		_js_global_type_map.insert(std::make_pair(typeName, p));
+	}
+}
+
 JSClass  *jsb_cocos2d_Action_class;
 JSObject *jsb_cocos2d_Action_prototype;
 
@@ -49716,200 +50361,6 @@ void js_register_cocos2dx_TiledGrid3D(JSContext *cx, JSObject *global) {
 	}
 }
 
-JSClass  *jsb_cocos2d_Device_class;
-JSObject *jsb_cocos2d_Device_prototype;
-
-bool js_cocos2dx_Device_getCurrentOrientation(JSContext *cx, uint32_t argc, jsval *vp)
-{
-	if (argc == 0) {
-		int ret = (int)cocos2d::Device::getCurrentOrientation();
-		jsval jsret = JSVAL_NULL;
-		jsret = int32_to_jsval(cx, ret);
-		JS_SET_RVAL(cx, vp, jsret);
-		return true;
-	}
-	JS_ReportError(cx, "js_cocos2dx_Device_getCurrentOrientation : wrong number of arguments");
-	return false;
-}
-
-bool js_cocos2dx_Device_setOrientationLock(JSContext *cx, uint32_t argc, jsval *vp)
-{
-	jsval *argv = JS_ARGV(cx, vp);
-	bool ok = true;
-	if (argc == 1) {
-		bool arg0;
-		ok &= JS_ValueToBoolean(cx, argv[0], &arg0);
-		JSB_PRECONDITION2(ok, cx, false, "js_cocos2dx_Device_setOrientationLock : Error processing arguments");
-		cocos2d::Device::setOrientationLock(arg0);
-		JS_SET_RVAL(cx, vp, JSVAL_VOID);
-		return true;
-	}
-	JS_ReportError(cx, "js_cocos2dx_Device_setOrientationLock : wrong number of arguments");
-	return false;
-}
-
-bool js_cocos2dx_Device_setAccelerometerEnabled(JSContext *cx, uint32_t argc, jsval *vp)
-{
-	jsval *argv = JS_ARGV(cx, vp);
-	bool ok = true;
-	if (argc == 1) {
-		bool arg0;
-		arg0 = JS::ToBoolean(JS::RootedValue(cx, argv[0]));
-		JSB_PRECONDITION2(ok, cx, false, "js_cocos2dx_Device_setAccelerometerEnabled : Error processing arguments");
-		cocos2d::Device::setAccelerometerEnabled(arg0);
-		JS_SET_RVAL(cx, vp, JSVAL_VOID);
-		return true;
-	}
-	JS_ReportError(cx, "js_cocos2dx_Device_setAccelerometerEnabled : wrong number of arguments");
-	return false;
-}
-
-bool js_cocos2dx_Device_setAccelerometerInterval(JSContext *cx, uint32_t argc, jsval *vp)
-{
-	jsval *argv = JS_ARGV(cx, vp);
-	bool ok = true;
-	if (argc == 1) {
-		double arg0;
-		ok &= JS::ToNumber( cx, JS::RootedValue(cx, argv[0]), &arg0);
-		JSB_PRECONDITION2(ok, cx, false, "js_cocos2dx_Device_setAccelerometerInterval : Error processing arguments");
-		cocos2d::Device::setAccelerometerInterval(arg0);
-		JS_SET_RVAL(cx, vp, JSVAL_VOID);
-		return true;
-	}
-	JS_ReportError(cx, "js_cocos2dx_Device_setAccelerometerInterval : wrong number of arguments");
-	return false;
-}
-
-bool js_cocos2dx_Device_setOrientationAllow(JSContext *cx, uint32_t argc, jsval *vp)
-{
-	jsval *argv = JS_ARGV(cx, vp);
-	bool ok = true;
-	if (argc == 2) {
-		cocos2d::Device::Orientation arg0;
-		bool arg1;
-		ok &= jsval_to_int32(cx, argv[0], (int32_t *)&arg0);
-		ok &= JS_ValueToBoolean(cx, argv[1], &arg1);
-		JSB_PRECONDITION2(ok, cx, false, "js_cocos2dx_Device_setOrientationAllow : Error processing arguments");
-		cocos2d::Device::setOrientationAllow(arg0, arg1);
-		JS_SET_RVAL(cx, vp, JSVAL_VOID);
-		return true;
-	}
-	JS_ReportError(cx, "js_cocos2dx_Device_setOrientationAllow : wrong number of arguments");
-	return false;
-}
-
-bool js_cocos2dx_Device_getDPI(JSContext *cx, uint32_t argc, jsval *vp)
-{
-	if (argc == 0) {
-		int ret = cocos2d::Device::getDPI();
-		jsval jsret = JSVAL_NULL;
-		jsret = int32_to_jsval(cx, ret);
-		JS_SET_RVAL(cx, vp, jsret);
-		return true;
-	}
-	JS_ReportError(cx, "js_cocos2dx_Device_getDPI : wrong number of arguments");
-	return false;
-}
-
-bool js_cocos2dx_Device_isOrientationAllowed(JSContext *cx, uint32_t argc, jsval *vp)
-{
-	jsval *argv = JS_ARGV(cx, vp);
-	bool ok = true;
-	if (argc == 1) {
-		cocos2d::Device::Orientation arg0;
-		ok &= jsval_to_int32(cx, argv[0], (int32_t *)&arg0);
-		JSB_PRECONDITION2(ok, cx, false, "js_cocos2dx_Device_isOrientationAllowed : Error processing arguments");
-		bool ret = cocos2d::Device::isOrientationAllowed(arg0);
-		jsval jsret = JSVAL_NULL;
-		jsret = BOOLEAN_TO_JSVAL(ret);
-		JS_SET_RVAL(cx, vp, jsret);
-		return true;
-	}
-	JS_ReportError(cx, "js_cocos2dx_Device_isOrientationAllowed : wrong number of arguments");
-	return false;
-}
-
-bool js_cocos2dx_Device_isOrientationLocked(JSContext *cx, uint32_t argc, jsval *vp)
-{
-	if (argc == 0) {
-		bool ret = cocos2d::Device::isOrientationLocked();
-		jsval jsret = JSVAL_NULL;
-		jsret = BOOLEAN_TO_JSVAL(ret);
-		JS_SET_RVAL(cx, vp, jsret);
-		return true;
-	}
-	JS_ReportError(cx, "js_cocos2dx_Device_isOrientationLocked : wrong number of arguments");
-	return false;
-}
-
-
-
-void js_cocos2d_Device_finalize(JSFreeOp *fop, JSObject *obj) {
-    CCLOGINFO("jsbindings: finalizing JS object %p (Device)", obj);
-}
-
-void js_register_cocos2dx_Device(JSContext *cx, JSObject *global) {
-	jsb_cocos2d_Device_class = (JSClass *)calloc(1, sizeof(JSClass));
-	jsb_cocos2d_Device_class->name = "Device";
-	jsb_cocos2d_Device_class->addProperty = JS_PropertyStub;
-	jsb_cocos2d_Device_class->delProperty = JS_DeletePropertyStub;
-	jsb_cocos2d_Device_class->getProperty = JS_PropertyStub;
-	jsb_cocos2d_Device_class->setProperty = JS_StrictPropertyStub;
-	jsb_cocos2d_Device_class->enumerate = JS_EnumerateStub;
-	jsb_cocos2d_Device_class->resolve = JS_ResolveStub;
-	jsb_cocos2d_Device_class->convert = JS_ConvertStub;
-	jsb_cocos2d_Device_class->finalize = js_cocos2d_Device_finalize;
-	jsb_cocos2d_Device_class->flags = JSCLASS_HAS_RESERVED_SLOTS(2);
-
-	static JSPropertySpec properties[] = {
-		{"__nativeObj", 0, JSPROP_ENUMERATE | JSPROP_PERMANENT, JSOP_WRAPPER(js_is_native_obj), JSOP_NULLWRAPPER},
-		{0, 0, 0, JSOP_NULLWRAPPER, JSOP_NULLWRAPPER}
-	};
-
-	static JSFunctionSpec funcs[] = {
-        JS_FS_END
-	};
-
-	static JSFunctionSpec st_funcs[] = {
-		JS_FN("getCurrentOrientation", js_cocos2dx_Device_getCurrentOrientation, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
-		JS_FN("setOrientationLock", js_cocos2dx_Device_setOrientationLock, 1, JSPROP_PERMANENT | JSPROP_ENUMERATE),
-		JS_FN("setAccelerometerEnabled", js_cocos2dx_Device_setAccelerometerEnabled, 1, JSPROP_PERMANENT | JSPROP_ENUMERATE),
-		JS_FN("setAccelerometerInterval", js_cocos2dx_Device_setAccelerometerInterval, 1, JSPROP_PERMANENT | JSPROP_ENUMERATE),
-		JS_FN("setOrientationAllow", js_cocos2dx_Device_setOrientationAllow, 2, JSPROP_PERMANENT | JSPROP_ENUMERATE),
-		JS_FN("getDPI", js_cocos2dx_Device_getDPI, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
-		JS_FN("isOrientationAllowed", js_cocos2dx_Device_isOrientationAllowed, 1, JSPROP_PERMANENT | JSPROP_ENUMERATE),
-		JS_FN("isOrientationLocked", js_cocos2dx_Device_isOrientationLocked, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
-		JS_FS_END
-	};
-
-	jsb_cocos2d_Device_prototype = JS_InitClass(
-		cx, global,
-		NULL, // parent proto
-		jsb_cocos2d_Device_class,
-		dummy_constructor<cocos2d::Device>, 0, // no constructor
-		properties,
-		funcs,
-		NULL, // no static properties
-		st_funcs);
-	// make the class enumerable in the registered namespace
-//	bool found;
-//FIXME: Removed in Firefox v27	
-//	JS_SetPropertyAttributes(cx, global, "Device", JSPROP_ENUMERATE | JSPROP_READONLY, &found);
-
-	// add the proto and JSClass to the type->js info hash table
-	TypeTest<cocos2d::Device> t;
-	js_type_class_t *p;
-	std::string typeName = t.s_name();
-	if (_js_global_type_map.find(typeName) == _js_global_type_map.end())
-	{
-		p = (js_type_class_t *)malloc(sizeof(js_type_class_t));
-		p->jsclass = jsb_cocos2d_Device_class;
-		p->proto = jsb_cocos2d_Device_prototype;
-		p->parentProto = NULL;
-		_js_global_type_map.insert(std::make_pair(typeName, p));
-	}
-}
-
 JSClass  *jsb_cocos2d_SAXParser_class;
 JSObject *jsb_cocos2d_SAXParser_prototype;
 
@@ -55475,265 +55926,6 @@ void js_register_cocos2dx_TileMapAtlas(JSContext *cx, JSObject *global) {
 	}
 }
 
-JSClass  *jsb_cocos2d_EventScreenLayout_class;
-JSObject *jsb_cocos2d_EventScreenLayout_prototype;
-
-bool js_cocos2dx_EventScreenLayout_getWidth(JSContext *cx, uint32_t argc, jsval *vp)
-{
-	JSObject *obj = JS_THIS_OBJECT(cx, vp);
-	js_proxy_t *proxy = jsb_get_js_proxy(obj);
-	cocos2d::EventScreenLayout* cobj = (cocos2d::EventScreenLayout *)(proxy ? proxy->ptr : NULL);
-	JSB_PRECONDITION2( cobj, cx, false, "js_cocos2dx_EventScreenLayout_getWidth : Invalid Native Object");
-	if (argc == 0) {
-		int ret = cobj->getWidth();
-		jsval jsret = JSVAL_NULL;
-		jsret = int32_to_jsval(cx, ret);
-		JS_SET_RVAL(cx, vp, jsret);
-		return true;
-	}
-
-	JS_ReportError(cx, "js_cocos2dx_EventScreenLayout_getWidth : wrong number of arguments: %d, was expecting %d", argc, 0);
-	return false;
-}
-bool js_cocos2dx_EventScreenLayout_getHeight(JSContext *cx, uint32_t argc, jsval *vp)
-{
-	JSObject *obj = JS_THIS_OBJECT(cx, vp);
-	js_proxy_t *proxy = jsb_get_js_proxy(obj);
-	cocos2d::EventScreenLayout* cobj = (cocos2d::EventScreenLayout *)(proxy ? proxy->ptr : NULL);
-	JSB_PRECONDITION2( cobj, cx, false, "js_cocos2dx_EventScreenLayout_getHeight : Invalid Native Object");
-	if (argc == 0) {
-		int ret = cobj->getHeight();
-		jsval jsret = JSVAL_NULL;
-		jsret = int32_to_jsval(cx, ret);
-		JS_SET_RVAL(cx, vp, jsret);
-		return true;
-	}
-
-	JS_ReportError(cx, "js_cocos2dx_EventScreenLayout_getHeight : wrong number of arguments: %d, was expecting %d", argc, 0);
-	return false;
-}
-bool js_cocos2dx_EventScreenLayout_getOrientation(JSContext *cx, uint32_t argc, jsval *vp)
-{
-	JSObject *obj = JS_THIS_OBJECT(cx, vp);
-	js_proxy_t *proxy = jsb_get_js_proxy(obj);
-	cocos2d::EventScreenLayout* cobj = (cocos2d::EventScreenLayout *)(proxy ? proxy->ptr : NULL);
-	JSB_PRECONDITION2( cobj, cx, false, "js_cocos2dx_EventScreenLayout_getOrientation : Invalid Native Object");
-	if (argc == 0) {
-		int ret = (int)cobj->getOrientation();
-		jsval jsret = JSVAL_NULL;
-		jsret = int32_to_jsval(cx, ret);
-		JS_SET_RVAL(cx, vp, jsret);
-		return true;
-	}
-
-	JS_ReportError(cx, "js_cocos2dx_EventScreenLayout_getOrientation : wrong number of arguments: %d, was expecting %d", argc, 0);
-	return false;
-}
-bool js_cocos2dx_EventScreenLayout_constructor(JSContext *cx, uint32_t argc, jsval *vp)
-{
-	jsval *argv = JS_ARGV(cx, vp);
-	bool ok = true;
-    cocos2d::Device::Orientation arg0;
-    int arg1;
-    int arg2;
-    ok &= jsval_to_int32(cx, argv[0], (int32_t *)&arg0);
-    ok &= jsval_to_int32(cx, argv[1], (int32_t *)&arg1);
-    ok &= jsval_to_int32(cx, argv[2], (int32_t *)&arg2);
-    JSB_PRECONDITION2(ok, cx, false, "js_cocos2dx_EventScreenLayout_constructor : Error processing arguments");
-    cocos2d::EventScreenLayout* cobj = new cocos2d::EventScreenLayout(arg0, arg1, arg2);
-    cocos2d::Ref *_ccobj = dynamic_cast<cocos2d::Ref *>(cobj);
-    if (_ccobj) {
-        _ccobj->autorelease();
-    }
-    TypeTest<cocos2d::EventScreenLayout> t;
-    js_type_class_t *typeClass = nullptr;
-    std::string typeName = t.s_name();
-    auto typeMapIter = _js_global_type_map.find(typeName);
-    CCASSERT(typeMapIter != _js_global_type_map.end(), "Can't find the class type!");
-    typeClass = typeMapIter->second;
-    CCASSERT(typeClass, "The value is null.");
-    JSObject *obj = JS_NewObject(cx, typeClass->jsclass, typeClass->proto, typeClass->parentProto);
-    JS_SET_RVAL(cx, vp, OBJECT_TO_JSVAL(obj));
-    // link the native object with the javascript object
-    js_proxy_t* p = jsb_new_proxy(cobj, obj);
-    JS_AddNamedObjectRoot(cx, &p->obj, "cocos2d::EventScreenLayout");
-    if (JS_HasProperty(cx, obj, "_ctor", &ok))
-        ScriptingCore::getInstance()->executeFunctionWithOwner(OBJECT_TO_JSVAL(obj), "_ctor", argc, argv);
-    return true;
-}
-
-
-extern JSObject *jsb_cocos2d_Event_prototype;
-
-void js_cocos2d_EventScreenLayout_finalize(JSFreeOp *fop, JSObject *obj) {
-    CCLOGINFO("jsbindings: finalizing JS object %p (EventScreenLayout)", obj);
-}
-
-void js_register_cocos2dx_EventScreenLayout(JSContext *cx, JSObject *global) {
-	jsb_cocos2d_EventScreenLayout_class = (JSClass *)calloc(1, sizeof(JSClass));
-	jsb_cocos2d_EventScreenLayout_class->name = "EventScreenLayout";
-	jsb_cocos2d_EventScreenLayout_class->addProperty = JS_PropertyStub;
-	jsb_cocos2d_EventScreenLayout_class->delProperty = JS_DeletePropertyStub;
-	jsb_cocos2d_EventScreenLayout_class->getProperty = JS_PropertyStub;
-	jsb_cocos2d_EventScreenLayout_class->setProperty = JS_StrictPropertyStub;
-	jsb_cocos2d_EventScreenLayout_class->enumerate = JS_EnumerateStub;
-	jsb_cocos2d_EventScreenLayout_class->resolve = JS_ResolveStub;
-	jsb_cocos2d_EventScreenLayout_class->convert = JS_ConvertStub;
-	jsb_cocos2d_EventScreenLayout_class->finalize = js_cocos2d_EventScreenLayout_finalize;
-	jsb_cocos2d_EventScreenLayout_class->flags = JSCLASS_HAS_RESERVED_SLOTS(2);
-
-	static JSPropertySpec properties[] = {
-		{"__nativeObj", 0, JSPROP_ENUMERATE | JSPROP_PERMANENT, JSOP_WRAPPER(js_is_native_obj), JSOP_NULLWRAPPER},
-		{0, 0, 0, JSOP_NULLWRAPPER, JSOP_NULLWRAPPER}
-	};
-
-	static JSFunctionSpec funcs[] = {
-		JS_FN("getWidth", js_cocos2dx_EventScreenLayout_getWidth, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
-		JS_FN("getHeight", js_cocos2dx_EventScreenLayout_getHeight, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
-		JS_FN("getOrientation", js_cocos2dx_EventScreenLayout_getOrientation, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
-        JS_FS_END
-	};
-
-	JSFunctionSpec *st_funcs = NULL;
-
-	jsb_cocos2d_EventScreenLayout_prototype = JS_InitClass(
-		cx, global,
-		jsb_cocos2d_Event_prototype,
-		jsb_cocos2d_EventScreenLayout_class,
-		js_cocos2dx_EventScreenLayout_constructor, 0, // constructor
-		properties,
-		funcs,
-		NULL, // no static properties
-		st_funcs);
-	// make the class enumerable in the registered namespace
-//	bool found;
-//FIXME: Removed in Firefox v27	
-//	JS_SetPropertyAttributes(cx, global, "EventScreenLayout", JSPROP_ENUMERATE | JSPROP_READONLY, &found);
-
-	// add the proto and JSClass to the type->js info hash table
-	TypeTest<cocos2d::EventScreenLayout> t;
-	js_type_class_t *p;
-	std::string typeName = t.s_name();
-	if (_js_global_type_map.find(typeName) == _js_global_type_map.end())
-	{
-		p = (js_type_class_t *)malloc(sizeof(js_type_class_t));
-		p->jsclass = jsb_cocos2d_EventScreenLayout_class;
-		p->proto = jsb_cocos2d_EventScreenLayout_prototype;
-		p->parentProto = jsb_cocos2d_Event_prototype;
-		_js_global_type_map.insert(std::make_pair(typeName, p));
-	}
-}
-
-JSClass  *jsb_cocos2d_EventListenerScreenLayout_class;
-JSObject *jsb_cocos2d_EventListenerScreenLayout_prototype;
-
-bool js_cocos2dx_EventListenerScreenLayout_create(JSContext *cx, uint32_t argc, jsval *vp)
-{
-	jsval *argv = JS_ARGV(cx, vp);
-	bool ok = true;
-	if (argc == 1) {
-		std::function<void (cocos2d::EventScreenLayout *)> arg0;
-		do {
-			std::shared_ptr<JSFunctionWrapper> func(new JSFunctionWrapper(cx, JS_THIS_OBJECT(cx, vp), argv[0]));
-			auto lambda = [=](cocos2d::EventScreenLayout* larg0) -> void {
-				jsval largv[1];
-				do {
-					if (larg0) {
-						js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::EventScreenLayout>(cx, (cocos2d::EventScreenLayout*)larg0);
-						largv[0] = OBJECT_TO_JSVAL(jsProxy->obj);
-					} else {
-						largv[0] = JSVAL_NULL;
-					}
-				} while (0);
-				jsval rval;
-				bool ok = func->invoke(1, &largv[0], rval);
-				if (!ok && JS_IsExceptionPending(cx)) {
-					JS_ReportPendingException(cx);
-				}
-			};
-			arg0 = lambda;
-		} while(0)
-		;
-		JSB_PRECONDITION2(ok, cx, false, "js_cocos2dx_EventListenerScreenLayout_create : Error processing arguments");
-		cocos2d::EventListenerScreenLayout* ret = cocos2d::EventListenerScreenLayout::create(arg0);
-		jsval jsret = JSVAL_NULL;
-		do {
-		if (ret) {
-			js_proxy_t *jsProxy = js_get_or_create_proxy<cocos2d::EventListenerScreenLayout>(cx, (cocos2d::EventListenerScreenLayout*)ret);
-			jsret = OBJECT_TO_JSVAL(jsProxy->obj);
-		} else {
-			jsret = JSVAL_NULL;
-		}
-	} while (0);
-		JS_SET_RVAL(cx, vp, jsret);
-		return true;
-	}
-	JS_ReportError(cx, "js_cocos2dx_EventListenerScreenLayout_create : wrong number of arguments");
-	return false;
-}
-
-
-extern JSObject *jsb_cocos2d_EventListener_prototype;
-
-void js_cocos2d_EventListenerScreenLayout_finalize(JSFreeOp *fop, JSObject *obj) {
-    CCLOGINFO("jsbindings: finalizing JS object %p (EventListenerScreenLayout)", obj);
-}
-
-void js_register_cocos2dx_EventListenerScreenLayout(JSContext *cx, JSObject *global) {
-	jsb_cocos2d_EventListenerScreenLayout_class = (JSClass *)calloc(1, sizeof(JSClass));
-	jsb_cocos2d_EventListenerScreenLayout_class->name = "EventListenerScreenLayout";
-	jsb_cocos2d_EventListenerScreenLayout_class->addProperty = JS_PropertyStub;
-	jsb_cocos2d_EventListenerScreenLayout_class->delProperty = JS_DeletePropertyStub;
-	jsb_cocos2d_EventListenerScreenLayout_class->getProperty = JS_PropertyStub;
-	jsb_cocos2d_EventListenerScreenLayout_class->setProperty = JS_StrictPropertyStub;
-	jsb_cocos2d_EventListenerScreenLayout_class->enumerate = JS_EnumerateStub;
-	jsb_cocos2d_EventListenerScreenLayout_class->resolve = JS_ResolveStub;
-	jsb_cocos2d_EventListenerScreenLayout_class->convert = JS_ConvertStub;
-	jsb_cocos2d_EventListenerScreenLayout_class->finalize = js_cocos2d_EventListenerScreenLayout_finalize;
-	jsb_cocos2d_EventListenerScreenLayout_class->flags = JSCLASS_HAS_RESERVED_SLOTS(2);
-
-	static JSPropertySpec properties[] = {
-		{"__nativeObj", 0, JSPROP_ENUMERATE | JSPROP_PERMANENT, JSOP_WRAPPER(js_is_native_obj), JSOP_NULLWRAPPER},
-		{0, 0, 0, JSOP_NULLWRAPPER, JSOP_NULLWRAPPER}
-	};
-
-	static JSFunctionSpec funcs[] = {
-        JS_FS_END
-	};
-
-	static JSFunctionSpec st_funcs[] = {
-		JS_FN("create", js_cocos2dx_EventListenerScreenLayout_create, 1, JSPROP_PERMANENT | JSPROP_ENUMERATE),
-		JS_FS_END
-	};
-
-	jsb_cocos2d_EventListenerScreenLayout_prototype = JS_InitClass(
-		cx, global,
-		jsb_cocos2d_EventListener_prototype,
-		jsb_cocos2d_EventListenerScreenLayout_class,
-		dummy_constructor<cocos2d::EventListenerScreenLayout>, 0, // no constructor
-		properties,
-		funcs,
-		NULL, // no static properties
-		st_funcs);
-	// make the class enumerable in the registered namespace
-//	bool found;
-//FIXME: Removed in Firefox v27	
-//	JS_SetPropertyAttributes(cx, global, "EventListenerScreenLayout", JSPROP_ENUMERATE | JSPROP_READONLY, &found);
-
-	// add the proto and JSClass to the type->js info hash table
-	TypeTest<cocos2d::EventListenerScreenLayout> t;
-	js_type_class_t *p;
-	std::string typeName = t.s_name();
-	if (_js_global_type_map.find(typeName) == _js_global_type_map.end())
-	{
-		p = (js_type_class_t *)malloc(sizeof(js_type_class_t));
-		p->jsclass = jsb_cocos2d_EventListenerScreenLayout_class;
-		p->proto = jsb_cocos2d_EventListenerScreenLayout_prototype;
-		p->parentProto = jsb_cocos2d_EventListener_prototype;
-		_js_global_type_map.insert(std::make_pair(typeName, p));
-	}
-}
-
 JSClass  *jsb_cocos2d_Component_class;
 JSObject *jsb_cocos2d_Component_prototype;
 
@@ -57282,7 +57474,6 @@ void register_all_cocos2dx(JSContext* cx, JSObject* obj) {
 	js_register_cocos2dx_Show(cx, obj);
 	js_register_cocos2dx_FadeOut(cx, obj);
 	js_register_cocos2dx_CallFunc(cx, obj);
-	js_register_cocos2dx_Event(cx, obj);
 	js_register_cocos2dx_EventMouse(cx, obj);
 	js_register_cocos2dx_Waves3D(cx, obj);
 	js_register_cocos2dx_EaseBezierAction(cx, obj);
@@ -57375,7 +57566,7 @@ void register_all_cocos2dx(JSContext* cx, JSObject* obj) {
 	js_register_cocos2dx_TransitionSplitRows(cx, obj);
 	js_register_cocos2dx_Device(cx, obj);
 	js_register_cocos2dx_TransitionProgressRadialCCW(cx, obj);
-	js_register_cocos2dx_ScaleTo(cx, obj);
+	js_register_cocos2dx_EventListenerFocus(cx, obj);
 	js_register_cocos2dx_TransitionPageTurn(cx, obj);
 	js_register_cocos2dx_BezierBy(cx, obj);
 	js_register_cocos2dx_BezierTo(cx, obj);
@@ -57384,13 +57575,15 @@ void register_all_cocos2dx(JSContext* cx, JSObject* obj) {
 	js_register_cocos2dx_ActionManager(cx, obj);
 	js_register_cocos2dx_TransitionFade(cx, obj);
 	js_register_cocos2dx_TransitionZoomFlipX(cx, obj);
+	js_register_cocos2dx_EventFocus(cx, obj);
 	js_register_cocos2dx_EaseQuinticActionInOut(cx, obj);
 	js_register_cocos2dx_SpriteFrameCache(cx, obj);
 	js_register_cocos2dx_TransitionCrossFade(cx, obj);
 	js_register_cocos2dx_Ripple3D(cx, obj);
 	js_register_cocos2dx_Lens3D(cx, obj);
-	js_register_cocos2dx_EaseQuarticActionInOut(cx, obj);
+	js_register_cocos2dx_ScaleTo(cx, obj);
 	js_register_cocos2dx_Spawn(cx, obj);
+	js_register_cocos2dx_EaseQuarticActionInOut(cx, obj);
 	js_register_cocos2dx_ShakyTiles3D(cx, obj);
 	js_register_cocos2dx_PageTurn3D(cx, obj);
 	js_register_cocos2dx_TransitionSlideInL(cx, obj);

@@ -222,6 +222,50 @@ bool js_cocos2dx_spine_Skeleton_setBonesToSetupPose(JSContext *cx, uint32_t argc
 	JS_ReportError(cx, "js_cocos2dx_spine_Skeleton_setBonesToSetupPose : wrong number of arguments: %d, was expecting %d", argc, 0);
 	return false;
 }
+bool js_cocos2dx_spine_Skeleton_createWithData(JSContext *cx, uint32_t argc, jsval *vp)
+{
+	jsval *argv = JS_ARGV(cx, vp);
+	bool ok = true;
+	if (argc == 1) {
+		spSkeletonData* arg0;
+		#pragma warning NO CONVERSION TO NATIVE FOR spSkeletonData*;
+		JSB_PRECONDITION2(ok, cx, false, "js_cocos2dx_spine_Skeleton_createWithData : Error processing arguments");
+		spine::Skeleton* ret = spine::Skeleton::createWithData(arg0);
+		jsval jsret = JSVAL_NULL;
+		do {
+		if (ret) {
+			js_proxy_t *jsProxy = js_get_or_create_proxy<spine::Skeleton>(cx, (spine::Skeleton*)ret);
+			jsret = OBJECT_TO_JSVAL(jsProxy->obj);
+		} else {
+			jsret = JSVAL_NULL;
+		}
+	} while (0);
+		JS_SET_RVAL(cx, vp, jsret);
+		return true;
+	}
+	if (argc == 2) {
+		spSkeletonData* arg0;
+		bool arg1;
+		#pragma warning NO CONVERSION TO NATIVE FOR spSkeletonData*;
+		arg1 = JS::ToBoolean(JS::RootedValue(cx, argv[1]));
+		JSB_PRECONDITION2(ok, cx, false, "js_cocos2dx_spine_Skeleton_createWithData : Error processing arguments");
+		spine::Skeleton* ret = spine::Skeleton::createWithData(arg0, arg1);
+		jsval jsret = JSVAL_NULL;
+		do {
+		if (ret) {
+			js_proxy_t *jsProxy = js_get_or_create_proxy<spine::Skeleton>(cx, (spine::Skeleton*)ret);
+			jsret = OBJECT_TO_JSVAL(jsProxy->obj);
+		} else {
+			jsret = JSVAL_NULL;
+		}
+	} while (0);
+		JS_SET_RVAL(cx, vp, jsret);
+		return true;
+	}
+	JS_ReportError(cx, "js_cocos2dx_spine_Skeleton_createWithData : wrong number of arguments");
+	return false;
+}
+
 bool js_cocos2dx_spine_Skeleton_createWithFile(JSContext *cx, uint32_t argc, jsval *vp)
 {
 	jsval *argv = JS_ARGV(cx, vp);
@@ -538,6 +582,7 @@ void js_register_cocos2dx_spine_Skeleton(JSContext *cx, JSObject *global) {
 	};
 
 	static JSFunctionSpec st_funcs[] = {
+		JS_FN("createWithData", js_cocos2dx_spine_Skeleton_createWithData, 1, JSPROP_PERMANENT | JSPROP_ENUMERATE),
 		JS_FN("create", js_cocos2dx_spine_Skeleton_createWithFile, 2, JSPROP_PERMANENT | JSPROP_ENUMERATE),
 		JS_FS_END
 	};
@@ -1080,6 +1125,17 @@ bool js_cocos2dx_spine_JSSkeletonAnimation_createWithFile(JSContext *cx, uint32_
 	JS_ReportError(cx, "js_cocos2dx_spine_JSSkeletonAnimation_createWithFile : wrong number of arguments");
 	return false;
 }
+bool js_cocos2dx_spine_JSSkeletonAnimation_clearCache(JSContext *cx, uint32_t argc, jsval *vp)
+{
+	if (argc == 0) {
+		spine::JSSkeletonAnimation::clearCache();
+		JS_SET_RVAL(cx, vp, JSVAL_VOID);
+		return true;
+	}
+	JS_ReportError(cx, "js_cocos2dx_spine_JSSkeletonAnimation_clearCache : wrong number of arguments");
+	return false;
+}
+
 bool js_cocos2dx_spine_JSSkeletonAnimation_constructor(JSContext *cx, uint32_t argc, jsval *vp)
 {
 	jsval *argv = JS_ARGV(cx, vp);
@@ -1236,6 +1292,7 @@ void js_register_cocos2dx_spine_JSSkeletonAnimation(JSContext *cx, JSObject *glo
 
 	static JSFunctionSpec st_funcs[] = {
 		JS_FN("createWithFile", js_cocos2dx_spine_JSSkeletonAnimation_createWithFile, 2, JSPROP_PERMANENT | JSPROP_ENUMERATE),
+		JS_FN("clearCache", js_cocos2dx_spine_JSSkeletonAnimation_clearCache, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),
 		JS_FS_END
 	};
 
