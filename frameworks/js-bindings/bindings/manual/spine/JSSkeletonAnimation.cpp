@@ -160,7 +160,7 @@ namespace spine {
         _bounds = spSkeletonBounds_create();
     }
     
-    const std::string& JSSkeletonAnimation::bounds_containsPoint( Vector2 p ) {
+    const std::string& JSSkeletonAnimation::bounds_containsPoint( const Vector2 & p ) {
         return bounds_containsPoint(p.x,p.y);
     }
     const std::string& JSSkeletonAnimation::bounds_containsPoint( float x, float y ) {
@@ -177,11 +177,11 @@ namespace spine {
                 return _buf;
             }
         }
-            spBoundingBoxAttachment* attachment = spSkeletonBounds_containsPoint( _bounds, x, y );
-            if (attachment) {
-                _buf = attachment->super.name;
-                return _buf;
-            }
+        spBoundingBoxAttachment* attachment = spSkeletonBounds_containsPoint( _bounds, x, y );
+        if (attachment) {
+            _buf = attachment->super.name;
+            return _buf;
+        }
         _buf = "";
         return _buf;
     }
