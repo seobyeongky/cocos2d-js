@@ -16,7 +16,8 @@ LOCAL_CFLAGS := -DCOCOS2D_JAVASCRIPT
 LOCAL_EXPORT_CFLAGS := -DCOCOS2D_JAVASCRIPT
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH) \
-                    $(LOCAL_PATH)/../../../cocos2d-x/cocos/editor-support/spine
+                    $(LOCAL_PATH)/../../../cocos2d-x/cocos/editor-support/spine \
+					$(LOCAL_PATH)/../../../cocos2d-x/cocos/math
 
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)
 
