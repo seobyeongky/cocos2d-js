@@ -528,7 +528,7 @@ void ScriptingCore::createGlobalContext() {
         .setIon(true)
         .setBaseline(true)
         .setAsmJS(true);
-    
+
     JS::CompileOptions compileOptions(_cx);
     compileOptions.setCompileAndGo(true);
     
