@@ -21,7 +21,7 @@ public:
     void supportBounds();
     void bounds_update();
     
-    const std::string& bounds_containsPoint( const Vector2 & p );
+    const std::string& bounds_containsPoint( const Vec2 & p );
     const std::string& bounds_containsPoint( float x, float y );
     
 protected:
