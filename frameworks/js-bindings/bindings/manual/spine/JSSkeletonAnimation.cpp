@@ -160,12 +160,12 @@ namespace spine {
         _bounds = spSkeletonBounds_create();
     }
     
-    const std::string& JSSkeletonAnimation::bounds_containsPoint( const Vector2 & p ) {
+    const std::string& JSSkeletonAnimation::bounds_containsPoint( const Vec2 & p ) {
         return bounds_containsPoint(p.x,p.y);
     }
     const std::string& JSSkeletonAnimation::bounds_containsPoint( float x, float y ) {
         
-        Vector2 pos = getPosition();
+        Vec2 pos = getPosition();
         
         x = (x - pos.x)/getScaleX();
         y = (y - pos.y)/getScaleY();
