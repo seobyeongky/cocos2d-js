@@ -646,6 +646,10 @@ JS_BINDED_FUNC_IMPL(MinXmlHttpRequest, open)
             _httpRequest->setRequestType(cocos2d::network::HttpRequest::Type::GET);
         }
         
+        std::vector<std::string> headers;
+        headers.push_back("User-Agent: cocos2d-x v3.1");
+        _httpRequest->setHeaders(headers);
+        
         _httpRequest->setUrl(_url.c_str());
         
         _isNetwork = true;
