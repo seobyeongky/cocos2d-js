@@ -836,6 +836,7 @@ bool ScriptingCore::forceGC(JSContext *cx, uint32_t argc, jsval *vp)
 
 bool ScriptingCore::dumpRoot(JSContext *cx, uint32_t argc, jsval *vp)
 {
+#ifdef DEBUG
     JS::CallArgs args = CallArgsFromVp(argc, vp);
     JSAutoByteString fileName;
     if (args.hasDefined(0)) {
@@ -877,6 +878,9 @@ bool ScriptingCore::dumpRoot(JSContext *cx, uint32_t argc, jsval *vp)
         JS_ReportOutOfMemory(cx);
     
     return ok;
+#else
+    return false;
+#endif
     // JS_DumpNamedRoots is only available on DEBUG versions of SpiderMonkey.
     // Mac and Simulator versions were compiled with DEBUG.
 #if COCOS2D_DEBUG
