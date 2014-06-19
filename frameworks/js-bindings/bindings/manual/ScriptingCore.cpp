@@ -516,6 +516,8 @@ void ScriptingCore::createGlobalContext() {
     this->_rt = JS_NewRuntime(8L * 1024L * 1024L, JS_USE_HELPER_THREADS);
     JS_SetGCParameter(_rt, JSGC_MAX_BYTES, 0xffffffff);
     
+    shellTrustedPrincipals.refcount = 1;
+    
     JS_SetTrustedPrincipals(_rt, &shellTrustedPrincipals);
     JS_SetSecurityCallbacks(_rt, &securityCallbacks);
     JS_SetNativeStackQuota(_rt, JSB_MAX_STACK_QUOTA);
@@ -532,6 +534,8 @@ void ScriptingCore::createGlobalContext() {
     JS::CompileOptions compileOptions(_cx);
     compileOptions.setCompileAndGo(true);
     
+    JS_SetGCParameter(_rt, JSGC_MODE, JSGC_MODE_INCREMENTAL);
+    
 //    JS_SetVersion(this->_cx, JSVERSION_LATEST);
     
     JS_SetErrorReporter(this->_cx, ScriptingCore::reportError);
@@ -547,6 +551,10 @@ void ScriptingCore::createGlobalContext() {
         sc_register_sth callback = *it;
         callback(this->_cx, this->_global);
     }
+    
+    JS::RootedValue abc(_cx);
+    
+    
 }
 
 static std::string RemoveFileExt(const std::string& filePath) {
@@ -746,7 +754,9 @@ bool ScriptingCore::executeScript(JSContext *cx, uint32_t argc, jsval *vp)
 {
     if (argc >= 1) {
         jsval* argv = JS_ARGV(cx, vp);
-        JSString* str = JS::ToString(cx, JS::RootedValue(cx, argv[0]));
+        JS::RootedValue tt(cx, argv[0]);
+        JSString * str = JS::ToString(cx, tt);
+        
         JSStringWrapper path(str);
         bool res = false;
         if (argc == 2 && argv[1].isString()) {
@@ -826,6 +836,47 @@ bool ScriptingCore::forceGC(JSContext *cx, uint32_t argc, jsval *vp)
 
 bool ScriptingCore::dumpRoot(JSContext *cx, uint32_t argc, jsval *vp)
 {
+    JS::CallArgs args = CallArgsFromVp(argc, vp);
+    JSAutoByteString fileName;
+    if (args.hasDefined(0)) {
+        JS::RootedString str(cx, JS::ToString(cx, args[0]));
+        if (!str)
+            return false;
+
+        if (!fileName.encodeUtf8(cx, str))
+            return false;
+    }
+    
+    size_t maxDepth = size_t(-1);
+    if (args.hasDefined(1)) {
+        uint32_t depth;
+        if (!ToUint32(cx, args[1], &depth))
+            return false;
+        maxDepth = depth;
+    }
+    
+    FILE *dumpFile = stdout;
+    if (fileName.length()) {
+        std::string path = FileUtils::getInstance()->getWritablePath();
+        if (path[path.length()-1] != '/')
+            path += '/';
+        path += fileName.ptr();
+        dumpFile = fopen(path.c_str(), "w");
+        if (!dumpFile) {
+            JS_ReportError(cx, "dumpHeap: can't open %s: %s\n",
+                           fileName.ptr(), strerror(errno));
+            return false;
+        }
+    }
+    
+    bool ok = JS_DumpHeap(JS_GetRuntime(cx), dumpFile, NULL, JSTRACE_OBJECT, NULL, maxDepth, NULL);
+    if (dumpFile != stdout)
+        fclose(dumpFile);
+    
+    if (!ok)
+        JS_ReportOutOfMemory(cx);
+    
+    return ok;
     // JS_DumpNamedRoots is only available on DEBUG versions of SpiderMonkey.
     // Mac and Simulator versions were compiled with DEBUG.
 #if COCOS2D_DEBUG

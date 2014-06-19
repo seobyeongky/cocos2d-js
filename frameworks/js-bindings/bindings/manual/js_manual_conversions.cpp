@@ -549,6 +549,7 @@ bool jsval_to_ccpoint(JSContext *cx, jsval v, Point* ret) {
     JS::RootedObject tmp(cx);
     JS::RootedValue jsx(cx);
     JS::RootedValue jsy(cx);
+    
     double x, y;
     JS::RootedValue tt(cx, v);
     bool ok = v.isObject() &&

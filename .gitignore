@@ -110,3 +110,6 @@ redmobile
 
 # ignore auto generated
 frameworks/js-bindings/bindings/auto
+
+frameworks/sosopang-runtime-src
+frameworks/js-bindings/external

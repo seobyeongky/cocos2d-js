@@ -147,7 +147,7 @@ JSAutoCompartment __jsb_ac(ScriptingCore::getInstance()->getGlobalContext(), Scr
 #endif // JSB_INCLUDE_XMLHTTP
 
 #ifndef JSB_MAX_STACK_QUOTA
-#define JSB_MAX_STACK_QUOTA 500000
+#define JSB_MAX_STACK_QUOTA 128 * sizeof(size_t) * 1024
 #endif // JSB_MAX_STACK_QUOTA
 
 #endif // __JS_BINDINGS_CONFIG_H
