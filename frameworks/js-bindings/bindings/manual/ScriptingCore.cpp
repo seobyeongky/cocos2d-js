@@ -879,7 +879,7 @@ bool ScriptingCore::dumpRoot(JSContext *cx, uint32_t argc, jsval *vp)
     
     return ok;
 #else
-    return false;
+    return true;
 #endif
     // JS_DumpNamedRoots is only available on DEBUG versions of SpiderMonkey.
     // Mac and Simulator versions were compiled with DEBUG.
