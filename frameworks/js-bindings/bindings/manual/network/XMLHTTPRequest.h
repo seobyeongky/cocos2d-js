@@ -87,6 +87,7 @@ private:
     void _setRequestHeader(const char* field, const char* value);
     void _setHttpRequestHeader();
     void _sendRequest(JSContext *cx);
+    void _errorFlagOn();
     
     std::string                       _url;
     JSContext*                        _cx;
@@ -104,6 +105,7 @@ private:
     cocos2d::network::HttpRequest*    _httpRequest;
     bool                              _isNetwork;
     bool                              _withCredentialsValue;
+    bool                              _errorFlag;
     std::unordered_map<std::string, std::string>          _httpHeader;
     std::unordered_map<std::string, std::string>          _requestHeader;
 };
