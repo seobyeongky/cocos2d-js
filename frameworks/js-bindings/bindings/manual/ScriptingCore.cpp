@@ -713,8 +713,20 @@ void ScriptingCore::reportError(JSContext *cx, const char *message, JSErrorRepor
             report->filename ? report->filename : "<no filename=\"filename\">",
             (unsigned int) report->lineno,
             message);
+    for (auto & reporter : getInstance()->getReporterFuncs()) {
+        reporter(cx, message, report);
+    }
 };
 
+void ScriptingCore::addErrorReporter(reporter_func_t reporter)
+{
+    _reporterFuncs.push_back(reporter);
+}
+
+std::vector<ScriptingCore::reporter_func_t> ScriptingCore::getReporterFuncs()
+{
+    return _reporterFuncs;
+}
 
 bool ScriptingCore::log(JSContext* cx, uint32_t argc, jsval *vp)
 {

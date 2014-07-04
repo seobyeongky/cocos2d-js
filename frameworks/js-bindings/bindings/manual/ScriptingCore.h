@@ -36,6 +36,8 @@
 
 #include <assert.h>
 #include <memory>
+#include <functional>
+#include <vector>
 
 void js_log(const char *format, ...);
 
@@ -245,6 +247,7 @@ public:
  private:
     void string_report(jsval val);
 
+    
 public:
     int handleNodeEvent(void* data);
     int handleComponentEvent(void* data);
@@ -253,6 +256,13 @@ public:
     bool handleTouchesEvent(void* nativeObj, cocos2d::EventTouch::EventCode eventCode, const std::vector<cocos2d::Touch*>& touches, cocos2d::Event* event, jsval* jsvalRet = nullptr);
     bool handleTouchEvent(void* nativeObj, cocos2d::EventTouch::EventCode eventCode, cocos2d::Touch* touch, cocos2d::Event* event, jsval* jsvalRet = nullptr);
     bool handleKeybardEvent(void* nativeObj, cocos2d::EventKeyboard::KeyCode keyCode, bool isPressed, cocos2d::Event* event);
+
+public:
+    typedef std::function<void(JSContext*,const char *,JSErrorReport *)> reporter_func_t;
+    void addErrorReporter(reporter_func_t reporter);
+private:
+    std::vector<reporter_func_t> getReporterFuncs();
+    std::vector<reporter_func_t> _reporterFuncs;
 };
 
 JSObject* NewGlobalObject(JSContext* cx, bool debug = false);
