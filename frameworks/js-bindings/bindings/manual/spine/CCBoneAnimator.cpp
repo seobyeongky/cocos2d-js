@@ -34,9 +34,7 @@ void BoneAnimator::setBoneName(std::string bone_name)
 
 void BoneAnimator::_update(float dt)
 {
-    log("bone_animator_update");
     if(_parent && _bone_name.length() != 0){
-        log("bone_animator_real_update");
         spBone* bone = findBone(_bone_name.c_str());
         
         Vec2 p = Vec2(bone->worldX, bone->worldY);
