@@ -162,6 +162,8 @@
 		BA623E15191A195F00761F37 /* uthash.h in Headers */ = {isa = PBXBuildFile; fileRef = BA623E08191A195F00761F37 /* uthash.h */; };
 		BA623E18191A196F00761F37 /* jsb_cocos2dx_pluginx_auto.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BA623E16191A196F00761F37 /* jsb_cocos2dx_pluginx_auto.cpp */; };
 		BA623E19191A196F00761F37 /* jsb_cocos2dx_pluginx_auto.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BA623E17191A196F00761F37 /* jsb_cocos2dx_pluginx_auto.hpp */; };
+		F9C5E68B1975101200CFDA3B /* CCBoneAnimator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9C5E6881975101200CFDA3B /* CCBoneAnimator.cpp */; };
+		F9C5E68D1975101200CFDA3B /* CCBoneAnimator.h in Headers */ = {isa = PBXBuildFile; fileRef = F9C5E6891975101200CFDA3B /* CCBoneAnimator.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -266,6 +268,8 @@
 		BA623E16191A196F00761F37 /* jsb_cocos2dx_pluginx_auto.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = jsb_cocos2dx_pluginx_auto.cpp; path = "../../cocos2d-x/plugin/jsbindings/auto/jsb_cocos2dx_pluginx_auto.cpp"; sourceTree = "<group>"; };
 		BA623E17191A196F00761F37 /* jsb_cocos2dx_pluginx_auto.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = jsb_cocos2dx_pluginx_auto.hpp; path = "../../cocos2d-x/plugin/jsbindings/auto/jsb_cocos2dx_pluginx_auto.hpp"; sourceTree = "<group>"; };
 		BA86F5EF18FBB75600334DC7 /* libjs_static.arm64.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libjs_static.arm64.a; sourceTree = "<group>"; };
+		F9C5E6881975101200CFDA3B /* CCBoneAnimator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCBoneAnimator.cpp; sourceTree = "<group>"; };
+		F9C5E6891975101200CFDA3B /* CCBoneAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCBoneAnimator.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -443,6 +447,8 @@
 		1A119E7F18BDF19200352BAA /* spine */ = {
 			isa = PBXGroup;
 			children = (
+				F9C5E6881975101200CFDA3B /* CCBoneAnimator.cpp */,
+				F9C5E6891975101200CFDA3B /* CCBoneAnimator.h */,
 				2A339D2618F5080A00DFCC09 /* JSSkeletonAnimation.cpp */,
 				2A339D2718F5080A00DFCC09 /* JSSkeletonAnimation.h */,
 				1A119E8018BDF19200352BAA /* Android.mk */,
@@ -578,6 +584,7 @@
 				1A119EA418BDF19200352BAA /* jsb_cocos2dx_studio_auto.hpp in Headers */,
 				1A119F0218BDF19200352BAA /* ScriptingCore.h in Headers */,
 				1A119EBE18BDF19200352BAA /* cocos2d_specifics.hpp in Headers */,
+				F9C5E68D1975101200CFDA3B /* CCBoneAnimator.h in Headers */,
 				83A5661C18DA878400FC31A0 /* jsb_socketio.h in Headers */,
 				1A1D3B7B18C44FD000922D3C /* jsb_event_dispatcher_manual.h in Headers */,
 				1A119EF618BDF19200352BAA /* js_bindings_system_registration.h in Headers */,
@@ -760,6 +767,7 @@
 				1A119ECA18BDF19200352BAA /* jsb_cocos2dx_extension_manual.cpp in Sources */,
 				1A119EA218BDF19200352BAA /* jsb_cocos2dx_studio_auto.cpp in Sources */,
 				1A119EDC18BDF19200352BAA /* js_manual_conversions.cpp in Sources */,
+				F9C5E68B1975101200CFDA3B /* CCBoneAnimator.cpp in Sources */,
 				83A5661A18DA878400FC31A0 /* jsb_socketio.cpp in Sources */,
 				1A119EE218BDF19200352BAA /* jsb_opengl_functions.cpp in Sources */,
 				2A570DA518F6D39100F437A7 /* jsb_cocos2dx_network_auto.cpp in Sources */,

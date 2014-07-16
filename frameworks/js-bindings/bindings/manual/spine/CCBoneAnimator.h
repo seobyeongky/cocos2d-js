@@ -11,12 +11,13 @@
 
 #include <iostream>
 #include <cocos2d.h>
+#include "JSSkeletonAnimation.h"
 #include <spine/CCSkeletonAnimation.h>
 
 using namespace cocos2d;
 using namespace spine;
 
-class BoneAnimator : public SkeletonAnimation
+class BoneAnimator : public JSSkeletonAnimation
 {
 public:
     BoneAnimator(std::string path);

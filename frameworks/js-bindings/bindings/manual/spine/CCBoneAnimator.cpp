@@ -8,7 +8,7 @@
 
 #include "CCBoneAnimator.h"
 
-BoneAnimator::BoneAnimator(std::string path) : SkeletonAnimation(std::string(path+".json").c_str(),std::string(path+".atlas").c_str())
+BoneAnimator::BoneAnimator(std::string path) : JSSkeletonAnimation(std::string(path+".json").c_str(),std::string(path+".atlas").c_str())
 {
     _prev_p = Vec2();
     _prev_rotation = 0;
