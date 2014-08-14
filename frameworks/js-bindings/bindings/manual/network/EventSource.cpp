@@ -372,6 +372,7 @@ void EventSource::Worker::func_th()
     CURLM * multi_handle = curl_multi_init();
     auto scheduler = Director::getInstance()->getScheduler();
     int still_running;
+    int still_desiring;
     
     while (1)
     {
@@ -411,6 +412,7 @@ void EventSource::Worker::func_th()
                 it++;
         }
         
+        still_desiring = 0;
         for (auto & h : handles)
         {
             if (h.reconnect_countdown)
@@ -421,6 +423,8 @@ void EventSource::Worker::func_th()
                     curl_multi_remove_handle(multi_handle, h.curl);
                     curl_multi_add_handle(multi_handle, h.curl);
                 }
+                else
+                    still_desiring++;
             }
         }
         
@@ -454,13 +458,13 @@ void EventSource::Worker::func_th()
 
                         h.reconnect_countdown = 30;
                         
-                        still_running++; // correct
+                        still_desiring++; // correct
                     }
                 }
             }
         }
         
-        if (still_running == 0)
+        if (still_running + still_desiring == 0)
         {
             bool empty;
             {
