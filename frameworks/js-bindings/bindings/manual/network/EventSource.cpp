@@ -316,6 +316,7 @@ struct HANDLE
     EventSource * self;
     CURL* curl;
     conn_context_t * ctx;
+    int reconnect_countdown;
 };
 
 #define CHECK_MCODE(msg) if(mcode != CURLM_OK) {\
@@ -392,6 +393,7 @@ void EventSource::Worker::func_th()
             h.self = self;
             h.curl = curl;
             h.ctx = context;
+            h.reconnect_countdown = 0;
             handles.push_back(h);
         }
         
@@ -408,6 +410,20 @@ void EventSource::Worker::func_th()
             else
                 it++;
         }
+        
+        for (auto & h : handles)
+        {
+            if (h.reconnect_countdown)
+            {
+                h.reconnect_countdown--;
+                if (h.reconnect_countdown == 0)
+                {
+                    curl_multi_remove_handle(multi_handle, h.curl);
+                    curl_multi_add_handle(multi_handle, h.curl);
+                }
+            }
+        }
+        
         CURLMcode mcode = curl_multi_perform(multi_handle, &still_running);
         CHECK_MCODE("curl_multi_perform");
 
@@ -435,20 +451,10 @@ void EventSource::Worker::func_th()
                             h.self->retain();
                             h.self->report_error(curl_easy_strerror(code));
                         });
-                        if (code == CURLE_PARTIAL_FILE)
-                        {
-                            CCLOG("EventSource reconnect...");
-                            CURLMcode res = curl_multi_remove_handle(multi_handle, h.curl);
-                            res = curl_multi_add_handle(multi_handle, h.curl);
-                            still_running++; // correct
-                        }
-                        else
-                        {
-                            curl_easy_cleanup(h.curl);
-                            h.self->release();
-                            delete h.ctx;
-                            handles.erase(handles.begin() + idx);
-                        }
+
+                        h.reconnect_countdown = 30;
+                        
+                        still_running++; // correct
                     }
                 }
             }
