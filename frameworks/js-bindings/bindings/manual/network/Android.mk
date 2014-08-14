@@ -9,6 +9,7 @@ LOCAL_MODULE_FILENAME := libcocos2dxjsbnetwork
 LOCAL_SRC_FILES := XMLHTTPRequest.cpp \
                    jsb_websocket.cpp \
                    jsb_socketio.cpp \
+				   EventSource.cpp \
                    ../../auto/jsb_cocos2dx_network_auto.cpp
 
 LOCAL_CFLAGS := -DCOCOS2D_JAVASCRIPT
