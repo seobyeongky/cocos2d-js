@@ -660,7 +660,8 @@ bool ScriptingCore::runScript(const char *path, JSObject* global, JSContext* cx)
         evaluatedOK = JS_ExecuteScript(cx, global, script, &rval);
         if (false == evaluatedOK) {
             cocos2d::log("(evaluatedOK == JS_FALSE)");
-            JS_ReportPendingException(cx);
+            if (JS_IsExceptionPending(cx))
+                JS_ReportPendingException(cx);
         }
     }
     return evaluatedOK;
