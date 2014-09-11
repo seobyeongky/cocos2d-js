@@ -1,6 +1,7 @@
 [submodule "frameworks/js-bindings/cocos2d-x"]
 	path = frameworks/js-bindings/cocos2d-x
 	url = git://github.com/redmobile/cocos2d-x.git
+	branch = v3
 [submodule "frameworks/cocos2d-html5"]
 	path = frameworks/cocos2d-html5
 	url = git://github.com/cocos2d/cocos2d-html5.git
@@ -10,6 +11,7 @@
 [submodule "tools/bindings-generator"]
 	path = tools/bindings-generator
 	url = git@github.com:redmobile/bindings-generator.git
+	branch = dev-rdmp
 [submodule "frameworks/runtime-src"]
 	path = frameworks/runtime-src
 	url = git@bitbucket.org:redduck/runtime-src.git
