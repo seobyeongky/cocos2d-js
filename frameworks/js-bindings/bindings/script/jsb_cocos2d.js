@@ -129,7 +129,10 @@ cc.PARTICLE_DEFAULT_CAPACITY = 500;
 // Then cast it to unsigned int, the value will be 0. The schedule will not be able to work.
 // I don't know why this occurs only on android.
 // So instead of passing -1 to it, I assign it with max value of unsigned int in c++.
-cc.REPEAT_FOREVER = 0xffffffff;
+//
+// Fixed by seobyeongky
+// 0xfffffffe is kRepeatForever. so, use 0xfffffffe instead of 0xffffffff
+cc.REPEAT_FOREVER = 0xfffffffe;
 
 cc.MENU_STATE_WAITING = 0;
 cc.MENU_STATE_TRACKING_TOUCH = 1;
@@ -490,12 +493,6 @@ cc.degreesToRadians = function (angle) {
 cc.radiansToDegress = function (angle) {
   return angle * cc.DEG;
 };
-
-/**
- * @constant
- * @type Number
- */
-cc.REPEAT_FOREVER = Number.MAX_VALUE - 1;
 
 /**
  * default gl blend src function. Compatible with premultiplied alpha images.
