@@ -560,7 +560,7 @@ JS_BINDED_CONSTRUCTOR_IMPL(EventSource)
 
 static void basic_object_finalize(JSFreeOp *freeOp, JSObject *obj)
 {
-    CCLOG("EventSource(%p) finalized", obj);
+//    CCLOG("EventSource(%p) finalized", obj);
 }
 
 #define SAFE_RETURN(x) if (x) \

@@ -664,6 +664,8 @@ JS_BINDED_FUNC_IMPL(MinXmlHttpRequest, open)
             _httpRequest->setUrl(_url.c_str());
         }
         
+//        printf("[XMLHttpRequest] %s %s\n", _meth.c_str(), _url.c_str());
+        
         _isNetwork = true;
         _readyState = OPENED;
         _status = 0;
@@ -836,7 +838,7 @@ JS_BINDED_FUNC_IMPL(MinXmlHttpRequest, overrideMimeType)
  */
 static void basic_object_finalize(JSFreeOp *freeOp, JSObject *obj)
 {
-    CCLOG("basic_object_finalize %p ...", obj);
+//    CCLOG("basic_object_finalize %p ...", obj);
 }
 
 /**
