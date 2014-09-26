@@ -920,7 +920,7 @@
 					"$(inherited)",
 					"$(SRCROOT)/../../external/spidermonkey/prebuilt/ios",
 				);
-				"OTHER_LDFLAGS[arch=arm64]" = "-ljs_static.arm64";
+				"OTHER_LDFLAGS[arch=arm64]" = "-ljs_static";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "$(inherited) $(SRCROOT)/../../external/spidermonkey/include/ios $(SRCROOT)/../../cocos2d-x/cocos/platform/ios $(SRCROOT)/../../cocos2d-x/extensions/cocos2dx-store/Soomla $(SRCROOT)/../../cocos2d-x/external/jansson $(SRCROOT)/../../cocos2d-x/cocos/network $(SRCROOT)/../../cocos2d-x/plugin/protocols/include $(SRCROOT)/../../cocos2d-x/external/curl/include/ios";
@@ -942,7 +942,7 @@
 					"$(inherited)",
 					"$(SRCROOT)/../../external/spidermonkey/prebuilt/ios",
 				);
-				"OTHER_LDFLAGS[arch=arm64]" = "-ljs_static.arm64";
+				"OTHER_LDFLAGS[arch=arm64]" = "-ljs_static";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "$(inherited) $(SRCROOT)/../../external/spidermonkey/include/ios $(SRCROOT)/../../cocos2d-x/cocos/platform/ios $(SRCROOT)/../../cocos2d-x/extensions/cocos2dx-store/Soomla $(SRCROOT)/../../cocos2d-x/external/jansson $(SRCROOT)/../../cocos2d-x/cocos/network $(SRCROOT)/../../cocos2d-x/plugin/protocols/include $(SRCROOT)/../../cocos2d-x/external/curl/include/ios";
