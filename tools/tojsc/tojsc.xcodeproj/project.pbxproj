@@ -1,0 +1,274 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2A7897D819E277CF00B3AB48 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2A7897D719E277CF00B3AB48 /* main.cpp */; };
+		2AA18AC419E26FDB00371891 /* libjs_static.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2AA18AC319E26FDB00371891 /* libjs_static.a */; };
+		2AA18AC619E26FFC00371891 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2AA18AC519E26FFC00371891 /* libz.dylib */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		2AA18AB419E2600100371891 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		2A7897D719E277CF00B3AB48 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = src/main.cpp; sourceTree = SOURCE_ROOT; };
+		2AA18AB619E2600100371891 /* tojsc */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = tojsc; sourceTree = BUILT_PRODUCTS_DIR; };
+		2AA18AC319E26FDB00371891 /* libjs_static.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjs_static.a; path = "../frameworks/js-bindings/external/spidermonkey/prebuilt/mac/libjs_static.a"; sourceTree = "<group>"; };
+		2AA18AC519E26FFC00371891 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		2AA18AB319E2600100371891 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2AA18AC619E26FFC00371891 /* libz.dylib in Frameworks */,
+				2AA18AC419E26FDB00371891 /* libjs_static.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2AA18AAD19E2600100371891 = {
+			isa = PBXGroup;
+			children = (
+				2AA18AC519E26FFC00371891 /* libz.dylib */,
+				2AA18AC219E26FC600371891 /* spidermonkey */,
+				2AA18AB819E2600100371891 /* src */,
+				2AA18AB719E2600100371891 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		2AA18AB719E2600100371891 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2AA18AB619E2600100371891 /* tojsc */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		2AA18AB819E2600100371891 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				2A7897D719E277CF00B3AB48 /* main.cpp */,
+			);
+			name = src;
+			path = jscompiler;
+			sourceTree = "<group>";
+		};
+		2AA18AC219E26FC600371891 /* spidermonkey */ = {
+			isa = PBXGroup;
+			children = (
+				2AA18AC319E26FDB00371891 /* libjs_static.a */,
+			);
+			name = spidermonkey;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		2AA18AB519E2600100371891 /* tojsc */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2AA18ABD19E2600100371891 /* Build configuration list for PBXNativeTarget "tojsc" */;
+			buildPhases = (
+				2AA18AB219E2600100371891 /* Sources */,
+				2AA18AB319E2600100371891 /* Frameworks */,
+				2AA18AB419E2600100371891 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = tojsc;
+			productName = jscompiler;
+			productReference = 2AA18AB619E2600100371891 /* tojsc */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		2AA18AAE19E2600100371891 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0600;
+				ORGANIZATIONNAME = redduck;
+				TargetAttributes = {
+					2AA18AB519E2600100371891 = {
+						CreatedOnToolsVersion = 6.0.1;
+					};
+				};
+			};
+			buildConfigurationList = 2AA18AB119E2600100371891 /* Build configuration list for PBXProject "tojsc" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 2AA18AAD19E2600100371891;
+			productRefGroup = 2AA18AB719E2600100371891 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				2AA18AB519E2600100371891 /* tojsc */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2AA18AB219E2600100371891 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2A7897D819E277CF00B3AB48 /* main.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		2AA18ABB19E2600100371891 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		2AA18ABC19E2600100371891 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		2AA18ABE19E2600100371891 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
+				GCC_PREPROCESSOR_DEFINITIONS = "";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(SRCROOT)/../../frameworks/js-bindings/external/spidermonkey/include/mac",
+				);
+				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/../../frameworks/js-bindings/external/spidermonkey/prebuilt/mac";
+				OTHER_LDFLAGS = "-ljs_static";
+				PRODUCT_NAME = tojsc;
+			};
+			name = Debug;
+		};
+		2AA18ABF19E2600100371891 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(SRCROOT)/../../frameworks/js-bindings/external/spidermonkey/include/mac",
+				);
+				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/../../frameworks/js-bindings/external/spidermonkey/prebuilt/mac";
+				OTHER_LDFLAGS = "-ljs_static";
+				PRODUCT_NAME = tojsc;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2AA18AB119E2600100371891 /* Build configuration list for PBXProject "tojsc" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2AA18ABB19E2600100371891 /* Debug */,
+				2AA18ABC19E2600100371891 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2AA18ABD19E2600100371891 /* Build configuration list for PBXNativeTarget "tojsc" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2AA18ABE19E2600100371891 /* Debug */,
+				2AA18ABF19E2600100371891 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 2AA18AAE19E2600100371891 /* Project object */;
+}
