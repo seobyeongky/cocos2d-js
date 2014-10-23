@@ -2707,7 +2707,7 @@ bool js_CardinalSplineActions_create(JSContext *cx, uint32_t argc, jsval *vp) {
 
 template<class T>
 bool js_CatmullRomActions_create(JSContext *cx, uint32_t argc, jsval *vp) {
-	JS::CallArgs argv = JS::CallArgsFromVp(argc, vp);
+    JS::CallArgs argv = JS::CallArgsFromVp(argc, vp);
     bool ok = true;
     
     if (argc == 2) {
@@ -2731,26 +2731,87 @@ bool js_CatmullRomActions_create(JSContext *cx, uint32_t argc, jsval *vp) {
         free(arr);
         
         jsval jsret;
-		do {
-			if (ret) {
-				js_proxy_t *p = jsb_get_native_proxy(ret);
-				if (p) {
-					jsret = OBJECT_TO_JSVAL(p->obj);
-				} else {
-					// create a new js obj of that class
-					js_proxy_t *proxy = js_get_or_create_proxy<T>(cx, ret);
-					jsret = OBJECT_TO_JSVAL(proxy->obj);
-				}
-			} else {
-				jsret = JSVAL_NULL;
-			}
-		} while (0);
-		JS_SET_RVAL(cx, vp, jsret);
-		return true;
+        do {
+            if (ret) {
+                js_proxy_t *p = jsb_get_native_proxy(ret);
+                if (p) {
+                    jsret = OBJECT_TO_JSVAL(p->obj);
+                } else {
+                    // create a new js obj of that class
+                    js_proxy_t *proxy = js_get_or_create_proxy<T>(cx, ret);
+                    jsret = OBJECT_TO_JSVAL(proxy->obj);
+                }
+            } else {
+                jsret = JSVAL_NULL;
+            }
+        } while (0);
+        JS_SET_RVAL(cx, vp, jsret);
+        return true;
         
     }
     JS_ReportError(cx, "wrong number of arguments: %d, was expecting %d", argc, 1);
-	return false;
+    return false;
+}
+
+template<class T>
+bool js_JellyNode_create(JSContext *cx, uint32_t argc, jsval *vp) {
+    JS::CallArgs argv = JS::CallArgsFromVp(argc, vp);
+    bool ok = true;
+    
+    if (argc == 5) {
+        
+        int num;
+        Point *arr;
+        ok &= jsval_to_ccarray_of_CCPoint(cx, argv[0], &arr, &num);
+        
+        JSB_PRECONDITION2(ok, cx, false, "Error processing arguments");
+        
+        PointArray *points = PointArray::create(num);
+        
+        for( int i=0; i < num;i++) {
+            points->addControlPoint(arr[i]);
+        }
+        
+        double stroke;
+        ok &= JS::ToNumber(cx, argv[1], &stroke);
+        
+        double tension;
+        ok &= JS::ToNumber(cx, argv[2], &tension);
+        
+        
+        std::string path;
+        ok &= jsval_to_std_string(cx, argv[3], &path);
+        JSB_PRECONDITION2(ok, cx, false, "Error processing arguments");
+        
+        std::string path_cap;
+        ok &= jsval_to_std_string(cx, argv[4], &path_cap);
+        JSB_PRECONDITION2(ok, cx, false, "Error processing arguments");
+        
+        T *ret = T::create(points,stroke,tension,path,path_cap);
+        
+        free(arr);
+        
+        jsval jsret;
+        do {
+            if (ret) {
+                js_proxy_t *p = jsb_get_native_proxy(ret);
+                if (p) {
+                    jsret = OBJECT_TO_JSVAL(p->obj);
+                } else {
+                    // create a new js obj of that class
+                    js_proxy_t *proxy = js_get_or_create_proxy<T>(cx, ret);
+                    jsret = OBJECT_TO_JSVAL(proxy->obj);
+                }
+            } else {
+                jsret = JSVAL_NULL;
+            }
+        } while (0);
+        JS_SET_RVAL(cx, vp, jsret);
+        return true;
+        
+    }
+    JS_ReportError(cx, "wrong number of arguments: %d, was expecting %d", argc, 1);
+    return false;
 }
 
 
@@ -2776,7 +2837,11 @@ bool JSB_CCCatmullRomBy_actionWithDuration(JSContext *cx, uint32_t argc, jsval *
 }
 
 bool JSB_CCCatmullRomTo_actionWithDuration(JSContext *cx, uint32_t argc, jsval *vp) {
-	return js_CatmullRomActions_create<cocos2d::CatmullRomTo>(cx, argc, vp);
+    return js_CatmullRomActions_create<cocos2d::CatmullRomTo>(cx, argc, vp);
+}
+
+bool JSB_CCJellyNode_create(JSContext *cx, uint32_t argc, jsval *vp) {
+    return js_JellyNode_create<cocos2d::JellyNode>(cx, argc, vp);
 }
 
 bool js_cocos2dx_ccGLEnableVertexAttribs(JSContext *cx, uint32_t argc, jsval *vp)
@@ -4582,6 +4647,9 @@ void register_cocos2dx_js_extensions(JSContext* cx, JSObject* global)
     
     tmpObj = JSVAL_TO_OBJECT(anonEvaluate(cx, global, "(function () { return cc.CatmullRomTo; })()"));
     JS_DefineFunction(cx, tmpObj, "create", JSB_CCCatmullRomTo_actionWithDuration, 2, JSPROP_READONLY | JSPROP_PERMANENT);
+    
+    tmpObj = JSVAL_TO_OBJECT(anonEvaluate(cx, global, "(function () { return cc.JellyNode; })()"));
+    JS_DefineFunction(cx, tmpObj, "create", JSB_CCJellyNode_create, 2, JSPROP_READONLY | JSPROP_PERMANENT);
     
     JS_DefineFunction(cx, jsb_cocos2d_Sprite_prototype, "textureLoaded", js_cocos2dx_CCSprite_textureLoaded, 0, JSPROP_ENUMERATE | JSPROP_PERMANENT);
 	JS_DefineFunction(cx, jsb_cocos2d_SpriteBatchNode_prototype, "getDescendants", js_cocos2dx_SpriteBatchNode_getDescendants, 0, JSPROP_ENUMERATE | JSPROP_PERMANENT);
