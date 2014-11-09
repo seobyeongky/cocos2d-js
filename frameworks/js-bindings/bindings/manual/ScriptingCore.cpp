@@ -531,8 +531,8 @@ void ScriptingCore::createGlobalContext() {
         .setBaseline(true)
         .setAsmJS(true);
 
-    JS::CompileOptions compileOptions(_cx);
-    compileOptions.setCompileAndGo(true);
+//    JS::CompileOptions compileOptions(_cx);
+//    compileOptions.setCompileAndGo(true);
     
     JS_SetGCParameter(_rt, JSGC_MODE, JSGC_MODE_INCREMENTAL);
     
@@ -608,7 +608,7 @@ void ScriptingCore::compileScript(const char *path, JSObject* global, JSContext*
 
         std::string fullPath = futil->fullPathForFilename(path);
         JS::CompileOptions options(cx);
-        options.setUTF8(true).setFileAndLine(fullPath.c_str(), 1);
+        options.setUTF8(true).setFileAndLine(fullPath.c_str(), 1).setCompileAndGo(true);
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
         std::string jsFileContent = futil->getStringFromFile(fullPath);
