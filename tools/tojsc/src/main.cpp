@@ -104,7 +104,7 @@ void search_r(const std::string root, std::vector<std::string> * paths)
         dir_entry = readdir(dir_info);
         if (!dir_entry) break;
 
-        uint16_t namlen = dir_entry->d_namlen;
+        uint16_t namlen = strlen(dir_entry->d_name);
         char last_0 = dir_entry->d_name[namlen - 3];
         char last_1 = dir_entry->d_name[namlen - 2];
         char last_2 = dir_entry->d_name[namlen - 1];
