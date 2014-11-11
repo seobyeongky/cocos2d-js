@@ -112,4 +112,5 @@ redmobile
 frameworks/js-bindings/bindings/auto
 
 frameworks/sosopang-runtime-src
+frameworks/sosopang-release-runtime-src
 frameworks/js-bindings/external
