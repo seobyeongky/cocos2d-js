@@ -170,6 +170,8 @@ void MinXmlHttpRequest::_setHttpRequestHeader()
     
 }
 
+
+
 /**
  *  @brief Callback for HTTPRequest. Handles the response and invokes Callback.
  *  @param sender   Object which initialized callback
@@ -194,6 +196,7 @@ void MinXmlHttpRequest::handle_requestResponse(cocos2d::network::HttpClient *sen
             _errorFlag = true;
             _status = 0;
             _statusText.clear();
+            _notify();
             return;
         }
     }
@@ -220,26 +223,8 @@ void MinXmlHttpRequest::handle_requestResponse(cocos2d::network::HttpClient *sen
     _data = (char*) malloc(_dataSize + 1);
     _data[_dataSize] = '\0';
     memcpy((void*)_data, (const void*)buffer->data(), _dataSize);
-
-    js_proxy_t * p;
-    void* ptr = (void*)this;
-    p = jsb_get_native_proxy(ptr);
     
-    if(p)
-    {
-        JSContext* cx = ScriptingCore::getInstance()->getGlobalContext();
-       
-        if (_onreadystateCallback)
-        {
-            JSB_AUTOCOMPARTMENT_WITH_GLOBAL_OBJCET
-            //JS_IsExceptionPending(cx) && JS_ReportPendingException(cx);
-            jsval fval = OBJECT_TO_JSVAL(_onreadystateCallback);
-            jsval out;
-            JS_CallFunctionValue(cx, NULL, fval, 0, NULL, &out);
-        }
-     
-    }
-
+    _notify();
 }
 /**
  * @brief   Send out request and fire callback when done.
@@ -330,6 +315,7 @@ JS_BINDED_CONSTRUCTOR_IMPL(MinXmlHttpRequest)
     JS_AddNamedObjectRoot(cx, &p->obj, "XMLHttpRequest");
     return true;
 }
+
 
 /**
  *  @brief  get Callback function for Javascript
@@ -839,6 +825,28 @@ JS_BINDED_FUNC_IMPL(MinXmlHttpRequest, overrideMimeType)
 static void basic_object_finalize(JSFreeOp *freeOp, JSObject *obj)
 {
 //    CCLOG("basic_object_finalize %p ...", obj);
+}
+
+void MinXmlHttpRequest::_notify()
+{
+    js_proxy_t * p;
+    void* ptr = (void*)this;
+    p = jsb_get_native_proxy(ptr);
+    
+    if(p)
+    {
+        JSContext* cx = ScriptingCore::getInstance()->getGlobalContext();
+        
+        if (_onreadystateCallback)
+        {
+            JSB_AUTOCOMPARTMENT_WITH_GLOBAL_OBJCET
+            //JS_IsExceptionPending(cx) && JS_ReportPendingException(cx);
+            jsval fval = OBJECT_TO_JSVAL(_onreadystateCallback);
+            jsval out;
+            JS_CallFunctionValue(cx, NULL, fval, 0, NULL, &out);
+        }
+        
+    }
 }
 
 /**

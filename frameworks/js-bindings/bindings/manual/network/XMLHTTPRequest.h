@@ -88,6 +88,7 @@ private:
     void _setHttpRequestHeader();
     void _sendRequest(JSContext *cx);
     void _errorFlagOn();
+    void _notify();
     
     std::string                       _url;
     JSContext*                        _cx;
