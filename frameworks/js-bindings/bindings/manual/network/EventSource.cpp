@@ -362,6 +362,8 @@ CURL * EventSource::Worker::make_easy_handle(EventSource * self, conn_context_t 
     CURL_EASY_SETOPT(curl, CURLOPT_OPENSOCKETDATA, context);
     CURL_EASY_SETOPT(curl, CURLOPT_WRITEFUNCTION, write_data);
     CURL_EASY_SETOPT(curl, CURLOPT_WRITEDATA, context);
+    CURL_EASY_SETOPT(curl, CURLOPT_SSL_VERIFYPEER, 0L);
+    CURL_EASY_SETOPT(curl, CURLOPT_SSL_VERIFYHOST, 0L);
     
     return curl;
 }
