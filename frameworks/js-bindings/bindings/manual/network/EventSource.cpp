@@ -242,7 +242,9 @@ curl_socket_t EventSource::Worker::sock_open(void *userdata,
     conn_context_t * ctx = reinterpret_cast<conn_context_t *>(userdata);
     
     Director::getInstance()->getScheduler()->performFunctionInCocosThread([=](){
-        ctx->self->report_open();
+        js_proxy_t * p = jsb_get_native_proxy(ctx->self);
+        if (p)
+            ctx->self->report_open();
     });
     
     return socket(addr->family, addr->socktype, addr->protocol);
@@ -324,8 +326,10 @@ scheduler->performFunctionInCocosThread([=](){\
 char errbuf[128];\
 sprintf(errbuf, msg " failed : %s", curl_multi_strerror(mcode));\
 for (auto & h : handles){\
+if (jsb_get_native_proxy(h.self)){\
 h.self->retain();\
 h.self->report_error(errbuf);\
+}\
 }});\
 break;\
 }
@@ -334,10 +338,12 @@ break;\
 auto res = curl_easy_setopt(x,y,z); \
 if (res != CURLE_OK) { \
 Director::getInstance()->getScheduler()->performFunctionInCocosThread([=](){ \
+if (jsb_get_native_proxy(self)){\
 char errbuf[128];\
 sprintf(errbuf, "curl_easy_setopt " #y "failed : %s", curl_easy_strerror(res));\
 self->retain();\
 self->report_error(errbuf); \
+}\
 }); \
 return nullptr; \
 } \
@@ -351,8 +357,11 @@ CURL * EventSource::Worker::make_easy_handle(EventSource * self, conn_context_t 
     if (!curl)
     {
         Director::getInstance()->getScheduler()->performFunctionInCocosThread([=](){
-            self->retain();
-            self->report_error("curl initiation failed");
+            js_proxy_t * p = jsb_get_native_proxy(self);
+            if (p) {
+                self->retain();
+                self->report_error("curl initiation failed");
+            }
         });
     }
     
@@ -364,6 +373,7 @@ CURL * EventSource::Worker::make_easy_handle(EventSource * self, conn_context_t 
     CURL_EASY_SETOPT(curl, CURLOPT_WRITEDATA, context);
     CURL_EASY_SETOPT(curl, CURLOPT_SSL_VERIFYPEER, 0L);
     CURL_EASY_SETOPT(curl, CURLOPT_SSL_VERIFYHOST, 0L);
+    CURL_EASY_SETOPT(curl, CURLOPT_NOSIGNAL, 1L);
     
     return curl;
 }
@@ -454,8 +464,12 @@ void EventSource::Worker::func_th()
                     if (code != CURLE_OK)
                     {
                         scheduler->performFunctionInCocosThread([=](){
-                            h.self->retain();
-                            h.self->report_error(curl_easy_strerror(code));
+                            js_proxy_t * p = jsb_get_native_proxy(h.self);
+                            if (p)
+                            {
+                                h.self->retain();
+                                h.self->report_error(curl_easy_strerror(code));
+                            }
                         });
 
                         h.reconnect_countdown = 30;
@@ -676,7 +690,7 @@ void EventSource::report_open()
     if (!_onopenCallback) return;
     
     JSContext* cx = ScriptingCore::getInstance()->getGlobalContext();
-        
+    
     JSB_AUTOCOMPARTMENT_WITH_GLOBAL_OBJCET
     JS::RootedValue fval(cx)
         , fout(cx);
