@@ -253,7 +253,6 @@ MinXmlHttpRequest::MinXmlHttpRequest()
 , _status(0)
 , _statusText()
 , _responseType()
-, _timeout()
 , _isAsync()
 , _httpRequest(new cocos2d::network::HttpRequest())
 , _isNetwork(true)
@@ -386,7 +385,7 @@ JS_BINDED_PROP_SET_IMPL(MinXmlHttpRequest, upload)
  */
 JS_BINDED_PROP_GET_IMPL(MinXmlHttpRequest, timeout)
 {
-    vp.set(INT_TO_JSVAL(_timeout));
+    vp.set(INT_TO_JSVAL(1000 * _httpRequest->getConnTimeout()));
     return true;
 }
 
@@ -398,8 +397,7 @@ JS_BINDED_PROP_GET_IMPL(MinXmlHttpRequest, timeout)
 JS_BINDED_PROP_SET_IMPL(MinXmlHttpRequest, timeout)
 {
     jsval timeout_ms = vp.get();
-    
-    _timeout = JSVAL_TO_INT(timeout_ms);
+    _httpRequest->setConnTimeout(JSVAL_TO_INT(timeout_ms) / 1000);
     //curl_easy_setopt(curlHandle, CURLOPT_CONNECTTIMEOUT_MS, timeout);
     return true;
     
@@ -868,6 +866,7 @@ void MinXmlHttpRequest::_js_register(JSContext *cx, JSObject *global)
         JS_BINDED_PROP_DEF_ACCESSOR(MinXmlHttpRequest, onreadystatechange),
         JS_BINDED_PROP_DEF_ACCESSOR(MinXmlHttpRequest, responseType),
         JS_BINDED_PROP_DEF_ACCESSOR(MinXmlHttpRequest, withCredentials),
+        JS_BINDED_PROP_DEF_ACCESSOR(MinXmlHttpRequest, timeout),
         JS_BINDED_PROP_DEF_GETTER(MinXmlHttpRequest, readyState),
         JS_BINDED_PROP_DEF_GETTER(MinXmlHttpRequest, status),
         JS_BINDED_PROP_DEF_GETTER(MinXmlHttpRequest, statusText),
