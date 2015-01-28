@@ -28,11 +28,11 @@ var UILabelAtlasTest = UIScene.extend({
     init: function () {
         if (this._super()) {
             //init text
-            this._topDisplayLabel.setText("");
-            this._bottomDisplayLabel.setText("LabelAtlas");
+            this._topDisplayLabel.setString("");
+            this._bottomDisplayLabel.setString("LabelAtlas");
 
             // Create the label atlas
-            var textAtlas = ccui.TextAtlas.create();
+            var textAtlas = new ccui.TextAtlas();
             textAtlas.setProperty("1234567890", "res/cocosui/labelatlas.png", 17, 22, "0");
             textAtlas.x = this._widget.width / 2;
 	        textAtlas.y = this._widget.height / 2;

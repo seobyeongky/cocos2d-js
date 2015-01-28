@@ -27,12 +27,12 @@ var UIImageViewTest = UIScene.extend({
     init: function () {
         if (this._super()) {
             //init text
-            this._topDisplayLabel.setText("");
-            this._bottomDisplayLabel.setText("ImageView");
+            this._topDisplayLabel.setString("");
+            this._bottomDisplayLabel.setString("ImageView");
 
-            var widgetSize = this._widget.getSize();
+            var widgetSize = this._widget.getContentSize();
             // Create the imageview
-            var imageView = ccui.ImageView.create();
+            var imageView = new ccui.ImageView();
             imageView.loadTexture("res/cocosui/ccicon.png");
             imageView.x = widgetSize.width / 2;
 	        imageView.y = widgetSize.height / 2 + imageView.height / 4;
@@ -47,18 +47,18 @@ var UIImageViewTest = UIScene.extend({
 var UIImageViewTest_Scale9 = UIScene.extend({
     init: function () {
         if (this._super()) {
-            var widgetSize = this._widget.getSize();
+            var widgetSize = this._widget.getContentSize();
             //init text
-            this._topDisplayLabel.setText("");
-            this._bottomDisplayLabel.setText("ImageView scale9 render");
+            this._topDisplayLabel.setString("");
+            this._bottomDisplayLabel.setString("ImageView scale9 render");
 
             // Create the imageview
-            var imageView = ccui.ImageView.create();
+            var imageView = new ccui.ImageView();
             imageView.setScale9Enabled(true);
             imageView.loadTexture("res/cocosui/buttonHighlighted.png");
-            imageView.setSize(cc.size(200, 85));
+            imageView.setContentSize(cc.size(200, 85));
             imageView.x = widgetSize.width / 2;
-	        imageView.y = widgetSize.height / 2 + imageView.getSize().height / 4;
+	        imageView.y = widgetSize.height / 2 + imageView.getContentSize().height / 4;
             this._mainNode.addChild(imageView);
 
             return true;

@@ -167,7 +167,7 @@ jsval spslotdata_to_jsval(JSContext* cx, spSlotData& v)
 {
     JSObject* tmp = JS_NewObject(cx, NULL, NULL, NULL);
     if (!tmp) return JSVAL_NULL;
-
+    
     bool ok = JS_DefineProperty(cx, tmp, "name", c_string_to_jsval(cx, v.name), NULL, NULL,  JSPROP_ENUMERATE | JSPROP_PERMANENT) &&
     JS_DefineProperty(cx, tmp, "attachmentName", c_string_to_jsval(cx, v.attachmentName), NULL, NULL,  JSPROP_ENUMERATE | JSPROP_PERMANENT) &&
     JS_DefineProperty(cx, tmp, "r", DOUBLE_TO_JSVAL(v.r), NULL, NULL, JSPROP_ENUMERATE | JSPROP_PERMANENT) &&
@@ -191,14 +191,14 @@ jsval spslot_to_jsval(JSContext* cx, spSlot& v)
     if (!tmp) return JSVAL_NULL;
     
     bool ok = JS_DefineProperty(cx, tmp, "r", DOUBLE_TO_JSVAL(v.r), NULL, NULL, JSPROP_ENUMERATE | JSPROP_PERMANENT) &&
-     JS_DefineProperty(cx, tmp, "g", DOUBLE_TO_JSVAL(v.g), NULL, NULL, JSPROP_ENUMERATE | JSPROP_PERMANENT) &&
-     JS_DefineProperty(cx, tmp, "b", DOUBLE_TO_JSVAL(v.b), NULL, NULL, JSPROP_ENUMERATE | JSPROP_PERMANENT) &&
-     JS_DefineProperty(cx, tmp, "a", DOUBLE_TO_JSVAL(v.a), NULL, NULL, JSPROP_ENUMERATE | JSPROP_PERMANENT) &&
-     JS_DefineProperty(cx, tmp, "bone", spbone_to_jsval(cx, *v.bone), NULL, NULL, JSPROP_ENUMERATE | JSPROP_PERMANENT) &&
-     JS_DefineProperty(cx, tmp, "skeleton", spskeleton_to_jsval(cx, *v.skeleton), NULL, NULL, JSPROP_ENUMERATE | JSPROP_PERMANENT) &&
-     JS_DefineProperty(cx, tmp, "attachment", spattachment_to_jsval(cx, *v.attachment), NULL, NULL, JSPROP_ENUMERATE | JSPROP_PERMANENT) &&
-     JS_DefineProperty(cx, tmp, "data", spslotdata_to_jsval(cx, *v.data), NULL, NULL, JSPROP_ENUMERATE | JSPROP_PERMANENT);
-        
+    JS_DefineProperty(cx, tmp, "g", DOUBLE_TO_JSVAL(v.g), NULL, NULL, JSPROP_ENUMERATE | JSPROP_PERMANENT) &&
+    JS_DefineProperty(cx, tmp, "b", DOUBLE_TO_JSVAL(v.b), NULL, NULL, JSPROP_ENUMERATE | JSPROP_PERMANENT) &&
+    JS_DefineProperty(cx, tmp, "a", DOUBLE_TO_JSVAL(v.a), NULL, NULL, JSPROP_ENUMERATE | JSPROP_PERMANENT) &&
+    JS_DefineProperty(cx, tmp, "bone", spbone_to_jsval(cx, *v.bone), NULL, NULL, JSPROP_ENUMERATE | JSPROP_PERMANENT) &&
+    JS_DefineProperty(cx, tmp, "skeleton", spskeleton_to_jsval(cx, *v.skeleton), NULL, NULL, JSPROP_ENUMERATE | JSPROP_PERMANENT) &&
+    JS_DefineProperty(cx, tmp, "attachment", spattachment_to_jsval(cx, *v.attachment), NULL, NULL, JSPROP_ENUMERATE | JSPROP_PERMANENT) &&
+    JS_DefineProperty(cx, tmp, "data", spslotdata_to_jsval(cx, *v.data), NULL, NULL, JSPROP_ENUMERATE | JSPROP_PERMANENT);
+    
     if (ok)
     {
         return OBJECT_TO_JSVAL(tmp);
@@ -290,18 +290,18 @@ jsval sptrackentry_to_jsval(JSContext* cx, spTrackEntry& v)
 
 bool jsb_cocos2dx_spine_findBone(JSContext *cx, uint32_t argc, jsval *vp)
 {
-	jsval *argv = JS_ARGV(cx, vp);
-	bool ok = true;
-	JSObject *obj = JS_THIS_OBJECT(cx, vp);
-	js_proxy_t *proxy = jsb_get_js_proxy(obj);
+    jsval *argv = JS_ARGV(cx, vp);
+    bool ok = true;
+    JSObject *obj = JS_THIS_OBJECT(cx, vp);
+    js_proxy_t *proxy = jsb_get_js_proxy(obj);
     spine::Skeleton* cobj = (spine::Skeleton *)(proxy ? proxy->ptr : NULL);
-	JSB_PRECONDITION2( cobj, cx, false, "Invalid Native Object");
-	if (argc == 1) {
-		const char* arg0;
-		std::string arg0_tmp; ok &= jsval_to_std_string(cx, argv[0], &arg0_tmp); arg0 = arg0_tmp.c_str();
-		JSB_PRECONDITION2(ok, cx, false, "Error processing arguments");
-		spBone* ret = cobj->findBone(arg0);
-		jsval jsret = JSVAL_NULL;
+    JSB_PRECONDITION2( cobj, cx, false, "Invalid Native Object");
+    if (argc == 1) {
+        const char* arg0;
+        std::string arg0_tmp; ok &= jsval_to_std_string(cx, argv[0], &arg0_tmp); arg0 = arg0_tmp.c_str();
+        JSB_PRECONDITION2(ok, cx, false, "Error processing arguments");
+        spBone* ret = cobj->findBone(arg0);
+        jsval jsret = JSVAL_NULL;
         do {
             if (ret)
             {
@@ -309,28 +309,28 @@ bool jsb_cocos2dx_spine_findBone(JSContext *cx, uint32_t argc, jsval *vp)
             }
         } while (0);
         
-		JS_SET_RVAL(cx, vp, jsret);
-		return true;
-	}
+        JS_SET_RVAL(cx, vp, jsret);
+        return true;
+    }
     
-	JS_ReportError(cx, "wrong number of arguments: %d, was expecting %d", argc, 1);
-	return false;
+    JS_ReportError(cx, "wrong number of arguments: %d, was expecting %d", argc, 1);
+    return false;
 }
 
 bool jsb_cocos2dx_spine_findSlot(JSContext *cx, uint32_t argc, jsval *vp)
 {
     jsval *argv = JS_ARGV(cx, vp);
-	bool ok = true;
-	JSObject *obj = JS_THIS_OBJECT(cx, vp);
-	js_proxy_t *proxy = jsb_get_js_proxy(obj);
+    bool ok = true;
+    JSObject *obj = JS_THIS_OBJECT(cx, vp);
+    js_proxy_t *proxy = jsb_get_js_proxy(obj);
     spine::Skeleton* cobj = (spine::Skeleton *)(proxy ? proxy->ptr : NULL);
-	JSB_PRECONDITION2( cobj, cx, false, "Invalid Native Object");
-	if (argc == 1) {
-		const char* arg0;
-		std::string arg0_tmp; ok &= jsval_to_std_string(cx, argv[0], &arg0_tmp); arg0 = arg0_tmp.c_str();
-		JSB_PRECONDITION2(ok, cx, false, "Error processing arguments");
-		spSlot* ret = cobj->findSlot(arg0);
-		jsval jsret = JSVAL_NULL;
+    JSB_PRECONDITION2( cobj, cx, false, "Invalid Native Object");
+    if (argc == 1) {
+        const char* arg0;
+        std::string arg0_tmp; ok &= jsval_to_std_string(cx, argv[0], &arg0_tmp); arg0 = arg0_tmp.c_str();
+        JSB_PRECONDITION2(ok, cx, false, "Error processing arguments");
+        spSlot* ret = cobj->findSlot(arg0);
+        jsval jsret = JSVAL_NULL;
         do {
             if (ret)
             {
@@ -338,12 +338,12 @@ bool jsb_cocos2dx_spine_findSlot(JSContext *cx, uint32_t argc, jsval *vp)
             }
         } while (0);
         
-		JS_SET_RVAL(cx, vp, jsret);
-		return true;
-	}
+        JS_SET_RVAL(cx, vp, jsret);
+        return true;
+    }
     
-	JS_ReportError(cx, "wrong number of arguments: %d, was expecting %d", argc, 1);
-	return false;
+    JS_ReportError(cx, "wrong number of arguments: %d, was expecting %d", argc, 1);
+    return false;
 }
 
 bool jsb_cocos2dx_spine_getAttachment(JSContext *cx, uint32_t argc, jsval *vp)
@@ -374,23 +374,23 @@ bool jsb_cocos2dx_spine_getAttachment(JSContext *cx, uint32_t argc, jsval *vp)
     }
     
     JS_ReportError(cx, "wrong number of arguments: %d, was expecting %d", argc, 1);
-	return false;
+    return false;
 }
 
 bool jsb_cocos2dx_spine_getCurrent(JSContext *cx, uint32_t argc, jsval *vp)
 {
-	jsval *argv = JS_ARGV(cx, vp);
-	bool ok = true;
-	JSObject *obj = JS_THIS_OBJECT(cx, vp);
-	js_proxy_t *proxy = jsb_get_js_proxy(obj);
+    jsval *argv = JS_ARGV(cx, vp);
+    bool ok = true;
+    JSObject *obj = JS_THIS_OBJECT(cx, vp);
+    js_proxy_t *proxy = jsb_get_js_proxy(obj);
     spine::SkeletonAnimation* cobj = (spine::SkeletonAnimation *)(proxy ? proxy->ptr : NULL);
-	JSB_PRECONDITION2( cobj, cx, false, "Invalid Native Object");
-	if (argc == 1) {
-		int arg0;
-		ok &= jsval_to_int32(cx, argv[0], (int32_t *)&arg0);
-		JSB_PRECONDITION2(ok, cx, false, "Error processing arguments");
-		spTrackEntry* ret = cobj->getCurrent(arg0);
-		jsval jsret = JSVAL_NULL;
+    JSB_PRECONDITION2( cobj, cx, false, "Invalid Native Object");
+    if (argc == 1) {
+        int arg0;
+        ok &= jsval_to_int32(cx, argv[0], (int32_t *)&arg0);
+        JSB_PRECONDITION2(ok, cx, false, "Error processing arguments");
+        spTrackEntry* ret = cobj->getCurrent(arg0);
+        jsval jsret = JSVAL_NULL;
         do {
             if (ret)
             {
@@ -398,9 +398,9 @@ bool jsb_cocos2dx_spine_getCurrent(JSContext *cx, uint32_t argc, jsval *vp)
             }
         } while (0);
         
-		JS_SET_RVAL(cx, vp, jsret);
-		return true;
-	}
+        JS_SET_RVAL(cx, vp, jsret);
+        return true;
+    }
     else if (argc == 0) {
         spTrackEntry* ret = cobj->getCurrent();
         jsval jsret = JSVAL_NULL;
@@ -415,18 +415,18 @@ bool jsb_cocos2dx_spine_getCurrent(JSContext *cx, uint32_t argc, jsval *vp)
         return true;
     }
     
-	JS_ReportError(cx, "wrong number of arguments: %d, was expecting %d", argc, 1);
-	return false;
+    JS_ReportError(cx, "wrong number of arguments: %d, was expecting %d", argc, 1);
+    return false;
 }
 
 bool jsb_cocos2dx_spine_setAnimation(JSContext *cx, uint32_t argc, jsval *vp)
 {
     jsval *argv = JS_ARGV(cx, vp);
-	bool ok = true;
-	JSObject *obj = JS_THIS_OBJECT(cx, vp);
-	js_proxy_t *proxy = jsb_get_js_proxy(obj);
+    bool ok = true;
+    JSObject *obj = JS_THIS_OBJECT(cx, vp);
+    js_proxy_t *proxy = jsb_get_js_proxy(obj);
     spine::SkeletonAnimation* cobj = (spine::SkeletonAnimation *)(proxy ? proxy->ptr : NULL);
-	JSB_PRECONDITION2( cobj, cx, false, "Invalid Native Object");
+    JSB_PRECONDITION2( cobj, cx, false, "Invalid Native Object");
     if (argc == 3) {
         int arg0;
         ok &= jsval_to_int32(cx, argv[0], (int32_t *)&arg0);
@@ -452,18 +452,18 @@ bool jsb_cocos2dx_spine_setAnimation(JSContext *cx, uint32_t argc, jsval *vp)
     }
     
     
-	JS_ReportError(cx, "wrong number of arguments: %d, was expecting %d", argc, 1);
-	return false;
+    JS_ReportError(cx, "wrong number of arguments: %d, was expecting %d", argc, 1);
+    return false;
 }
 
 bool jsb_cocos2dx_spine_addAnimation(JSContext *cx, uint32_t argc, jsval *vp)
 {
     jsval *argv = JS_ARGV(cx, vp);
-	bool ok = true;
-	JSObject *obj = JS_THIS_OBJECT(cx, vp);
-	js_proxy_t *proxy = jsb_get_js_proxy(obj);
+    bool ok = true;
+    JSObject *obj = JS_THIS_OBJECT(cx, vp);
+    js_proxy_t *proxy = jsb_get_js_proxy(obj);
     spine::SkeletonAnimation* cobj = (spine::SkeletonAnimation *)(proxy ? proxy->ptr : NULL);
-	JSB_PRECONDITION2( cobj, cx, false, "Invalid Native Object");
+    JSB_PRECONDITION2( cobj, cx, false, "Invalid Native Object");
     if (argc == 3) {
         int arg0;
         ok &= jsval_to_int32(cx, argv[0], (int32_t *)&arg0);
@@ -511,10 +511,10 @@ bool jsb_cocos2dx_spine_addAnimation(JSContext *cx, uint32_t argc, jsval *vp)
         
         JS_SET_RVAL(cx, vp, jsret);
         return true;
-    }    
+    }
     
-	JS_ReportError(cx, "wrong number of arguments: %d, was expecting %d", argc, 1);
-	return false;
+    JS_ReportError(cx, "wrong number of arguments: %d, was expecting %d", argc, 1);
+    return false;
 }
 
 
@@ -558,7 +558,7 @@ public:
 static bool jsb_cocos2dx_spine_setAnimationListener(JSContext *cx, uint32_t argc, jsval *vp)
 {
     JSObject *obj = JS_THIS_OBJECT(cx, vp);
-	js_proxy_t *proxy = jsb_get_js_proxy(obj);
+    js_proxy_t *proxy = jsb_get_js_proxy(obj);
     
     spine::SkeletonAnimation* node = (spine::SkeletonAnimation *)(proxy ? proxy->ptr : NULL);
     JSB_PRECONDITION2( node, cx, false, "Invalid Native Object");

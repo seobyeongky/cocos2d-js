@@ -31,7 +31,6 @@
 #include "ScriptingCore.h"
 #ifdef JSB_INCLUDE_CHIPMUNK
 
-#include "chipmunk.h"
 #include "js_bindings_chipmunk_auto_classes.h"
 
 // Free Functions
@@ -51,6 +50,7 @@ bool JSB_cpCentroidForPoly(JSContext *cx, uint32_t argc, jsval *vp);
 bool JSB_cpRecenterPoly(JSContext *cx, uint32_t argc, jsval *vp);
 
 // "Methods" from the OO API
+bool JSB_cpSpace_setDefaultCollisionHandler(JSContext *cx, uint32_t argc, jsval *vp);
 bool JSB_cpSpace_addCollisionHandler(JSContext *cx, uint32_t argc, jsval *vp);
 bool JSB_cpSpace_removeCollisionHandler(JSContext *cx, uint32_t argc, jsval *vp);
 
@@ -63,7 +63,16 @@ bool JSB_cpSpace_removeBody(JSContext *cx, uint32_t argc, jsval *vp);
 bool JSB_cpSpace_removeConstraint(JSContext *cx, uint32_t argc, jsval *vp);
 bool JSB_cpSpace_removeShape(JSContext *cx, uint32_t argc, jsval *vp);
 bool JSB_cpSpace_removeStaticShape(JSContext *cx, uint32_t argc, jsval *vp);
-
+bool JSB_cpSpace_segmentQueryFirst(JSContext *cx, uint32_t argc, jsval *vp);
+bool JSB_cpSpace_nearestPointQueryNearest(JSContext *cx, uint32_t argc, jsval *vp);
+bool JSB_cpSpace_eachShape(JSContext *cx, uint32_t argc, jsval *vp);
+bool JSB_cpSpace_eachBody(JSContext *cx, uint32_t argc, jsval *vp);
+bool JSB_cpSpace_eachConstraint(JSContext *cx, uint32_t argc, jsval *vp);
+bool JSB_cpSpace_pointQuery(JSContext *cx, uint32_t argc, jsval *vp);
+bool JSB_cpSpace_nearestPointQuery(JSContext *cx, uint32_t argc, jsval *vp);
+bool JSB_cpSpace_segmentQuery(JSContext *cx, uint32_t argc, jsval *vp);
+bool JSB_cpSpace_bbQuery(JSContext *cx, uint32_t argc, jsval *vp);
+bool JSB_cpSpace_addPostStepCallback(JSContext *cx, uint32_t argc, jsval *vp);
 
 bool JSB_cpArbiter_getBodies(JSContext *cx, uint32_t argc, jsval *vp);
 bool JSB_cpArbiter_getShapes(JSContext *cx, uint32_t argc, jsval *vp);
@@ -71,6 +80,10 @@ bool JSB_cpArbiter_getShapes(JSContext *cx, uint32_t argc, jsval *vp);
 bool JSB_cpBody_constructor(JSContext *cx, uint32_t argc, jsval *vp);
 bool JSB_cpBody_getUserData(JSContext *cx, uint32_t argc, jsval *vp);
 bool JSB_cpBody_setUserData(JSContext *cx, uint32_t argc, jsval *vp);
+
+bool JSB_cpBody_eachShape(JSContext *cx, uint32_t argc, jsval *vp);
+bool JSB_cpBody_eachConstraint(JSContext *cx, uint32_t argc, jsval *vp);
+bool JSB_cpBody_eachArbiter(JSContext *cx, uint32_t argc, jsval *vp);
 
 
 // convertions

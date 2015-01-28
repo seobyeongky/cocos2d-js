@@ -36,7 +36,7 @@ var ANIMATION_TYPE = {
 SpineTestScene = TestScene.extend({
 
     runThisTest:function () {
-        var layer = SpineTest.create();
+        var layer = new SpineTest();
         this.addChild(layer);
 
         director.runScene(this);
@@ -45,9 +45,10 @@ SpineTestScene = TestScene.extend({
 
 touchcount = 0;
 
-SpineTest = BaseTestLayer.extend({
+var SpineTest = BaseTestLayer.extend({
     _spineboy:null,
     _debugMode: 0,
+    _flipped: false,
     ctor:function () {
         this._super(cc.color(0,0,0,255), cc.color(98,99,117,255));
 
@@ -122,6 +123,13 @@ SpineTest = BaseTestLayer.extend({
                 break;
             case ANIMATION_TYPE.ANIMATION_COMPLETE:
                 cc.log(trackIndex + " complete: " + animationName + "," + loopCount);
+                if(this._flipped){
+                    this._flipped = false;
+                    this._spineboy.setScaleX(1);
+                }else{
+                    this._flipped = true;
+                    this._spineboy.setScaleX(-1);
+                }
                 break;
             default :
                 break;
@@ -137,7 +145,3 @@ SpineTest = BaseTestLayer.extend({
     }
 
 });
-
-SpineTest.create = function () {
-    return new SpineTest();
-};

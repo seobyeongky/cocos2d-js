@@ -94,6 +94,29 @@ void JSStudioEventListenerWrapper::eventCallbackFunc(Ref* sender,int eventType)
     }
 }
 
+class CallbacksComponent: public cocos2d::Component {
+public:
+    CallbacksComponent();
+    virtual ~CallbacksComponent();
+    
+    cocos2d::__Dictionary* callbacks;
+    static const std::string NAME;
+};
+
+const std::string CallbacksComponent::NAME = "JSB_Callbacks";
+
+CallbacksComponent::CallbacksComponent()
+{
+    setName(NAME);
+    callbacks = cocos2d::__Dictionary::create();
+    CC_SAFE_RETAIN(callbacks);
+}
+
+CallbacksComponent::~CallbacksComponent()
+{
+    CC_SAFE_RELEASE(callbacks);
+}
+
 static bool js_cocos2dx_UIWidget_addTouchEventListener(JSContext *cx, uint32_t argc, jsval *vp)
 {
     JSObject *obj = JS_THIS_OBJECT(cx, vp);
@@ -107,12 +130,14 @@ static bool js_cocos2dx_UIWidget_addTouchEventListener(JSContext *cx, uint32_t a
         JSStudioEventListenerWrapper *tmpObj = new JSStudioEventListenerWrapper();
         tmpObj->autorelease();
         
-        cocos2d::__Dictionary* dict = static_cast<cocos2d::__Dictionary*>(cobj->getUserObject());
-        if (nullptr == dict)
+        CallbacksComponent *comp = static_cast<CallbacksComponent *>(cobj->getComponent(CallbacksComponent::NAME));
+        if (nullptr == comp)
         {
-            dict = cocos2d::__Dictionary::create();
-            cobj->setUserObject(dict);
+            comp = new CallbacksComponent();
+            comp->autorelease();
+            cobj->addComponent(comp);
         }
+        cocos2d::__Dictionary* dict = comp->callbacks;
         dict->setObject(tmpObj, "widgetTouchEvent");
 
         tmpObj->setJSCallbackFunc(argv[0]);
@@ -120,6 +145,26 @@ static bool js_cocos2dx_UIWidget_addTouchEventListener(JSContext *cx, uint32_t a
         
         cobj->addTouchEventListener(tmpObj, toucheventselector(JSStudioEventListenerWrapper::eventCallbackFunc));
 
+        return true;
+    }
+    else if(argc == 1){
+        JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
+        std::shared_ptr<JSFunctionWrapper> func(new JSFunctionWrapper(cx, obj, args.get(0)));
+        cobj->addTouchEventListener([=](Ref* widget, Widget::TouchEventType type)->void{
+            jsval arg[2];
+            js_proxy_t *proxy = js_get_or_create_proxy(cx, widget);
+            if(proxy)
+                arg[0] = OBJECT_TO_JSVAL(proxy->obj);
+            else
+                arg[0] = JSVAL_NULL;
+            arg[1] = int32_to_jsval(cx, (int32_t)type);
+            jsval rval;
+
+            bool ok = func->invoke(2, arg, rval);
+            if (!ok && JS_IsExceptionPending(cx)) {
+                JS_ReportPendingException(cx);
+            }
+        });
         return true;
     }
     JS_ReportError(cx, "Invalid number of arguments");
@@ -154,6 +199,26 @@ static bool js_cocos2dx_UICheckBox_addEventListener(JSContext *cx, uint32_t argc
 
         return true;
     }
+    else if(argc == 1){
+        JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
+        std::shared_ptr<JSFunctionWrapper> func(new JSFunctionWrapper(cx, obj, args.get(0)));
+        cobj->addEventListener([=](Ref* widget, CheckBox::EventType type)->void{
+            jsval arg[2];
+            js_proxy_t *proxy = js_get_or_create_proxy(cx, widget);
+            if(proxy)
+                arg[0] = OBJECT_TO_JSVAL(proxy->obj);
+            else
+                arg[0] = JSVAL_NULL;
+            arg[1] = int32_to_jsval(cx, (int32_t)type);
+            jsval rval;
+
+            bool ok = func->invoke(2, arg, rval);
+            if (!ok && JS_IsExceptionPending(cx)) {
+                JS_ReportPendingException(cx);
+            }
+        });
+        return true;
+    }
     JS_ReportError(cx, "Invalid number of arguments");
     return false;
 }
@@ -184,6 +249,26 @@ static bool js_cocos2dx_UISlider_addEventListener(JSContext *cx, uint32_t argc, 
 
         cobj->addEventListenerSlider(tmpObj, sliderpercentchangedselector(JSStudioEventListenerWrapper::eventCallbackFunc));
 
+        return true;
+    }
+    else if(argc == 1){
+        JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
+        std::shared_ptr<JSFunctionWrapper> func(new JSFunctionWrapper(cx, obj, args.get(0)));
+        cobj->addEventListener([=](Ref* widget, Slider::EventType type)->void{
+            jsval arg[2];
+            js_proxy_t *proxy = js_get_or_create_proxy(cx, widget);
+            if(proxy)
+                arg[0] = OBJECT_TO_JSVAL(proxy->obj);
+            else
+                arg[0] = JSVAL_NULL;
+            arg[1] = int32_to_jsval(cx, (int32_t)type);
+            jsval rval;
+
+            bool ok = func->invoke(2, arg, rval);
+            if (!ok && JS_IsExceptionPending(cx)) {
+                JS_ReportPendingException(cx);
+            }
+        });
         return true;
     }
     JS_ReportError(cx, "Invalid number of arguments");
@@ -218,6 +303,26 @@ static bool js_cocos2dx_UITextField_addEventListener(JSContext *cx, uint32_t arg
 
         return true;
     }
+    else if(argc == 1){
+        JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
+        std::shared_ptr<JSFunctionWrapper> func(new JSFunctionWrapper(cx, obj, args.get(0)));
+        cobj->addEventListener([=](Ref* widget, TextField::EventType type)->void{
+            jsval arg[2];
+            js_proxy_t *proxy = js_get_or_create_proxy(cx, widget);
+            if(proxy)
+                arg[0] = OBJECT_TO_JSVAL(proxy->obj);
+            else
+                arg[0] = JSVAL_NULL;
+            arg[1] = int32_to_jsval(cx, (int32_t)type);
+            jsval rval;
+
+            bool ok = func->invoke(2, arg, rval);
+            if (!ok && JS_IsExceptionPending(cx)) {
+                JS_ReportPendingException(cx);
+            }
+        });
+        return true;
+    }
     JS_ReportError(cx, "Invalid number of arguments");
     return false;
 }
@@ -248,6 +353,26 @@ static bool js_cocos2dx_UIPageView_addEventListener(JSContext *cx, uint32_t argc
 
         cobj->addEventListenerPageView(tmpObj, pagevieweventselector(JSStudioEventListenerWrapper::eventCallbackFunc));
 
+        return true;
+    }
+    else if(argc == 1){
+        JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
+        std::shared_ptr<JSFunctionWrapper> func(new JSFunctionWrapper(cx, obj, args.get(0)));
+        cobj->addEventListener([=](Ref* widget, PageView::EventType type)->void{
+            jsval arg[2];
+            js_proxy_t *proxy = js_get_or_create_proxy(cx, widget);
+            if(proxy)
+                arg[0] = OBJECT_TO_JSVAL(proxy->obj);
+            else
+                arg[0] = JSVAL_NULL;
+            arg[1] = int32_to_jsval(cx, (int32_t)type);
+            jsval rval;
+
+            bool ok = func->invoke(2, arg, rval);
+            if (!ok && JS_IsExceptionPending(cx)) {
+                JS_ReportPendingException(cx);
+            }
+        });
         return true;
     }
     JS_ReportError(cx, "Invalid number of arguments");
@@ -281,6 +406,25 @@ static bool js_cocos2dx_UIScrollView_addEventListener(JSContext *cx, uint32_t ar
         cobj->addEventListenerScrollView(tmpObj, scrollvieweventselector(JSStudioEventListenerWrapper::eventCallbackFunc));
         
         return true;
+    }else if(argc == 1){
+        JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
+        std::shared_ptr<JSFunctionWrapper> func(new JSFunctionWrapper(cx, obj, args.get(0)));
+        cobj->addEventListener([=](Ref* widget, ScrollView::EventType type)->void{
+            jsval arg[2];
+            js_proxy_t *proxy = js_get_or_create_proxy(cx, widget);
+            if(proxy)
+                arg[0] = OBJECT_TO_JSVAL(proxy->obj);
+            else
+                arg[0] = JSVAL_NULL;
+            arg[1] = int32_to_jsval(cx, (int32_t)type);
+            jsval rval;
+
+            bool ok = func->invoke(2, arg, rval);
+            if (!ok && JS_IsExceptionPending(cx)) {
+                JS_ReportPendingException(cx);
+            }
+        });
+        return true;
     }
     JS_ReportError(cx, "Invalid number of arguments");
     return false;
@@ -312,6 +456,28 @@ static bool js_cocos2dx_UIListView_addEventListener(JSContext *cx, uint32_t argc
 
         cobj->addEventListenerListView(tmpObj, listvieweventselector(JSStudioEventListenerWrapper::eventCallbackFunc));
 
+        return true;
+    }
+    else if(argc == 1){
+        JS::CallArgs args = JS::CallArgsFromVp(argc, vp);
+        std::shared_ptr<JSFunctionWrapper> func(new JSFunctionWrapper(cx, obj, args.get(0)));
+        auto lambda = [=](Ref* widget, ListView::EventType type)->void{
+            jsval arg[2];
+            js_proxy_t *proxy = js_get_or_create_proxy(cx, widget);
+            if(proxy)
+                arg[0] = OBJECT_TO_JSVAL(proxy->obj);
+            else
+                arg[0] = JSVAL_NULL;
+            arg[1] = int32_to_jsval(cx, (int32_t)type);
+            jsval rval;
+
+            bool ok = func->invoke(2, arg, rval);
+            if (!ok && JS_IsExceptionPending(cx)) {
+                JS_ReportPendingException(cx);
+            }
+        };
+        cocos2d::ui::ListView::ccListViewCallback cb = lambda;
+        cobj->addEventListener(cb);
         return true;
     }
     JS_ReportError(cx, "Invalid number of arguments");
@@ -381,6 +547,110 @@ static bool js_cocos2dx_LayoutParameter_getMargin(JSContext *cx, uint32_t argc, 
     return false;
 }
 
+class JSB_EditBoxDelegate
+: public Ref
+, public EditBoxDelegate
+{
+public:
+    JSB_EditBoxDelegate()
+    : _JSDelegate(NULL)
+    , _needUnroot(false)
+    {}
+    
+    virtual ~JSB_EditBoxDelegate()
+    {
+        if (_needUnroot)
+        {
+            JSContext* cx = ScriptingCore::getInstance()->getGlobalContext();
+            JS_RemoveObjectRoot(cx, &_JSDelegate);
+        }
+    }
+    
+    virtual void editBoxEditingDidBegin(EditBox* editBox) override
+    {
+        js_proxy_t * p = jsb_get_native_proxy(editBox);
+        if (!p) return;
+        
+        jsval arg = OBJECT_TO_JSVAL(p->obj);
+        ScriptingCore::getInstance()->executeFunctionWithOwner(OBJECT_TO_JSVAL(_JSDelegate), "editBoxEditingDidBegin", 1, &arg, NULL);
+    }
+    
+    virtual void editBoxEditingDidEnd(EditBox* editBox) override
+    {
+        js_proxy_t * p = jsb_get_native_proxy(editBox);
+        if (!p) return;
+        
+        jsval arg = OBJECT_TO_JSVAL(p->obj);
+        ScriptingCore::getInstance()->executeFunctionWithOwner(OBJECT_TO_JSVAL(_JSDelegate), "editBoxEditingDidEnd", 1, &arg, NULL);
+    }
+    
+    virtual void editBoxTextChanged(EditBox* editBox, const std::string& text) override
+    {
+        js_proxy_t * p = jsb_get_native_proxy(editBox);
+        if (!p) return;
+        
+        jsval dataVal[2];
+        dataVal[0] = OBJECT_TO_JSVAL(p->obj);
+        std::string arg1 = text;
+        dataVal[1] = std_string_to_jsval(ScriptingCore::getInstance()->getGlobalContext(), arg1);
+        
+        ScriptingCore::getInstance()->executeFunctionWithOwner(OBJECT_TO_JSVAL(_JSDelegate), "editBoxTextChanged", 2, dataVal, NULL);
+    }
+    
+    virtual void editBoxReturn(EditBox* editBox) override
+    {
+        js_proxy_t * p = jsb_get_native_proxy(editBox);
+        if (!p) return;
+        
+        jsval arg = OBJECT_TO_JSVAL(p->obj);
+        ScriptingCore::getInstance()->executeFunctionWithOwner(OBJECT_TO_JSVAL(_JSDelegate), "editBoxReturn", 1, &arg, NULL);
+    }
+    
+    void setJSDelegate(JSObject* pJSDelegate)
+    {
+        _JSDelegate = pJSDelegate;
+        
+        // Check whether the js delegate is a pure js object.
+        js_proxy_t* p = jsb_get_js_proxy(_JSDelegate);
+        if (!p)
+        {
+            _needUnroot = true;
+            JSContext* cx = ScriptingCore::getInstance()->getGlobalContext();
+            JS_AddNamedObjectRoot(cx, &_JSDelegate, "TableViewDelegate");
+        }
+    }
+private:
+    JSObject* _JSDelegate;
+    bool _needUnroot;
+};
+
+static bool js_cocos2dx_CCEditBox_setDelegate(JSContext *cx, uint32_t argc, jsval *vp)
+{
+    jsval *argv = JS_ARGV(cx, vp);
+    JSObject *obj = JS_THIS_OBJECT(cx, vp);
+    js_proxy_t *proxy = jsb_get_js_proxy(obj);
+    cocos2d::ui::EditBox* cobj = (cocos2d::ui::EditBox *)(proxy ? proxy->ptr : NULL);
+    JSB_PRECONDITION2( cobj, cx, false, "Invalid Native Object");
+    
+    if (argc == 1)
+    {
+        // save the delegate
+        JSObject *jsDelegate = JSVAL_TO_OBJECT(argv[0]);
+        JSB_EditBoxDelegate* nativeDelegate = new JSB_EditBoxDelegate();
+        nativeDelegate->setJSDelegate(jsDelegate);
+        
+        cobj->setUserObject(nativeDelegate);
+        cobj->setDelegate(nativeDelegate);
+        
+        nativeDelegate->release();
+        
+        JS_SET_RVAL(cx, vp, JSVAL_VOID);
+        return true;
+    }
+    JS_ReportError(cx, "wrong number of arguments: %d, was expecting %d", argc, 1);
+    return false;
+}
+
 extern JSObject* jsb_cocos2d_ui_Widget_prototype;
 extern JSObject* jsb_cocos2d_ui_CheckBox_prototype;
 extern JSObject* jsb_cocos2d_ui_Slider_prototype;
@@ -389,24 +659,27 @@ extern JSObject* jsb_cocos2d_ui_LayoutParameter_prototype;
 extern JSObject* jsb_cocos2d_ui_PageView_prototype;
 extern JSObject* jsb_cocos2d_ui_ScrollView_prototype;
 extern JSObject* jsb_cocos2d_ui_ListView_prototype;
+extern JSObject* jsb_cocos2d_ui_EditBox_prototype;
 
 void register_all_cocos2dx_ui_manual(JSContext* cx, JSObject* global)
 {
     JS_DefineFunction(cx, jsb_cocos2d_ui_Widget_prototype, "addTouchEventListener", js_cocos2dx_UIWidget_addTouchEventListener, 2, JSPROP_ENUMERATE | JSPROP_PERMANENT);
 
-    JS_DefineFunction(cx, jsb_cocos2d_ui_CheckBox_prototype, "addEventListenerCheckBox", js_cocos2dx_UICheckBox_addEventListener, 2, JSPROP_ENUMERATE | JSPROP_PERMANENT);
+    JS_DefineFunction(cx, jsb_cocos2d_ui_CheckBox_prototype, "addEventListener", js_cocos2dx_UICheckBox_addEventListener, 2, JSPROP_ENUMERATE | JSPROP_PERMANENT);
 
-    JS_DefineFunction(cx, jsb_cocos2d_ui_Slider_prototype, "addEventListenerSlider", js_cocos2dx_UISlider_addEventListener, 2, JSPROP_ENUMERATE | JSPROP_PERMANENT);
+    JS_DefineFunction(cx, jsb_cocos2d_ui_Slider_prototype, "addEventListener", js_cocos2dx_UISlider_addEventListener, 2, JSPROP_ENUMERATE | JSPROP_PERMANENT);
 
-    JS_DefineFunction(cx, jsb_cocos2d_ui_TextField_prototype, "addEventListenerTextField", js_cocos2dx_UITextField_addEventListener, 2, JSPROP_ENUMERATE | JSPROP_PERMANENT);
+    JS_DefineFunction(cx, jsb_cocos2d_ui_TextField_prototype, "addEventListener", js_cocos2dx_UITextField_addEventListener, 2, JSPROP_ENUMERATE | JSPROP_PERMANENT);
 
-    JS_DefineFunction(cx, jsb_cocos2d_ui_PageView_prototype, "addEventListenerPageView", js_cocos2dx_UIPageView_addEventListener, 2, JSPROP_ENUMERATE | JSPROP_PERMANENT);
+    JS_DefineFunction(cx, jsb_cocos2d_ui_PageView_prototype, "addEventListener", js_cocos2dx_UIPageView_addEventListener, 2, JSPROP_ENUMERATE | JSPROP_PERMANENT);
     
-    JS_DefineFunction(cx, jsb_cocos2d_ui_ScrollView_prototype, "addEventListenerScrollView", js_cocos2dx_UIScrollView_addEventListener, 2, JSPROP_ENUMERATE | JSPROP_PERMANENT);
+    JS_DefineFunction(cx, jsb_cocos2d_ui_ScrollView_prototype, "addEventListener", js_cocos2dx_UIScrollView_addEventListener, 2, JSPROP_ENUMERATE | JSPROP_PERMANENT);
 
-    JS_DefineFunction(cx, jsb_cocos2d_ui_ListView_prototype, "addEventListenerListView", js_cocos2dx_UIListView_addEventListener, 2, JSPROP_ENUMERATE | JSPROP_PERMANENT);
+    JS_DefineFunction(cx, jsb_cocos2d_ui_ListView_prototype, "addEventListener", js_cocos2dx_UIListView_addEventListener, 2, JSPROP_ENUMERATE | JSPROP_PERMANENT);
 
     JS_DefineFunction(cx, jsb_cocos2d_ui_LayoutParameter_prototype, "setMargin", js_cocos2dx_LayoutParameter_setMargin, 1, JSPROP_ENUMERATE | JSPROP_PERMANENT);
 
     JS_DefineFunction(cx, jsb_cocos2d_ui_LayoutParameter_prototype, "getMargin", js_cocos2dx_LayoutParameter_getMargin, 0, JSPROP_ENUMERATE | JSPROP_PERMANENT);
+    
+    JS_DefineFunction(cx, jsb_cocos2d_ui_EditBox_prototype, "setDelegate", js_cocos2dx_CCEditBox_setDelegate, 1, JSPROP_ENUMERATE | JSPROP_PERMANENT);
 }

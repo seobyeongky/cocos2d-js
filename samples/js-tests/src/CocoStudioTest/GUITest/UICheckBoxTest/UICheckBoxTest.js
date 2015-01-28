@@ -34,17 +34,17 @@ var UICheckBoxEditorTest = UIBaseLayer.extend({
         back_label.addTouchEventListener(this.backEvent,this);
 
         var checkbox = ccui.helper.seekWidgetByName(root, "CheckBox_540");
-        checkbox.addEventListenerCheckBox(this.selectedStateEvent,this);
+        checkbox.addEventListener(this.selectedStateEvent,this);
 
     },
 
     selectedStateEvent: function (sender, type) {
         switch (type) {
             case ccui.CheckBox.EVENT_SELECTED:
-                this._topDisplayText.setText("Selected");
+                this._topDisplayText.setString("Selected");
                 break;
             case ccui.CheckBox.EVENT_UNSELECTED:
-                this._topDisplayText.setText("Unselected");
+                this._topDisplayText.setString("Unselected");
                 break;
 
             default:

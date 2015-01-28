@@ -101,6 +101,7 @@ private:
     int                               _status;
     std::string                       _statusText;
     ResponseType                      _responseType;
+    unsigned                          _timeout;
     bool                              _isAsync;
     cocos2d::network::HttpRequest*    _httpRequest;
     bool                              _isNetwork;
@@ -108,6 +109,7 @@ private:
     bool                              _errorFlag;
     std::unordered_map<std::string, std::string>          _httpHeader;
     std::unordered_map<std::string, std::string>          _requestHeader;
+    bool                              _isAborted;
 };
 
 #endif

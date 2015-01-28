@@ -1,3 +1,35 @@
+/****************************************************************************
+ Cocos2d-html5 show case : Moon Warriors
+
+ Copyright (c) 2011-2012 cocos2d-x.org
+ Copyright (c) 2013-2014 Chukong Technologies Inc.
+
+ http://www.cocos2d-x.org
+
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+
+ The above copyright notice and this permission notice shall be included in
+ all copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ THE SOFTWARE.
+
+ @Authors:
+ Programmer: Shengxiang Chen (陈升想), Dingping Lv (吕定平), Ricardo Quesada
+ Effects animation: Hao Wu (吴昊)
+ Quality Assurance: Sean Lin (林顺)
+ ****************************************************************************/
+
 var LevelManager = cc.Class.extend({
     _currentLevel:null,
     _gameLayer:null,
@@ -66,30 +98,28 @@ var LevelManager = cc.Class.extend({
         switch (addEnemy.moveType) {
             case MW.ENEMY_MOVE_TYPE.ATTACK:
                 offset = cc.p(this._gameLayer._ship.x, this._gameLayer._ship.y);
-                tmpAction = cc.MoveTo.create(1, offset);
+                tmpAction = cc.moveTo(1, offset);
                 break;
             case MW.ENEMY_MOVE_TYPE.VERTICAL:
                 offset = cc.p(0, -winSize.height - addEnemy.height);
-                tmpAction = cc.MoveBy.create(4, offset);
+                tmpAction = cc.moveBy(4, offset);
                 break;
             case MW.ENEMY_MOVE_TYPE.HORIZONTAL:
                 offset = cc.p(0, -100 - 200 * Math.random());
-                a0 = cc.MoveBy.create(0.5, offset);
-                a1 = cc.MoveBy.create(1, cc.p(-50 - 100 * Math.random(), 0));
-                var onComplete = cc.CallFunc.create(function (pSender) {
-                    var a2 = cc.DelayTime.create(1);
-                    var a3 = cc.MoveBy.create(1, cc.p(100 + 100 * Math.random(), 0));
-                    pSender.runAction(cc.RepeatForever.create(
-                        cc.Sequence.create(a2, a3, a2.clone(), a3.reverse())
-                    ));
+                a0 = cc.moveBy(0.5, offset);
+                a1 = cc.moveBy(1, cc.p(-50 - 100 * Math.random(), 0));
+                var onComplete = cc.callFunc(function (pSender) {
+                    var a2 = cc.delayTime(1);
+                    var a3 = cc.moveBy(1, cc.p(100 + 100 * Math.random(), 0));
+                    pSender.runAction(cc.sequence(a2, a3, a2.clone(), a3.reverse()).repeatForever());
                 }.bind(addEnemy) );
-                tmpAction = cc.Sequence.create(a0, a1, onComplete);
+                tmpAction = cc.sequence(a0, a1, onComplete);
                 break;
             case MW.ENEMY_MOVE_TYPE.OVERLAP:
-                var newX = (addEnemy.x <= winSize.width / 2) ? 320 : -320;
-                a0 = cc.MoveBy.create(4, cc.p(newX, -240));
-                a1 = cc.MoveBy.create(4,cc.p(-newX,-320));
-                tmpAction = cc.Sequence.create(a0,a1);
+                var newX = (addEnemy.x <= winSize.width / 2) ? MW.WIDTH : -MW.WIDTH;
+                a0 = cc.moveBy(4, cc.p(newX, -MW.WIDTH*0.75));
+                a1 = cc.moveBy(4, cc.p(-newX,-MW.WIDTH));
+                tmpAction = cc.sequence(a0,a1);
                 break;
         }
 

@@ -197,7 +197,7 @@ var TestAsynchronousLoading = ArmatureTestLayer.extend({
     dataLoaded: function (percent) {
         cc.log("percent:" + percent);
         var subTile = this.getChildByTag(BASE_TEST_SUBTITLE_TAG);
-        subTile.setString("current percent : " + percent.toFixed(2) * 100);
+        subTile.setString("current percent : " + (percent.toFixed(2) * 100));
         if (percent >= 1) {
             this.setMenuItemEnabled(true);
         }
@@ -217,12 +217,13 @@ var TestDirectLoading = ArmatureTestLayer.extend({
         // load resource directly
         ccs.armatureDataManager.addArmatureFileInfo(s_bear_json);
 
-        var armature = ccs.Armature.create("bear");
+        var armature = new ccs.Armature("bear");
         armature.getAnimation().playWithIndex(0);
         armature.anchorX = 0.5;
         armature.anchorY = 0.5;
         armature.x = winSize.width / 2;
         armature.y = winSize.height / 2;
+        armature.runAction(cc.sequence(cc.tintTo(5, 200,100,0), cc.tintTo(5, 255,255,255)));
         this.addChild(armature);
     },
     title:function () {
@@ -240,7 +241,7 @@ var TestCSWithSkeleton = ArmatureTestLayer.extend({
         this._super();
         ccs.armatureDataManager.addArmatureFileInfo(s_Cowboy_json);
 
-        var armature = ccs.Armature.create("Cowboy");
+        var armature = new ccs.Armature("Cowboy");
         armature.getAnimation().playWithIndex(0);
         armature.scale = 0.2;
         armature.anchorX = 0.5;
@@ -263,7 +264,7 @@ var TestDragonBones20 = ArmatureTestLayer.extend({
     onEnter:function () {
         this._super();
         ccs.armatureDataManager.addArmatureFileInfo(s_Dragon_png, s_Dragon_plist, s_Dragon_xml);
-        var armature = ccs.Armature.create("Dragon");
+        var armature = new ccs.Armature("Dragon");
         armature.getAnimation().playWithIndex(0);
         armature.getAnimation().setSpeedScale(0.4);
         armature.scale = 0.6;
@@ -290,12 +291,12 @@ var TestPerformance = ArmatureTestLayer.extend({
         this._super();
         ccs.armatureDataManager.addArmatureFileInfo(s_knight_png, s_knight_plist, s_knight_xml);
         cc.MenuItemFont.setFontSize(65);
-        var decrease = cc.MenuItemFont.create(" - ", this.onDecrease, this);
+        var decrease = new cc.MenuItemFont(" - ", this.onDecrease, this);
         decrease.color = cc.color(0, 200, 20);
-        var increase = cc.MenuItemFont.create(" + ", this.onIncrease, this);
+        var increase = new cc.MenuItemFont(" + ", this.onIncrease, this);
         increase.color = cc.color(0, 200, 20);
 
-        var menu = cc.Menu.create(decrease, increase);
+        var menu = new cc.Menu(decrease, increase);
         menu.alignItemsHorizontally();
         menu.x = cc.visibleRect.width / 2;
         menu.y = cc.visibleRect.height - 100;
@@ -324,7 +325,7 @@ var TestPerformance = ArmatureTestLayer.extend({
     addArmature: function (number) {
         for (var i = 0; i < number; i++) {
             this.armatureCount++;
-            var armature = ccs.Armature.create("Knight_f/Knight");
+            var armature = new ccs.Armature("Knight_f/Knight");
             armature.getAnimation().playWithIndex(0);
             armature.x = 50 + this.armatureCount * 2;
             armature.y = 150;
@@ -354,7 +355,7 @@ var TestPerformanceBatchNode = TestPerformance.extend({
     batchNode: null,
     onEnter: function () {
 	    this._super();
-        this.batchNode = ccs.BatchNode.create();
+        this.batchNode = new ccs.BatchNode();
         this.addChild(this.batchNode);
     },
     title: function () {
@@ -380,7 +381,7 @@ var TestChangeZorder = ArmatureTestLayer.extend({
         var armature = null;
         var armatureDataManager = ccs.armatureDataManager;
         armatureDataManager.addArmatureFileInfo(s_knight_png, s_knight_plist, s_knight_xml);
-        armature = ccs.Armature.create("Knight_f/Knight");
+        armature = new ccs.Armature("Knight_f/Knight");
         armature.getAnimation().playWithIndex(0);
         armature.x = winSize.width / 2;
         armature.y = winSize.height / 2 - 100;
@@ -388,7 +389,7 @@ var TestChangeZorder = ArmatureTestLayer.extend({
         this.addChild(armature, 0, 0);
 
         armatureDataManager.addArmatureFileInfo(s_Cowboy_json);
-        armature = ccs.Armature.create("Cowboy");
+        armature = new ccs.Armature("Cowboy");
         armature.getAnimation().playWithIndex(0);
         armature.scale = 0.24;
         armature.x = winSize.width / 2;
@@ -396,7 +397,7 @@ var TestChangeZorder = ArmatureTestLayer.extend({
         this.addChild(armature, 1, 1);
 
         armatureDataManager.addArmatureFileInfo(s_Dragon_png, s_Dragon_plist, s_Dragon_xml);
-        armature = ccs.Armature.create("Dragon");
+        armature = new ccs.Armature("Dragon");
         armature.getAnimation().playWithIndex(0);
         armature.x = winSize.width / 2;
         armature.y = winSize.height / 2 - 100;
@@ -429,13 +430,16 @@ var TestAnimationEvent = ArmatureTestLayer.extend({
         this._super();
 
         ccs.armatureDataManager.addArmatureFileInfo(s_Cowboy_json);
-        this._armature = ccs.Armature.create("Cowboy");
+        this._armature = new ccs.Armature("Cowboy");
         this._armature.getAnimation().play("Fire");
         this._armature.scaleX = -0.25;
         this._armature.scaleY = 0.25;
         this._armature.x = winSize.width / 2 - 150;
         this._armature.y = winSize.height / 2;
-        this._armature.getAnimation().setMovementEventCallFunc(this.animationEvent,this);
+        var self = this;
+        this._armature.getAnimation().setMovementEventCallFunc(function(armature, movementType, movementID) {
+            self.animationEvent(armature, movementType, movementID);
+        });
         this.addChild(this._armature);
 
         this._direction = 1;
@@ -447,9 +451,9 @@ var TestAnimationEvent = ArmatureTestLayer.extend({
     animationEvent:function (armature, movementType, movementID) {
         if (movementType == ccs.MovementEventType.loopComplete) {
             if (movementID == "Fire") {
-                var moveBy = cc.MoveBy.create(2, cc.p(300 * this._direction, 0));
+                var moveBy = cc.moveBy(2, cc.p(300 * this._direction, 0));
                 this._armature.stopAllActions();
-                this._armature.runAction(cc.Sequence.create(moveBy, cc.CallFunc.create(this.callback, this)));
+                this._armature.runAction(cc.sequence(moveBy, cc.callFunc(this.callback, this)));
                 this._armature.getAnimation().play("Walk");
 
                 this._direction *= -1;
@@ -457,7 +461,7 @@ var TestAnimationEvent = ArmatureTestLayer.extend({
         }
     },
     callback:function () {
-        this._armature.runAction(cc.ScaleTo.create(0.3, 0.25 * this._direction * -1, 0.25));
+        this._armature.runAction(cc.scaleTo(0.3, 0.25 * this._direction * -1, 0.25));
         this._armature.getAnimation().play("Fire", 10);
     }
 });
@@ -473,21 +477,25 @@ var TestFrameEvent = ArmatureTestLayer.extend({
 	_nodeGrid: null,
     onEnter: function () {
         this._super();
-        var armature = ccs.Armature.create("HeroAnimation");
+        ccs.armatureDataManager.addArmatureFileInfo(s_HeroAnimation_json);
+        var armature = new ccs.Armature("HeroAnimation");
         armature.getAnimation().play("attack");
         armature.getAnimation().setSpeedScale(0.5);
 	    var center = cc.visibleRect.center;
         armature.x = center.x - 50;
 	    armature.y = center.y - 100;
 
-	    this._nodeGrid = cc.NodeGrid.create();
-	    this._nodeGrid.addChild(armature);
+        this._nodeGrid = new cc.NodeGrid();
+        this._nodeGrid.addChild(armature);
         this.addChild(this._nodeGrid);
         /*
          * Set armature's frame event callback function
          * To disconnect this event, just setFrameEventCallFunc(NULL, NULL);
          */
-        armature.getAnimation().setFrameEventCallFunc(this.onFrameEvent, this);
+        var self = this;
+        armature.getAnimation().setFrameEventCallFunc(function(bone, evt, originFrameIndex, currentFrameIndex) {
+            self.onFrameEvent(bone, evt, originFrameIndex, currentFrameIndex);
+        });
 
         this.schedule(this.checkAction);
     },
@@ -499,7 +507,7 @@ var TestFrameEvent = ArmatureTestLayer.extend({
         if (!this.getActionByTag(FRAME_EVENT_ACTION_TAG) || this.getActionByTag(FRAME_EVENT_ACTION_TAG).isDone()) {
             if ("opengl" in cc.sys.capabilities) {
                 this.stopAllActions();
-                var action = cc.ShatteredTiles3D.create(0.2, cc.size(16, 12), 5, false);
+                var action = cc.shatteredTiles3D(0.2, cc.size(16, 12), 5, false);
                 action.tag = FRAME_EVENT_ACTION_TAG;
                 this._nodeGrid.runAction(action);
             }
@@ -541,7 +549,7 @@ var TestParticleDisplay = ArmatureTestLayer.extend({
         this.animationID = 0;
 
         ccs.armatureDataManager.addArmatureFileInfo(s_robot_png, s_robot_plist, s_robot_xml);
-        this.armature = ccs.Armature.create("robot");
+        this.armature = new ccs.Armature("robot");
         this.armature.getAnimation().playWithIndex(4);
 	    var center = cc.visibleRect.center;
         this.armature.x = center.x;
@@ -550,11 +558,11 @@ var TestParticleDisplay = ArmatureTestLayer.extend({
         this.armature.getAnimation().setSpeedScale(0.5);
         this.addChild(this.armature);
 
-        var p1 = cc.ParticleSystem.create("res/Particles/SmallSun.plist");
+        var p1 = new cc.ParticleSystem("res/Particles/SmallSun.plist");
         p1.setTotalParticles(30);
-        var p2 = cc.ParticleSystem.create("res/Particles/SmallSun.plist");
+        var p2 = new cc.ParticleSystem("res/Particles/SmallSun.plist");
         p2.setTotalParticles(30);
-        var bone = ccs.Bone.create("p1");
+        var bone = new ccs.Bone("p1");
         bone.addDisplay(p1, 0);
         bone.changeDisplayWithIndex(0, true);
         bone.setIgnoreMovementBoneData(true);
@@ -562,7 +570,7 @@ var TestParticleDisplay = ArmatureTestLayer.extend({
         bone.scale = 1.2;
         this.armature.addBone(bone, "bady-a3");
 
-        bone = ccs.Bone.create("p2");
+        bone = new ccs.Bone("p2");
         bone.addDisplay(p2, 0);
         bone.changeDisplayWithIndex(0, true);
         bone.setIgnoreMovementBoneData(true);
@@ -600,7 +608,7 @@ var TestUseMutiplePicture = ArmatureTestLayer.extend({
         armatureDataManager.addArmatureFileInfo(s_knight_png, s_knight_plist, s_knight_xml);
         armatureDataManager.addArmatureFileInfo(s_weapon_png, s_weapon_plist, s_weapon_xml);
 
-        this.armature = ccs.Armature.create("Knight_f/Knight");
+        this.armature = new ccs.Armature("Knight_f/Knight");
         this.armature.getAnimation().playWithIndex(0);
         this.armature.x = winSize.width / 2;
         this.armature.y = winSize.height / 2;
@@ -616,7 +624,7 @@ var TestUseMutiplePicture = ArmatureTestLayer.extend({
         }
 
         //add label
-        var label = cc.LabelTTF.create("This is a weapon!", "Arial", 18);
+        var label = new cc.LabelTTF("This is a weapon!", "Arial", 18);
         label.anchorX = 0.2;
         label.anchorY = 0.5;
         this.armature.getBone("weapon").addDisplay(label, 7);
@@ -653,7 +661,7 @@ var TestColliderDetector = ArmatureTestLayer.extend({
         ccs.ENABLE_PHYSICS_CHIPMUNK_DETECT = true;
         ccs.armatureDataManager.addArmatureFileInfo(s_Cowboy_json);
 
-        this.armature1 = ccs.Armature.create("Cowboy");
+        this.armature1 = new ccs.Armature("Cowboy");
         this.armature1.getAnimation().play("FireWithoutBullet");
         this.armature1.getAnimation().setSpeedScale(0.2);
         this.armature1.scaleX = -0.2;
@@ -669,7 +677,7 @@ var TestColliderDetector = ArmatureTestLayer.extend({
 
         this.addChild(this.armature1);
 
-        this.armature2 = ccs.Armature.create("Cowboy");
+        this.armature2 = new ccs.Armature("Cowboy");
         this.armature2.getAnimation().play("Walk");
         this.armature2.scaleX = -0.2;
         this.armature2.scaleY = 0.2;
@@ -677,7 +685,7 @@ var TestColliderDetector = ArmatureTestLayer.extend({
         this.armature2.y = winSize.height / 2;
         this.addChild(this.armature2);
 
-        this.bullet = cc.PhysicsSprite.create("#25.png");
+        this.bullet = new cc.PhysicsSprite("#25.png");
         this.addChild(this.bullet);
 
         this.initWorld();
@@ -688,7 +696,7 @@ var TestColliderDetector = ArmatureTestLayer.extend({
         this.space.gravity =  cp.v(0, 0);
 
         // Physics debug layer
-        var debugLayer = cc.PhysicsDebugNode.create(this.space);
+        var debugLayer = new cc.PhysicsDebugNode(this.space);
         this.addChild(debugLayer, 9999);
 
         //init bullet body
@@ -728,20 +736,19 @@ var TestColliderDetector = ArmatureTestLayer.extend({
         this.bullet.x = p.x + 60;
         this.bullet.y = p.y;
         this.bullet.stopAllActions();
-        this.bullet.runAction(cc.MoveBy.create(1.5, cc.p(800, 0)));
+        this.bullet.runAction(cc.moveBy(1.5, cc.p(800, 0)));
     },
     beginHit:function(arbiter, space){
         var shapes = arbiter.getShapes();
         var shapeA = shapes[0];
         var shapeB = shapes[1];
         var bone;
-        if(shapeA.collision_type==this.enemyTag){
+        if(shapeA.collision_type==this.enemyTag)
             bone = shapeA.data;
-        }
-        if(shapeB.collision_type==this.enemyTag){
+        if(shapeB.collision_type==this.enemyTag)
             bone = shapeB.data;
-        }
-        bone.getArmature().visible = false;
+        if(bone)
+            bone.getArmature().visible = false;
     },
 
     endHit:function(arbiter, space){
@@ -749,13 +756,12 @@ var TestColliderDetector = ArmatureTestLayer.extend({
         var shapeA = shapes[0];
         var shapeB = shapes[1];
         var bone;
-        if(shapeA.collision_type==this.enemyTag){
+        if(shapeA.collision_type==this.enemyTag)
             bone = shapeA.data;
-        }
-        if(shapeB.collision_type==this.enemyTag){
+        if(shapeB.collision_type==this.enemyTag)
             bone = shapeB.data;
-        }
-        bone.getArmature().visible = true;
+        if(bone)
+            bone.getArmature().visible = true;
     },
     update:function(dt){
         this.space.step(dt);
@@ -793,7 +799,7 @@ var TestCalculatedVertex = ArmatureTestLayer.extend({
         ccs.ENABLE_PHYSICS_SAVE_CALCULATED_VERTEX = true;
         ccs.armatureDataManager.addArmatureFileInfo(s_Cowboy_json);
 
-        this.armature1 = ccs.Armature.create("Cowboy");
+        this.armature1 = new ccs.Armature("Cowboy");
         this.armature1.getAnimation().play("FireWithoutBullet");
         this.armature1.getAnimation().setSpeedScale(0.2);
         this.armature1.scaleX = -0.2;
@@ -809,7 +815,7 @@ var TestCalculatedVertex = ArmatureTestLayer.extend({
 
         this.addChild(this.armature1);
 
-        this.armature2 = ccs.Armature.create("Cowboy");
+        this.armature2 = new ccs.Armature("Cowboy");
         this.armature2.getAnimation().play("Walk");
         this.armature2.scaleX = -0.2;
         this.armature2.scaleY = 0.2;
@@ -817,7 +823,7 @@ var TestCalculatedVertex = ArmatureTestLayer.extend({
         this.armature2.y = winSize.height / 2;
         this.addChild(this.armature2);
 
-        this.bullet = cc.Sprite.create("#25.png");
+        this.bullet = new cc.Sprite("#25.png");
         this.addChild(this.bullet);
 
         this.scheduleUpdate();
@@ -833,7 +839,7 @@ var TestCalculatedVertex = ArmatureTestLayer.extend({
         this.bullet.x = p.x + 60;
         this.bullet.y = p.y;
         this.bullet.stopAllActions();
-        this.bullet.runAction(cc.MoveBy.create(1.5, cc.p(800, 0)));
+        this.bullet.runAction(cc.moveBy(1.5, cc.p(800, 0)));
     },
 
     update: function (dt) {
@@ -847,7 +853,7 @@ var TestCalculatedVertex = ArmatureTestLayer.extend({
         var dict = this.armature2.getBoneDic();
         for (var key in dict) {
             var bone = dict[key];
-            var bodyList = bone.getColliderBodyList();
+            var bodyList = bone.getColliderBodyList() || [];
             for (var i = 0; i < bodyList.length; i++) {
                 var body = bodyList[i];
                 var vertexList = body.getCalculatedVertexList();
@@ -896,13 +902,13 @@ var TestBoundingBox = ArmatureTestLayer.extend({
         var _this = this;
         _this._super();
 
-        _this.drawNode = cc.DrawNode.create();
+        _this.drawNode = new cc.DrawNode();
         _this.drawNode.setDrawColor(cc.color(100,100,100,255));
         _this.addChild(_this.drawNode);
 
         ccs.armatureDataManager.addArmatureFileInfo(s_Cowboy_json);
 
-        _this.armature = ccs.Armature.create("Cowboy");
+        _this.armature = new ccs.Armature("Cowboy");
         _this.armature.getAnimation().playWithIndex(0);
         _this.armature.x = winSize.width / 2;
         _this.armature.y = winSize.height / 2;
@@ -916,7 +922,7 @@ var TestBoundingBox = ArmatureTestLayer.extend({
         return "Test BoundingBox";
     },
     update: function () {
-        var rect =  this.armature.boundingBox();
+        var rect =  this.armature.getBoundingBox();
         this.drawNode.clear();
         this.drawNode.drawRect(cc.p(rect.x, rect.y), cc.p(cc.rectGetMaxX(rect), cc.rectGetMaxY(rect)));
     }
@@ -932,7 +938,7 @@ var TestAnchorPoint = ArmatureTestLayer.extend({
         this._super();
         ccs.armatureDataManager.addArmatureFileInfo(s_Cowboy_json);
         for (var i = 0; i < 5; i++) {
-            var armature = ccs.Armature.create("Cowboy");
+            var armature = new ccs.Armature("Cowboy");
             armature.getAnimation().playWithIndex(0);
             armature.x = winSize.width / 2;
             armature.y = winSize.height / 2;
@@ -974,7 +980,7 @@ var TestArmatureNesting = ArmatureTestLayer.extend({
     onEnter:function () {
         this._super();
         ccs.armatureDataManager.addArmatureFileInfo(s_cyborg_png, s_cyborg_plist, s_cyborg_xml);
-        this.armature = ccs.Armature.create("cyborg");
+        this.armature = new ccs.Armature("cyborg");
         this.armature.getAnimation().playWithIndex(1);
         this.armature.x = winSize.width / 2;
         this.armature.y = winSize.height / 2;
@@ -1094,9 +1100,9 @@ var TestArmatureNesting2 = ArmatureTestLayer.extend({
         this._super();
 
         this._touchedMenu = false;
-        var label = cc.LabelTTF.create("Change Mount", "Arial", 20);
-        var menuItem = cc.MenuItemLabel.create(label, this.changeMountCallback, this);
-        var menu = cc.Menu.create(menuItem);
+        var label = new cc.LabelTTF("Change Mount", "Arial", 20);
+        var menuItem = new cc.MenuItemLabel(label, this.changeMountCallback, this);
+        var menu = new cc.Menu(menuItem);
         menu.x = 0;
         menu.y = 0;
         menuItem.x = cc.visibleRect.right.x - 67;
@@ -1135,7 +1141,7 @@ var TestArmatureNesting2 = ArmatureTestLayer.extend({
             armature.scaleX = 1;
         }
 
-        var move = cc.MoveTo.create(2, point);
+        var move = cc.moveTo(2, point);
         armature.stopAllActions();
         armature.runAction(move);
         return false;
@@ -1164,7 +1170,7 @@ var TestArmatureNesting2 = ArmatureTestLayer.extend({
         }
     },
     createMount: function (name, position) {
-        var armature = ccs.Armature.create(name);
+        var armature = new ccs.Armature(name);
         armature.getAnimation().playWithIndex(0);
         armature.x = position.x;
 	    armature.y = position.y;
@@ -1182,7 +1188,7 @@ var TestPlaySeveralMovement = ArmatureTestLayer.extend({
     onEnter:function () {
         this._super();
         ccs.armatureDataManager.addArmatureFileInfo(s_Cowboy_json);
-        var armature = ccs.Armature.create("Cowboy");
+        var armature = new ccs.Armature("Cowboy");
         armature.getAnimation().playWithNames(["Walk", "FireMax", "Fire"],10,true);
         armature.scale = 0.2;
         armature.x = winSize.width / 2;
@@ -1214,7 +1220,7 @@ var TestChangeAnimationInternal = ArmatureTestLayer.extend({
         this._super();
 
         ccs.armatureDataManager.addArmatureFileInfo(s_Cowboy_json);
-        var armature = ccs.Armature.create("Cowboy");
+        var armature = new ccs.Armature("Cowboy");
         armature.getAnimation().playWithIndex(0);
         armature.scale = 0.2;
         armature.x = winSize.width / 2;
@@ -1261,7 +1267,7 @@ var TestEasing = ArmatureTestLayer.extend({
         this._super();
 
         ccs.armatureDataManager.addArmatureFileInfo(s_testEasing_json);
-        var armature = ccs.Armature.create("testEasing");
+        var armature = new ccs.Armature("testEasing");
         armature.getAnimation().playWithIndex(0);
         armature.scale = 0.8;
         armature.x = winSize.width / 2;

@@ -27,7 +27,7 @@ class ConfigParser
 {
 public:
     static ConfigParser *getInstance(void);
-    void readConfig();
+	static void purge();
 
     // predefined screen size
     int getScreenSizeCount(void);
@@ -36,18 +36,25 @@ public:
     string getEntryFile();
     rapidjson::Document& getConfigJsonRoot();
     const SimulatorScreenSize getScreenSize(int index);
+    int getConsolePort();
+    int getUploadPort();
+    int getDebugPort();
     bool isLanscape();
-    bool isInit();
+    bool isWindowTop();
     
 private:
+    void readConfig();
     ConfigParser(void);
-    static ConfigParser *s_sharedInstance;
+    static ConfigParser *s_sharedConfigParserInstance;
     ScreenSizeArray _screenSizeArray;
     cocos2d::Size _initViewSize;
     string _viewName;
     string _entryfile;
     bool _isLandscape;
-    bool _isInit;
+    bool _isWindowTop;
+    int _consolePort;
+    int _uploadPort;
+    int _debugPort;
     
     rapidjson::Document _docRootjson;
 };

@@ -45,13 +45,26 @@ var cocoStudioTestItemNames = [
         testScene:function () {
             runSceneEditorTest();
         }
+    },
+    {
+        itemTitle:"ParserTest",
+        testScene:function(){
+            runParserTest();
+        }
     }
 ];
+
 if(!cc.sys.isNative){
     cocoStudioTestItemNames.push({
         itemTitle: "CocoStudioComponentsTest",
         testScene: function () {
             runComponentsTestLayer();
+        }
+    });
+    cocoStudioTestItemNames.push({
+        itemTitle:"CustomWidget",
+        testScene:function(){
+            runCustomGUITest();
         }
     });
 }
@@ -62,14 +75,14 @@ var CocoStudioMainLayer = cc.Layer.extend({
 
         var winSize = cc.director.getWinSize();
 
-        var pMenu = cc.Menu.create();
+        var pMenu = new cc.Menu();
         pMenu.x = 0;
 	    pMenu.y = 0;
         cc.MenuItemFont.setFontName("Arial");
         cc.MenuItemFont.setFontSize(24);
         for (var i = 0; i < cocoStudioTestItemNames.length; ++i) {
             var selItem = cocoStudioTestItemNames[i];
-            var pItem = cc.MenuItemFont.create(selItem.itemTitle,
+            var pItem = new cc.MenuItemFont(selItem.itemTitle,
                 this.menuCallback, this);
             pItem.x = winSize.width / 2;
 	        pItem.y = winSize.height - (i + 1) * LINE_SPACE;

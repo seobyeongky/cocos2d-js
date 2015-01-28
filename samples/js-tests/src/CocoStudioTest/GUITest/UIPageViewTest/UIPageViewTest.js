@@ -34,14 +34,14 @@ var UIPageViewEditorTest = UIBaseLayer.extend({
         back_label.addTouchEventListener(this.backEvent,this);
 
         var pageView =ccui.helper.seekWidgetByName(root, "PageView_1269");
-        pageView.addEventListenerPageView(this.pageViewEvent, this);
+        pageView.addEventListener(this.pageViewEvent, this);
     },
 
     pageViewEvent: function (sender, type) {
         switch (type) {
             case ccui.PageView.EVENT_TURNING:
                 var pageView = sender;
-                this._topDisplayText.setText("page = " + (pageView.getCurPageIndex() + 1));
+                this._topDisplayText.setString("page = " + (pageView.getCurPageIndex() + 1));
                 break;
             default:
                 break;
