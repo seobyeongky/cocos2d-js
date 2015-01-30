@@ -909,6 +909,7 @@ cc.view.getTargetDensityDPI = function() {return cc.DENSITYDPI_DEVICE;};
  * @name cc.eventManager
  */
 cc.eventManager = cc.director.getEventDispatcher();
+
 /**
  * @type {cc.AudioEngine}
  * @name cc.audioEngine
@@ -973,7 +974,6 @@ cc.fileUtils = cc.FileUtils.getInstance();
 cc.fileUtils.setPopupNotify(false);
 
 
-
 /**
  * @type {Object}
  * @name cc.screen
@@ -1014,8 +1014,8 @@ var jsb = jsb || {};
  * Only available in JSB
  */
 jsb.fileUtils = cc.fileUtils;
-delete cc.FileUtils;
-delete cc.fileUtils;
+//delete cc.FileUtils;
+//delete cc.fileUtils;
 
 /**
  * @type {Object}
@@ -1624,11 +1624,6 @@ jsb.urlRegExp = new RegExp(
         // user:pass authentication
         "(?:\\S+(?::\\S*)?@)?" +
         "(?:" +
-            // IP address exclusion
-            // private & local networks
-            "(?!(?:10|127)(?:\\.\\d{1,3}){3})" +
-            "(?!(?:169\\.254|192\\.168)(?:\\.\\d{1,3}){2})" +
-            "(?!172\\.(?:1[6-9]|2\\d|3[0-1])(?:\\.\\d{1,3}){2})" +
             // IP address dotted notation octets
             // excludes loopback network 0.0.0.0
             // excludes reserved space >= 224.0.0.0

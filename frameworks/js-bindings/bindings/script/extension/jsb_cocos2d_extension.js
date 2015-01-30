@@ -28,7 +28,8 @@
  * Only available in JSB
  */
 jsb.AssetsManager = cc.AssetsManager;
-delete cc.AssetsManager;
+// no delete!!!
+//delete cc.AssetsManager;
 /**
  * @type {Object}
  * @name jsb.EventListenerAssetsManager

@@ -612,9 +612,6 @@ static std::string RemoveFileExt(const std::string& filePath) {
 
 JSScript* ScriptingCore::getScript(const char *path)
 {
-    // no reuse !
-    return NULL;
-
     // a) check jsc file first
     std::string byteCodePath = RemoveFileExt(std::string(path)) + BYTE_CODE_FILE_EXT;
     if (filename_script.find(byteCodePath) != filename_script.end())
@@ -633,10 +630,11 @@ void ScriptingCore::compileScript(const char *path, JSObject* global, JSContext*
     if (!path) {
         return;
     }
-    
-    if (getScript(path)) {
-        return;
-    }
+
+    // do not reuse!!!
+//    if (getScript(path)) {
+//        return;
+//    }
 
     cocos2d::FileUtils *futil = cocos2d::FileUtils::getInstance();
 
@@ -1405,15 +1403,37 @@ bool ScriptingCore::handleKeybardEvent(void* nativeObj, cocos2d::EventKeyboard::
     
     if (isPressed)
     {
-        ret = executeFunctionWithOwner(OBJECT_TO_JSVAL(p->obj), "onKeyPressed", 2, args);
+        ret = executeFunctionWithOwner(OBJECT_TO_JSVAL(p->obj), "_onKeyPressed", 2, args);
     }
     else
     {
-        ret = executeFunctionWithOwner(OBJECT_TO_JSVAL(p->obj), "onKeyReleased", 2, args);
+        ret = executeFunctionWithOwner(OBJECT_TO_JSVAL(p->obj), "_onKeyReleased", 2, args);
     }
 
     removeJSObject(_cx, event);
     
+    return ret;
+}
+
+bool ScriptingCore::handleFocusEvent(void* nativeObj, cocos2d::ui::Widget* widgetLoseFocus, cocos2d::ui::Widget* widgetGetFocus)
+{
+    JSB_AUTOCOMPARTMENT_WITH_GLOBAL_OBJCET
+
+    js_proxy_t * p = jsb_get_native_proxy(nativeObj);
+
+    if (nullptr == p)
+        return false;
+
+    jsval args[2] = {
+        getJSObject(_cx, widgetLoseFocus),
+        getJSObject(_cx, widgetGetFocus)
+    };
+
+    bool ret = executeFunctionWithOwner(OBJECT_TO_JSVAL(p->obj), "onFocusChanged", 2, args);
+
+    removeJSObject(_cx, widgetLoseFocus);
+    removeJSObject(_cx, widgetGetFocus);
+
     return ret;
 }
 
@@ -1797,8 +1817,7 @@ void ScriptingCore::enableDebugger(unsigned int port)
         JS_DefineFunction(_cx, _debugGlobal, "_enterNestedEventLoop", JSBDebug_enterNestedEventLoop, 0, JSPROP_READONLY | JSPROP_PERMANENT);
         JS_DefineFunction(_cx, _debugGlobal, "_exitNestedEventLoop", JSBDebug_exitNestedEventLoop, 0, JSPROP_READONLY | JSPROP_PERMANENT);
         JS_DefineFunction(_cx, _debugGlobal, "_getEventLoopNestLevel", JSBDebug_getEventLoopNestLevel, 0, JSPROP_READONLY | JSPROP_PERMANENT);
-        
-        
+
         runScript("script/jsb_debugger.js", _debugGlobal);
         
         // prepare the debugger
