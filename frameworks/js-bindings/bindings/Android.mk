@@ -12,6 +12,8 @@ LOCAL_SRC_FILES := auto/jsb_cocos2dx_auto.cpp \
                    auto/jsb_cocos2dx_spine_auto.cpp \
                    auto/jsb_cocos2dx_studio_auto.cpp \
                    auto/jsb_cocos2dx_ui_auto.cpp \
+                   auto/jsb_cocos2dx_network_auto.cpp \
+                   auto/jsb_soomla_auto.cpp \
                    manual/ScriptingCore.cpp \
                    manual/cocos2d_specifics.cpp \
                    manual/js_manual_conversions.cpp \
@@ -35,8 +37,12 @@ LOCAL_SRC_FILES := auto/jsb_cocos2dx_auto.cpp \
                    manual/network/jsb_socketio.cpp \
                    manual/network/jsb_websocket.cpp \
                    manual/network/XMLHTTPRequest.cpp \
+                   manual/network/EventSource.cpp \
                    manual/spine/jsb_cocos2dx_spine_manual.cpp \
-                   manual/ui/jsb_cocos2dx_ui_manual.cpp
+                   manual/spine/CCBoneAnimator.cpp \
+                   manual/spine/JSSkeletonAnimation.cpp \
+                   manual/ui/jsb_cocos2dx_ui_manual.cpp \
+                   manual/soomla/jsb_soomla.cpp
                    
 
 LOCAL_CFLAGS := -DCOCOS2D_JAVASCRIPT
@@ -45,12 +51,16 @@ LOCAL_EXPORT_CFLAGS := -DCOCOS2D_JAVASCRIPT
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/manual \
                     $(LOCAL_PATH)/manual/cocostudio \
+                    $(LOCAL_PATH)/manual/spine \
+                    $(LOCAL_PATH)/manual/soomla \
                     $(LOCAL_PATH)/auto \
                     $(LOCAL_PATH)/../cocos2d-x/cocos/2d \
                     $(LOCAL_PATH)/../cocos2d-x/cocos/base \
                     $(LOCAL_PATH)/../cocos2d-x/cocos/ui \
+                    $(LOCAL_PATH)/../cocos2d-x/cocos/math \
                     $(LOCAL_PATH)/../cocos2d-x/cocos/audio/include \
                     $(LOCAL_PATH)/../cocos2d-x/cocos/storage \
+                    $(LOCAL_PATH)/../cocos2d-x/cocos/network \
                     $(LOCAL_PATH)/../cocos2d-x/extensions \
                     $(LOCAL_PATH)/../cocos2d-x/cocos/editor-support/spine \
                     $(LOCAL_PATH)/../cocos2d-x/cocos/editor-support/cocosbuilder \
@@ -64,6 +74,7 @@ LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/manual \
 LOCAL_STATIC_LIBRARIES := cocos2dx_static
 LOCAL_STATIC_LIBRARIES += spidermonkey_static
 LOCAL_STATIC_LIBRARIES += cocos_localstorage_static
+LOCAL_STATIC_LIBRARIES += jansson_static
 
 include $(BUILD_STATIC_LIBRARY)
 

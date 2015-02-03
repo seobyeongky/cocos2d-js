@@ -238,13 +238,7 @@ void MinXmlHttpRequest::handle_requestResponse(cocos2d::network::HttpClient *sen
 void MinXmlHttpRequest::_sendRequest(JSContext *cx)
 {
     _httpRequest->setResponseCallback(this, httpresponse_selector(MinXmlHttpRequest::handle_requestResponse));
-    _httpRequest->_tag += "B(";
-    _httpRequest->_tag += std::to_string(_httpRequest->getReferenceCount());
-    _httpRequest->_tag += ")";
     cocos2d::network::HttpClient::getInstance()->sendImmediate(_httpRequest);
-    _httpRequest->_tag += "D(";
-    _httpRequest->_tag += std::to_string(_httpRequest->getReferenceCount());
-    _httpRequest->_tag += ")";
     _httpRequest->release();
 }
 
@@ -274,10 +268,6 @@ MinXmlHttpRequest::MinXmlHttpRequest()
 , _requestHeader()
 , _isAborted(false)
 {
-    char buf[256];
-    sprintf(buf, "%p", _httpRequest);
-    _httpRequest->_tag = buf;
-    _httpRequest->_tag += "A";
 }
 
 /**
