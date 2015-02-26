@@ -61,6 +61,18 @@ isOpacityModifyRGB : function (
 },
 
 /**
+ * @method initWithData
+ * @param {spSkeletonData} arg0
+ * @param {bool} arg1
+ */
+initWithData : function (
+spskeletondata, 
+bool 
+)
+{
+},
+
+/**
  * @method setDebugSlotsEnabled
  * @param {bool} arg0
  */
@@ -162,6 +174,20 @@ getTimeScale : function (
 )
 {
     return 0;
+},
+
+/**
+ * @method initWithFile
+* @param {String|String} str
+* @param {String|spAtlas} str
+* @param {float|float} float
+*/
+initWithFile : function(
+str,
+spatlas,
+float 
+)
+{
 },
 
 /**
@@ -431,7 +457,7 @@ float
 /**
  * @method SkeletonAnimation
  * @constructor
-* @param {String|spSkeletonData|String} str
+* @param {spSkeletonData|String|String} spskeletondata
 * @param {spAtlas|String} spatlas
 * @param {float|float} float
 */
