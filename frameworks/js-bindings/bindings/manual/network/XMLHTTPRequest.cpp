@@ -196,12 +196,13 @@ void MinXmlHttpRequest::handle_requestResponse(cocos2d::network::HttpClient *sen
     if (!response->isSucceed())
     {
         CCLOG("Response failed, error buffer: %s", response->getErrorBuffer());
-        if (statusCode == 0)
+        if (statusCode == 0 || statusCode == -1)
         {
             _errorFlag = true;
             _status = 0;
             _statusText.clear();
-            _notify();
+            _notify(_onerrorCallback);
+            _notify(_onloadendCallback);
             return;
         }
     }
@@ -229,7 +230,9 @@ void MinXmlHttpRequest::handle_requestResponse(cocos2d::network::HttpClient *sen
     _data[_dataSize] = '\0';
     memcpy((void*)_data, (const void*)buffer->data(), _dataSize);
     
-    _notify();
+    _notify(_onreadystateCallback);
+    _notify(_onloadCallback);
+    _notify(_onloadendCallback);
 }
 /**
  * @brief   Send out request and fire callback when done.
@@ -254,6 +257,11 @@ MinXmlHttpRequest::MinXmlHttpRequest()
 , _data(nullptr)
 , _dataSize()
 , _onreadystateCallback(nullptr)
+, _onloadstartCallback(nullptr)
+, _onabortCallback(nullptr)
+, _onerrorCallback(nullptr)
+, _onloadCallback(nullptr)
+, _onloadendCallback(nullptr)
 , _readyState(UNSENT)
 , _status(0)
 , _statusText()
@@ -324,44 +332,41 @@ JS_BINDED_CONSTRUCTOR_IMPL(MinXmlHttpRequest)
 
 
 /**
- *  @brief  get Callback function for Javascript
- * 
- */
-JS_BINDED_PROP_GET_IMPL(MinXmlHttpRequest, onreadystatechange)
-{
-    if (_onreadystateCallback)
-    {
-        JSString *tmpstr = JS_NewStringCopyZ(cx, "1");
-        JS::RootedValue tmpval(cx);
-        tmpval = STRING_TO_JSVAL(tmpstr);
-        JS_SetProperty(cx, _onreadystateCallback, "readyState", tmpval);
-        
-        jsval out = OBJECT_TO_JSVAL(_onreadystateCallback);
-        vp.set(out);
-        
-    }
-    else
-    {
-        vp.set(JSVAL_NULL);
-    }
-    return true;
-}
-
-/**
+ *  @brief Get Callback function for Javascript
  *  @brief Set Callback function coming from Javascript
  *
- *
  */
-JS_BINDED_PROP_SET_IMPL(MinXmlHttpRequest, onreadystatechange)
-{
-    jsval callback = vp.get();
-    if (callback != JSVAL_NULL)
-    {
-        _onreadystateCallback = JSVAL_TO_OBJECT(callback);
-        JS_AddNamedObjectRoot(cx, &_onreadystateCallback, "onreadystateCallback");
-    }
-    return true;
+#define GETTER_SETTER_FOR_CALLBACK_PROP(x,y) JS_BINDED_PROP_GET_IMPL(MinXmlHttpRequest, x)\
+{\
+    if (y)\
+    {\
+        jsval out = OBJECT_TO_JSVAL(y);\
+        vp.set(out);\
+    }\
+    else\
+    {\
+        vp.set(JSVAL_NULL);\
+    }\
+    return true;\
+}\
+JS_BINDED_PROP_SET_IMPL(MinXmlHttpRequest, x)\
+{\
+    jsval callback = vp.get();\
+    if (callback != JSVAL_NULL)\
+    {\
+        y = JSVAL_TO_OBJECT(callback);\
+        JS_AddNamedObjectRoot(cx, &y, #y);\
+    }\
+    return true;\
 }
+
+
+GETTER_SETTER_FOR_CALLBACK_PROP(onreadystatechange, _onreadystateCallback)
+GETTER_SETTER_FOR_CALLBACK_PROP(onloadstart, _onloadstartCallback)
+GETTER_SETTER_FOR_CALLBACK_PROP(onabort, _onabortCallback)
+GETTER_SETTER_FOR_CALLBACK_PROP(onerror, _onerrorCallback)
+GETTER_SETTER_FOR_CALLBACK_PROP(onload, _onloadCallback)
+GETTER_SETTER_FOR_CALLBACK_PROP(onloadend, _onloadendCallback)
 
 /**
  *  @brief upload getter - TODO
@@ -711,6 +716,7 @@ JS_BINDED_FUNC_IMPL(MinXmlHttpRequest, send)
 
     _setHttpRequestHeader();
     _sendRequest(cx);
+    _notify(_onloadstartCallback);
 
     return true;
 }
@@ -729,6 +735,9 @@ JS_BINDED_FUNC_IMPL(MinXmlHttpRequest, abort)
 
     //3.Change the state to UNSENT.
     _readyState = UNSENT;
+    
+    _notify(_onabortCallback);
+    
     return true;
 }
 
@@ -848,21 +857,21 @@ static void basic_object_finalize(JSFreeOp *freeOp, JSObject *obj)
 //    CCLOG("basic_object_finalize %p ...", obj);
 }
 
-void MinXmlHttpRequest::_notify()
+void MinXmlHttpRequest::_notify(JSObject * callback)
 {
     js_proxy_t * p;
     void* ptr = (void*)this;
     p = jsb_get_native_proxy(ptr);
-    
+
     if(p)
     {
         JSContext* cx = ScriptingCore::getInstance()->getGlobalContext();
         
-        if (_onreadystateCallback)
+        if (callback)
         {
             JSB_AUTOCOMPARTMENT_WITH_GLOBAL_OBJCET
             //JS_IsExceptionPending(cx) && JS_ReportPendingException(cx);
-            jsval fval = OBJECT_TO_JSVAL(_onreadystateCallback);
+            jsval fval = OBJECT_TO_JSVAL(callback);
             jsval out;
             JS_CallFunctionValue(cx, NULL, fval, 0, NULL, &out);
         }
@@ -886,6 +895,11 @@ void MinXmlHttpRequest::_js_register(JSContext *cx, JSObject *global)
     
     MinXmlHttpRequest::js_class = jsclass;
     static JSPropertySpec props[] = {
+        JS_BINDED_PROP_DEF_ACCESSOR(MinXmlHttpRequest, onloadstart),
+        JS_BINDED_PROP_DEF_ACCESSOR(MinXmlHttpRequest, onabort),
+        JS_BINDED_PROP_DEF_ACCESSOR(MinXmlHttpRequest, onerror),
+        JS_BINDED_PROP_DEF_ACCESSOR(MinXmlHttpRequest, onload),
+        JS_BINDED_PROP_DEF_ACCESSOR(MinXmlHttpRequest, onloadend),
         JS_BINDED_PROP_DEF_ACCESSOR(MinXmlHttpRequest, onreadystatechange),
         JS_BINDED_PROP_DEF_ACCESSOR(MinXmlHttpRequest, responseType),
         JS_BINDED_PROP_DEF_ACCESSOR(MinXmlHttpRequest, withCredentials),
